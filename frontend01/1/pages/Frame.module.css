@@ -1,0 +1,98 @@
+.child,
+.home {
+  position: absolute;
+}
+.child {
+  top: 0;
+  left: -9px;
+  background-color: var(--color-teal);
+  width: 1449px;
+  height: 55px;
+}
+.home {
+  margin: 0;
+  top: 3px;
+  left: 61px;
+  font-size: inherit;
+  font-weight: 400;
+  font-family: inherit;
+}
+.image5 {
+  top: 7px;
+  left: 1330px;
+  width: 36px;
+  height: 37px;
+  background-image: url(/public/image5@2x.png);
+  cursor: pointer;
+}
+.image5,
+.image6,
+.image7 {
+  text-decoration: none;
+  position: absolute;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top;
+}
+.image6 {
+  top: -15px;
+  left: 1249px;
+  width: 81px;
+  height: 81px;
+  background-image: url(/public/image6@2x.png);
+  cursor: pointer;
+}
+.image7 {
+  top: 2px;
+  left: 1388px;
+  width: 44px;
+  height: 47px;
+  background-image: url(/public/image7@2x.png);
+}
+.image22Icon,
+.image23Icon {
+  position: absolute;
+  top: 6px;
+  left: 17px;
+  width: 41px;
+  height: 42px;
+  object-fit: cover;
+}
+.image23Icon {
+  top: 139px;
+  left: 32px;
+  width: 44px;
+  height: 47px;
+}
+.teachersName {
+  text-decoration: none;
+  position: absolute;
+  top: 153px;
+  left: 80px;
+  font-size: var(--font-size-xl);
+  color: var(--color-black);
+  display: inline-block;
+  width: 360px;
+  height: 33px;
+}
+.main,
+.parent {
+  background-color: var(--color-white);
+  overflow: hidden;
+}
+.main {
+  position: absolute;
+  top: 22px;
+  left: 51px;
+  width: 1440px;
+  height: 1024px;
+  text-align: left;
+  font-size: var(--font-size-21xl);
+  color: var(--color-white);
+  font-family: var(--font-inter);
+}
+.parent {
+  position: relative;
+  width: 100%;
+  height: 1125px;
+}

@@ -1,0 +1,9 @@
+@import './base.css';
+@import 'bootstrap';
+
+body{
+    background-image: url(opt2.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    backdrop-filter: blur(3px);
+}

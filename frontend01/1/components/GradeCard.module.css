@@ -1,0 +1,396 @@
+.frameChild,
+.frameInner,
+.frameItem,
+.lineIcon {
+  position: absolute;
+  top: 21px;
+  left: 32px;
+  width: 1020px;
+  height: 527px;
+}
+.frameInner,
+.frameItem,
+.lineIcon {
+  height: 88px;
+}
+.frameInner,
+.lineIcon {
+  left: 309px;
+  width: 2px;
+  height: 524px;
+}
+.lineIcon {
+  top: 19px;
+  left: 435px;
+  width: 5px;
+  height: 526px;
+}
+.frameChild1,
+.frameChild2 {
+  position: absolute;
+  top: 21px;
+  left: 550px;
+  width: 2px;
+  height: 524px;
+}
+.frameChild2 {
+  left: 657px;
+  width: 5px;
+}
+.frameChild3,
+.frameChild4 {
+  position: absolute;
+  top: 19px;
+  left: 891px;
+  width: 3px;
+  height: 526px;
+}
+.frameChild4 {
+  top: 21px;
+  left: 777px;
+  height: 524px;
+}
+.frameChild5,
+.frameChild6,
+.frameChild7,
+.frameChild8,
+.lineDiv {
+  position: absolute;
+  top: 176.5px;
+  left: 38.5px;
+  border-top: 1px solid var(--color-black);
+  box-sizing: border-box;
+  width: 1014px;
+  height: 1px;
+}
+.frameChild5,
+.frameChild6,
+.frameChild7,
+.frameChild8 {
+  top: 248.5px;
+  left: 43.5px;
+}
+.frameChild6,
+.frameChild7,
+.frameChild8 {
+  top: 319.5px;
+  left: 38.5px;
+}
+.frameChild7,
+.frameChild8 {
+  top: 393.5px;
+  left: 42.5px;
+}
+.frameChild8 {
+  top: 470.5px;
+  left: 43.5px;
+}
+.frameButton,
+.frameChild9 {
+  position: absolute;
+  top: 131px;
+  left: 910px;
+  cursor: pointer;
+}
+.frameChild9 {
+  top: 198px;
+}
+.frameChild10,
+.frameChild11,
+.frameChild12,
+.frameChild13 {
+  position: absolute;
+  top: 272px;
+  left: 910px;
+  cursor: pointer;
+}
+.frameChild11,
+.frameChild12,
+.frameChild13 {
+  top: 337px;
+}
+.frameChild12,
+.frameChild13 {
+  top: 409px;
+}
+.frameChild13 {
+  top: 491px;
+}
+.st,
+.subject {
+  position: absolute;
+  display: inline-block;
+}
+.subject {
+  margin: 0;
+  top: 58px;
+  left: 57px;
+  font-size: var(--font-size-11xl);
+  font-weight: 400;
+  font-family: inherit;
+  width: 342px;
+  height: 59px;
+}
+.st {
+  top: 68px;
+  left: 348px;
+  width: 87px;
+  height: 62px;
+}
+.final,
+.nd,
+.st,
+.th {
+  margin: 0;
+  font-size: inherit;
+  font-weight: 400;
+  font-family: inherit;
+}
+.nd {
+  position: absolute;
+  top: 66px;
+  left: 464px;
+  display: inline-block;
+  width: 67px;
+  height: 43px;
+}
+.final,
+.th {
+  width: 117px;
+}
+.th {
+  position: absolute;
+  top: 64px;
+  left: 681px;
+  display: inline-block;
+  height: 43px;
+}
+.final {
+  top: 62px;
+  left: 787px;
+  height: 44px;
+}
+.consultation,
+.final,
+.rd {
+  position: absolute;
+  display: inline-block;
+}
+.consultation {
+  cursor: pointer;
+  top: 48px;
+  left: 900px;
+  width: 156px;
+  height: 41px;
+}
+.rd {
+  top: 66px;
+  left: 563px;
+  width: 87px;
+  height: 17px;
+}
+.english,
+.filipino,
+.gmrc,
+.history,
+.math,
+.science {
+  margin: 0;
+  position: absolute;
+  top: 132px;
+  left: 39px;
+  font-size: inherit;
+  font-weight: 400;
+  font-family: inherit;
+  color: var(--color-black);
+  display: inline-block;
+  width: 360px;
+  height: 33px;
+}
+.english,
+.filipino,
+.gmrc,
+.history,
+.science {
+  top: 193px;
+  left: 42px;
+  height: 32px;
+}
+.english,
+.filipino,
+.gmrc,
+.history {
+  top: 265px;
+  left: 39px;
+}
+.filipino,
+.gmrc,
+.history {
+  top: 358px;
+  height: 33px;
+}
+.gmrc,
+.history {
+  top: 424px;
+  height: 32px;
+}
+.history {
+  top: 483px;
+  height: 33px;
+}
+.textfield,
+.textfield1,
+.textfield2 {
+  border: 0;
+  background-color: transparent;
+  position: absolute;
+  top: 148px;
+  left: 352px;
+}
+.textfield1,
+.textfield2 {
+  top: 220px;
+}
+.textfield2 {
+  top: 292px;
+}
+.textfield3,
+.textfield4,
+.textfield5,
+.textfield6,
+.textfield7,
+.textfield8 {
+  border: 0;
+  background-color: transparent;
+  position: absolute;
+  top: 366px;
+  left: 352px;
+}
+.textfield4,
+.textfield5,
+.textfield6,
+.textfield7,
+.textfield8 {
+  top: 443px;
+}
+.textfield5,
+.textfield6,
+.textfield7,
+.textfield8 {
+  top: 490px;
+}
+.textfield6,
+.textfield7,
+.textfield8 {
+  top: 508px;
+  left: 470px;
+}
+.textfield7,
+.textfield8 {
+  top: 443px;
+  left: 467px;
+}
+.textfield8 {
+  top: 364px;
+}
+.textfield10,
+.textfield11,
+.textfield12,
+.textfield13,
+.textfield9 {
+  border: 0;
+  background-color: transparent;
+  position: absolute;
+  top: 297px;
+  left: 470px;
+}
+.textfield10,
+.textfield11,
+.textfield12,
+.textfield13 {
+  top: 221px;
+}
+.textfield11,
+.textfield12,
+.textfield13 {
+  top: 149px;
+}
+.textfield12,
+.textfield13 {
+  top: 147px;
+  left: 579px;
+}
+.textfield13 {
+  top: 209px;
+}
+.textfield14,
+.textfield15,
+.textfield16,
+.textfield17,
+.textfield18 {
+  border: 0;
+  background-color: transparent;
+  position: absolute;
+  top: 292px;
+  left: 576px;
+}
+.textfield15,
+.textfield16,
+.textfield17,
+.textfield18 {
+  top: 364px;
+}
+.textfield16,
+.textfield17,
+.textfield18 {
+  top: 443px;
+}
+.textfield17,
+.textfield18 {
+  top: 503px;
+}
+.textfield18 {
+  top: 144px;
+  left: 678px;
+}
+.textfield19,
+.textfield20,
+.textfield21,
+.textfield22,
+.textfield23 {
+  border: 0;
+  background-color: transparent;
+  position: absolute;
+  top: 213px;
+  left: 667px;
+}
+.textfield20,
+.textfield21,
+.textfield22,
+.textfield23 {
+  top: 367px;
+}
+.textfield21,
+.textfield22,
+.textfield23 {
+  top: 292px;
+}
+.textfield22,
+.textfield23 {
+  top: 498px;
+}
+.textfield23 {
+  top: 438px;
+}
+.vectorParent {
+  position: absolute;
+  top: 173px;
+  left: 0;
+  width: 1067px;
+  height: 563px;
+  overflow: hidden;
+  text-align: left;
+  font-size: var(--font-size-xl);
+  color: var(--color-white);
+  font-family: var(--font-inter);
+}
