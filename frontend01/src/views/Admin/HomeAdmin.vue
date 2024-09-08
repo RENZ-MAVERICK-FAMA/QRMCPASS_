@@ -85,7 +85,7 @@
 import axios from 'axios';
 import * as XLSX from 'xlsx';
 import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts.js';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts.js';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 export default {
   data() {
