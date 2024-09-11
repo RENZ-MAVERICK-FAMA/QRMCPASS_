@@ -1,36 +1,34 @@
 <template>
-  <div>
-   
-    <h1> login</h1>
-    <div class="container">
-      <div class="form-container">
-      
-        <form @submit.prevent="loginall">
-          <div class="form-group">
-            <label for="username">Username</label>
-            <input v-model="formData.username" type="text" class="form-control" id="username" placeholder="Enter username">
-          </div>
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input v-model="formData.password" type="password" class="form-control" id="password" placeholder="Enter password">
-          </div> 
-
-          <br>
-          <button type="submit" class="btn btn-primary">Login</button>
-         
-        </form>
-
-        <div v-if="loginError" class="alert alert-danger" role="alert">
-          {{ loginError }}
+  <main class=" select-none grid justify-center p-4"  >
+    <form @submit.prevent="loginall" class="mt-10 p-5 bg-white shadow rounded-[20px] w-full h-full md:p-5 flex items-center" >
+      <div class="" >
+        <div class="flex items-center justify-center w-full mb-5" >
+          <img src="\src\assets\ceedmo-logo.png" alt="" class=" w-[180px]">
         </div>
+        <AlertMessage :loginError="loginError" />
+        <InputGroup class="mt-3" >
+            <InputText v-model="formData.username" type="text" id="username" placeholder="Username" />
+            <InputGroupAddon class="bg-white" >
+                <i class="pi pi-user"></i>
+            </InputGroupAddon>
+        </InputGroup>
+        <InputGroup class="mt-3" >
+            <InputText v-model="formData.password" type="password" id="password" placeholder="Password" />
+            <InputGroupAddon  class="bg-white" >
+                <i class="pi pi-eye"></i>
+            </InputGroupAddon>
+        </InputGroup>
+        <Button type="submit" label="Login" icon="pi pi-sign-in" class="w-full mt-3" severity="success" />
+        <RouterLink to="/reset" >
+          <p class="mt-2 text-center font-light hover:text-slate-300" >Forgot Password?</p>
+        </RouterLink>
       </div>
-    </div>
-  </div>
+    </form>
+  </main>
 </template>
-
 <script>
 import axios from 'axios';
-
+import { defineAsyncComponent } from 'vue';
 export default {
   data() {
     return {
@@ -40,6 +38,9 @@ export default {
       },
       loginError: ''
     };
+  },
+  components:{
+    AlertMessage: defineAsyncComponent(()=>import('@/components/errors/AlertMessage.vue'))
   },
   methods: {
   loginall() {
@@ -88,75 +89,3 @@ created() {
 }
 };
 </script>
-<style scoped>
-/* Navbar styles */
-.navbar {
-  display: flex;
-  justify-content: flex-start;
-}
-
-
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 400px; /* Adjust the height as needed */
-  width: 300px;
-  background-color: none;
-  margin: 0;
-  margin-left: 525px;
-  margin-top: 50px;
-  border-radius: 10%;
-  /* border: 2px solid #124410; */
-  background-color: #fff; /* Set the background color of your div */
-     box-shadow: 0 4px 8px #363a37; /* Add a shadow effect */
-}
-#reset {
-    color: black;
-    transition: color 0.3s ease;
-}
-
-#reset:hover {
-    color: rgb(3, 112, 255);
-}
-.alert {
-  margin-top: 15px;
-}
-.form-group {
-margin-bottom: 20px; /* Add spacing between form groups */
-}
-label{
-  font-weight: none;
-  text-transform: uppercase;
-  margin-bottom: 5px;
-  font-size: small;
-  font-weight: bold;
-  color:#124410;
-}
-.nav-link{
-  text-transform: uppercase;
-  font-size: small;
-  color: #071d8b;
-  text-decoration: underline;
-}
-.btn{
-  background-color: #1f5425;
-  border-color: #1f5425;
-  text-transform: uppercase;
-  font-size: normal;
-  margin: auto;
-  margin-left: 70px;
-  margin-top: 25px;
-}
-.btn:hover{
-  background-color: #1da124;
-}
-h1{
-  text-transform: uppercase;
-  font-size: large;
-  text-align: center;
-  margin-top: 50px;
-  color: black;
-}
-
-</style>

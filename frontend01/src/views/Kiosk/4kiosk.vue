@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div>
-      <h2 align="center">Pag cash in sa Balance</h2>
+      <h2>Pag cash in sa Balance</h2>
       <div v-if="error" class="alert alert-danger" role="alert">
         {{ error }}
         <button @click="clearError" class="close" data-dismiss="alert">
@@ -79,7 +79,7 @@
 </template>
 
     
-    <script>
+<script>
   import { ref, toHandlers, watch } from 'vue'
   import { useRoute, useRouter } from 'vue-router'
   import { QrcodeStream } from 'vue-qrcode-reader';
@@ -224,13 +224,13 @@
         console.error('An error occurred:', error);
         this.error = 'An error occurred. Please try again.';
     }
-},
-onError: console.error,
+  },
+  onError: console.error,
 
-resetValidationState() {
-  this.isValid = undefined
-},
-        async onDetect([firstDetectedCode]) {
+  resetValidationState() {
+    this.isValid = undefined
+  },
+      async onDetect([firstDetectedCode]) {
       this.result = firstDetectedCode.rawValue
       this.paused = true
 
@@ -367,10 +367,10 @@ resetValidationState() {
   .catch(error => {
     console.error('Error fetching recent transactions:', error);
   });
-}
+  }
     }};
     
-  </script>
+</script>
     
     <style scoped>
    .container{

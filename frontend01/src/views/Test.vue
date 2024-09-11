@@ -1,52 +1,45 @@
 <template>
-  <div class="container">
-    <div class="row">
-      <div class="cont-l">
-      <h3 class="display-5">Welcome sa</h3>
-      <h2 class="display-6"> QRMCPASS</h2>
-      <br>
-      <br>
-      <p>Maayong pag-abot sa QRMCPASS, ang imong tiwala nga solusyon alang sa pagdumala sa kalidad ug katalagman sa imong mga proyekto.</p>
-      <p>Pinaagi sa QRMCPASS, makapapalong ka sa imong mga proseso sa pagdumala sa proyekto, makailhan sa mga potensyal nga katalagman, ug makasiguro nga ang mga pamatasan sa kalidad gipatuman.</p>
-      <p>Usbagon ang among mga gibug-atan ug kuhaon ang kumander sa imong proyekto.</p>
-  </div>
-    </div>
-    <div class="row">
-      <div class="form-container">
-        <img src="\src\assets\ceedmo-logo.png" alt="" class="logo-client">
-        <h1 class="display-7"> login</h1>
-      
-        <form @submit.prevent="loginall">
-          <div class="form-group">
-            <label for="floatingInput">Username</label>
-            <input v-model="formData.username" type="text" class="form-control" id="username" placeholder="Enter username">
-          </div>
-          <div class="form-group">
-            <label for="floatingPassword">Password</label>
-            <input v-model="formData.password" type="password" class="form-control" id="password" placeholder="Enter password">
-          </div> 
-
-          <br>
-         
-          <button type="submit" class="btn btn-primary">Login</button>
-
-          
-         
-        </form>
-
-        <div v-if="loginError" class="alert alert-danger" role="alert">
-          {{ loginError }}
+  <div class=" h-auto p-5 grid place-content-center mt-5 md:mt-10" >
+      <div class="bg-white shadow rounded-[20px] p-10 grid grid-rows-[100px,1fr] grid-cols-1 md:grid-rows-1 md:grid-cols-2 md:w-[800px]" >
+        <div class="" >
+          <h1 class=" text-[25px] md:text-[30px] font-medium  text-center md:text-left " >Welcome sa</h1>
+          <h2 class="text-[35px] md:text-[40px] font-bold  text-center md:text-left "> QRMCPASS</h2>
+          <p class="hidden md:block font-light" >Maayong pag-abot sa QRMCPASS, ang imong tiwala nga solusyon alang sa pagdumala sa kalidad ug katalagman sa imong mga proyekto.</p><br/>
+          <p class="hidden md:block font-light" >Pinaagi sa QRMCPASS, makapapalong ka sa imong mga proseso sa pagdumala sa proyekto, makailhan sa mga potensyal nga katalagman, ug makasiguro nga ang mga pamatasan sa kalidad gipatuman.</p><br/>
+          <p class="hidden md:block font-light" >Usbagon ang among mga gibug-atan ug kuhaon ang kumander sa imong proyekto.</p><br/>
+        </div>
+        <div class=" md:p-5 h-full">
+          <form @submit.prevent="loginall" class=" rounded-[20px] w-full h-full md:p-5 flex items-center" >
+            <div class="" >
+              <div class="flex items-center justify-center w-full mb-5" >
+                <img src="\src\assets\ceedmo-logo.png" alt="" class=" hidden md:block w-[180px]">
+              </div>
+              <AlertMessage :loginError="loginError" />
+              <InputGroup class="mt-3" >
+                  <InputText v-model="formData.username" id="username"  type="text" placeholder="Username" />
+                  <InputGroupAddon class="bg-white" >
+                      <i class="pi pi-user"></i>
+                  </InputGroupAddon>
+              </InputGroup>
+              <InputGroup class="mt-3" >
+                  <InputText v-model="formData.password" id="password" type="password" placeholder="Password" />
+                  <InputGroupAddon  class="bg-white" >
+                      <i class="pi pi-eye"></i>
+                  </InputGroupAddon>
+              </InputGroup>
+              <Button type="submit" label="Login" icon="pi pi-sign-in" class="w-full mt-3" severity="success" />
+              <RouterLink to="/reset" >
+                <p class="mt-2 text-center font-light hover:text-slate-300" >Forgot Password?</p>
+              </RouterLink>
+            </div>
+          </form>
         </div>
       </div>
-    </div>
-    
-  
- 
-    </div>
- 
+  </div>
 </template>
 <script>
 import axios from 'axios';
+import { defineAsyncComponent } from 'vue';
 
 export default {
   data() {
@@ -57,6 +50,9 @@ export default {
       },
       loginError: ''
     };
+  },
+  components:{
+    AlertMessage: defineAsyncComponent(()=>import('@/components/errors/AlertMessage.vue'))
   },
   methods: {
     loginall() {
@@ -120,86 +116,3 @@ created() {
 }
 };
 </script>
-
-<style scoped>
-.container{
-  display: flex;
-  justify-content: center;
-  margin-top: 40px;
-  gap: 250px;
-}
-
-.container-sm{
-  /* background-color: aqua; */
-  width: 500px;
-  
-}
-.form-container{
-   background-color: #fff; 
-  width: 400px;
-  padding: 20px;
-  margin-left: 20px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
-  border-radius: 20px;
-  justify-content: center;
-  align-items: center;
-  height: 600px;
-}
-.display-6{
-  color: #012e0e;
-  font-weight: bold;
-}
-.display-7{
-  color: #000;
-  text-transform: uppercase;
-  text-align: center;
-}
-.form-group{
-  color: #000;
-  margin: 20px;
-}
-label{
-  margin-bottom: 10px;
-}
-.btn{
-  background-color:#015a1b;
-  color: #fff;
-  border: none;
-  text-align: center;
-  margin-left: 20px;
-  border-radius: 5px;
-  width: 320px;
-  text-transform: uppercase;
-}
-.btn:hover{
-  background-color: #fff;
-  color: #015a1b;
-  padding: 10px;
-  transition: ease all 0.5s;
-  border: 1px solid #015a1b;
-}
-.alert{
-  margin-top: 20px;
-}
-.forgot{
-  color: #fff;
-  text-align: center;
-  text-decoration: underline;
-}
-.logo-client{
-  height: 100px;
-  margin-left: 100px;
-  margin-bottom: 50px;
-}
-.cont-l{
-  width: 400px;
-  background-color: white;
-  padding: 30px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
-  border-radius: 20px;
-
-}
-p{
-  font-size: 18px;
-}
-</style>

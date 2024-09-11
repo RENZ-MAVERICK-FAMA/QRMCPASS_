@@ -1,61 +1,44 @@
-
 <template>
-
-     <!-- Analytic Cards -->
-
-     <div class="row">
-      <div class="container-md">
-        <div class="analytics-card">
-  <div class="card">
-    <div class="card-body">
-      <p class="card-title">Paid Motorela Today:</p>
-      <p class="card-text"><strong>{{ motorelaPaidCount }}/{{ motorelaCount }}</strong></p>
-    </div>
-  </div>
-</div>
-<div class="analytics-card">
-  <div class="card">
-    <div class="card-body">
-      <p class="card-title">Paid Multicab Today:</p>
-      <p class="card-text"><strong>{{ multicabPaidCount }} /{{ multicabCount }}</strong></p>
-    </div>
-  </div>
-</div>
-<div class="analytics-card">
-  <div class="card">
-    <div class="card-body">
-      <p class="card-title">Delinquent Motorela Today:</p>
-      <p class="card-text"><strong>{{ motoreladelCount }}/{{ motorelaCount }}</strong></p>
-    </div>
-  </div>
-</div>
-<div class="analytics-card">
-  <div class="card">
-    <div class="card-body">
-      <p class="card-title">Delinquent Multicab Today:</p>
-      <p class="card-text"><strong>{{ multicabdelCount }} /{{ multicabCount }}</strong></p>
-    </div>
-  </div>
-</div>
-  </div>
+  <main class=" select-none bg-slate-100 px-[5%] sm:px-[10%] md:px-[15%] py-10" >
+    <div class="grid gap-4 md:grid-cols-2 md:grid-rows-2 lg:grid-cols-4 lg:grid-rows-1 " >
+      <div class="p-5 rounded-[10px] shadow bg-white" >
+        <h1 class="text-[20px] md:text-[25px] font-extrabold text-center" >{{ motorelaPaidCount }}/{{ motorelaCount }}</h1>
+        <label class="t font-extralight" >Paid Motorela Today</label>
       </div>
-
-  <div class="container">
-        <div class="cont-r">
-      <p class="display-5">WELCOME <span id="operator-name" class="display-6">{{ user.first_name }} {{ user.last_name }}!</span></p>
-      <!-- <p class="display-5">username: <span class="display-6">{{ user.email }}</span></p> -->
-      <div class="btn-option">
-        <button class="btn btn-success"><RouterLink class="nav-link" to="/units">Units</RouterLink></button>
-      <button class="btn btn-success"><RouterLink class="nav-link" to="/addunit">Add Unit</RouterLink></button>
-    </div>
-
-
+      <div class="p-5 rounded-[10px] shadow bg-white" >
+        <h1 class="text-[20px] md:text-[25px] font-extrabold text-center" >{{ motorelaPaidCount }}/{{ motorelaCount }}</h1>
+        <label class="t font-extralight" >Paid Multicab Today</label>
+      </div>
+      <div class="p-5 rounded-[10px] shadow bg-white" >
+        <h1 class="text-[20px] md:text-[25px] font-extrabold text-center" >{{ motorelaPaidCount }}/{{ motorelaCount }}</h1>
+        <label class="t font-extralight" >Delinquent Motorela Today</label>
+      </div>
+      <div class="p-5 rounded-[10px] shadow bg-white" >
+        <h1 class="text-[20px] md:text-[25px] font-extrabold text-center" >{{ motorelaPaidCount }}/{{ motorelaCount }}</h1>
+        <label class="t font-extralight" >Delinquent Multicab Today</label>
       </div>
     </div>
-
-
+    <div class="bg-white p-5 shadow mt-5 rounded-[10px]" >
+      <h1 class="text-[25px]" >
+        WELCOME 
+        <span id="operator-name" class="font-bold">
+        {{ user.first_name }} {{ user.last_name }}!</span>
+      </h1>
+      <div class="grid  md:gap-10 md:grid-cols-2" >
+        <div class="py-3" >
+          <RouterLink to="/units" >
+            <Button label="UNITS" severity="success" class="w-full" />
+          </RouterLink>
+        </div>
+        <div class="py-3" >
+          <RouterLink to="/addunit" >
+            <Button label="ADD UNIT" severity="success" class="w-full" />
+          </RouterLink>
+        </div>
+      </div>
+    </div>
+  </main>
 </template>
-RouterView
 <script>
 import { ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -180,74 +163,3 @@ axios.get('http://127.0.0.1:9000/operator/delinquent_units_today', {
   }
 }
 </script>
-
-<style scoped>
-.container{
-  gap: 30px;
-  margin-left: 220px;
-
-}
-.analytics-card{
-  width: 200px;
-  margin: 10px;
-  border-radius: 10px;
-  border: none;
-}
-.display-5{
-  font-size: 30px;
-}
-.display-6{
-  font-size: 30px;
-  color: #012e0e;
-  font-style: italic;
-}
-#operator-name{
-  text-transform: uppercase;
-  font-weight: bold;
-}
-.btn{
-  margin: 20px;
-  width: 50pc;
-  margin-top: 50px;
-  background-color: #7ABA78;
-}
-.btn-option{
-  display: flex;
-}
-.card-body{
-  background-color: #198754;
-  color: #fff;
-  border-radius: 10px;
-  border: none;
-  width: 200px;
-  height: 100px;
-}
-/* .card-body:hover{
-  background-color: #012e0e;
-  color: #fff;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  transition: ease all 0.5s;
-} */
-.cont-r{
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
-  padding: 20px;
-  border-radius: 20px;
-  width: 900px;
-  margin-top: 30px;
-  background-color: #fff;
-}
-.container-md{
-  display: flex;
-  margin-left: 250px;
-  margin-top: 50px;
-
-}
-.card{
-  background-color: #198754;
-}
-/* .card:hover{
-  transition: ease all 0.5s;
-  background-color: #012e0e;
-  color: #fff;
-} */
-</style>

@@ -1,5 +1,35 @@
 <template>
-    <ToastProvider>
+  <main  class=" select-none flex justify-center p-4" >
+      <form @submit.prevent="addTeller" class="bg-white w-[500px] md:mt-10 p-5 rounded-[10px] shadow">
+        <h1 class="text-[25px] font-bold" >ADMIN SIGN UP</h1>
+        <div class="mt-3" >
+          <label>Username</label>
+          <InputText type="text" v-model="username" id="username" placeholder="Enter Username" required class="w-full" />
+        </div>
+        <div class="mt-3" >
+          <label>Firstname</label>
+          <InputText type="text" v-model="firstName" id="firstName" placeholder="Enter Firstname" required class="w-full" />
+        </div>
+        <div class="mt-3" >
+          <label>Lastname</label>
+          <InputText type="text" v-model="lastName" id="lastName" placeholder="Enter Lastname" required class="w-full" />
+        </div>
+        <div class="mt-3" >
+          <label>Address</label>
+          <InputText type="text" v-model="address" id="address" placeholder="Enter Address" required class="w-full" />
+        </div>
+        <div class="mt-3" >
+          <label>Password</label>
+          <InputText type="password" v-model="password1" id="license" placeholder="Enter Password" required class="w-full" />
+        </div>
+        <div class="mt-3" >
+          <label>Confirm Password</label>
+          <InputText type="password" v-model="password2" id="license" placeholder="Confirm Password" required class="w-full" />
+        </div>
+        <Button type="submit" class="mt-3 w-full" severity="success" icon="pi pi-plus" label="Submit" />
+      </form>
+  </main>
+    <!-- <ToastProvider>
       <div class="container">
         <div>
       <form @submit.prevent="addTeller">
@@ -71,7 +101,7 @@
     </div>
       </div>
     
-  </ToastProvider>
+  </ToastProvider> -->
   </template>
 
   <script>
@@ -121,43 +151,3 @@ import axios from 'axios';
   }
 };
   </script>
-
-<style scoped>
-.container{
-  width: 500px;
-  margin-top: 50px;
-  background-color: white; /* White background */
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); /* Gray shadow */
-  padding: 20px; /* Add padding for spacing */
-  border-radius: 5%;
-}
-label{
-  margin-bottom: 10px;
-  margin-top: 10px;
-  text-transform: uppercase;
-  font-size: small;
-  font-weight: bold;
-}
-h3{
-  text-transform: uppercase;
-  text-align: center;
-}
-button{
-  background-color: #4CAF50; /* Green background */
-  border: none; /* Remove borders */
-  color: white; /* White text */
-  padding: 10px 35px; /* Padding */
-  text-align: center; /* Center text */
-  text-decoration: none; /* Remove underline */
-  display: inline-block; /* Make the button a block element */
-  font-size: 16px; /* Font size */
-  border-radius: 20px; /* Rounded corners */
-  cursor: pointer; /* Add cursor pointer */
-  transition: background-color 0.3s ease;
-  margin: auto;
-  margin-top: 10px;
-}
-button:hover{
-  background-color: #2BA842;
-}
-</style>

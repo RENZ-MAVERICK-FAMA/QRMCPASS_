@@ -1,149 +1,131 @@
-
 <template>
-
-  <div class="container-fluid">
-    <div id="top-card"class="card">
-        <div class="card-body">
-          <h5 class="card-title">Manual TopUp</h5>
-          <h6 class="card-subtitle mb-2 text-body-secondary">Motorela & Multicab</h6>
-          <p class="card-text">Allows to Top Up manually.</p>
-          <button class="btn btn-success"><RouterLink class="nav-link" to="/topup">Manual Topup</RouterLink></button> 
-        </div>
+  <main class="select-none flex justify-center p-4">
+    <div class="bg-white w-[450px] mt-10 p-5 rounded-[10px] shadow">
+      <div>
+        <h1 class="text-[25px] font-bold">Manually TopUp</h1>
+        <p class="font-light">Motorela & Multicab</p>
+        <p class="font-extralight">Allows to Top Up manually.</p>
+        <RouterLink class="nav-link" to="/topup">
+          <Button
+            label="Manually TopUp"
+            class="mt-3 w-full"
+            icon="pi pi-money-bill"
+            severity="success"
+          />
+        </RouterLink>
+      </div>
+      <Divider />
+      <div>
+        <h1 class="text-[25px] font-bold">Pay Delinquencies</h1>
+        <p class="font-light">Motorela & Multicab</p>
+        <p class="font-extralight">Allows to pay deliquinces.</p>
+        <RouterLink class="nav-link" to="/deduct">
+          <Button
+            label="Pay Delinquency"
+            class="mt-3 w-full"
+            icon="pi pi-money-bill"
+            severity="success"
+          />
+        </RouterLink>
+      </div>
+      <Divider />
+      <div>
+        <h1 class="text-[25px] font-bold">Pay with QR</h1>
+        <p class="font-light">QR Payment Scan for Motorela</p>
+        <p class="font-extralight">Allows to pay via QR.</p>
+        <RouterLink class="nav-link" to="/motorelascan">
+          <Button
+            label="Motorela Scan"
+            class="mt-3 w-full"
+            icon="pi pi-qrcode"
+            severity="success"
+          />
+        </RouterLink>
+        <RouterLink class="nav-link" to="/multicabscan">
+          <Button
+            label="Multicab Scan"
+            class="mt-3 w-full"
+            icon="pi pi-qrcode"
+            severity="success"
+          />
+        </RouterLink>
+      </div>
     </div>
-  </div>
-  <div class="container-fluid">
-    <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Pay Delinquencies</h5>
-          <h6 class="card-subtitle mb-2 text-body-secondary">Motorela & Multicab</h6>
-          <p class="card-text">Allows to pay deliquinces.</p>
-          <button class="btn btn-success"><RouterLink class="nav-link" to="/deduct">Pay Delinquency</RouterLink></button> 
-        </div>
-    </div>
-  </div>
-  <div class="container-fluid">
-    <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Pay with QR</h5>
-          <h6 class="card-subtitle mb-2 text-body-secondary">QR Payment Scan for Motorela</h6>
-          <p class="card-text">Allows to pay via QR.</p>
-          <button class="btn"><RouterLink class="nav-link" to="/motorelascan">Motorela Scan</RouterLink></button>
-          <button class="btn"><RouterLink class="nav-link" to="/multicabscan">Multicab Scan</RouterLink></button>
-        </div>
-    </div>
-  </div>
-  
-  
+  </main>
 </template>
-<!-- RouterView -->
 <script>
-import { ref, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import axios from 'axios'
+import { ref, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import axios from "axios";
 
 export default {
- setup() {
-   const authenticated = ref(false)
- 
- 
-   const route = useRoute()
-   const router = useRouter()
+  setup() {
+    const authenticated = ref(false);
 
-   // Check authentication status
-   if (localStorage.getItem('access_token')) {
-     authenticated.value = true
- 
-   
-   }
+    const route = useRoute();
+    const router = useRouter();
 
-   watch(authenticated, (newValue) => {
- if (newValue) {
-   // User is authenticated
+    // Check authentication status
+    if (localStorage.getItem("access_token")) {
+      authenticated.value = true;
+    }
 
-   router.push('/homeTeller');
- } else {
-   // User is not authenticated
-   
-   router.push('/loginTeller');
- }
-})
-  
-const teller = ref({ id: null, username: '', first_name: '', last_name: '' })
+    watch(authenticated, (newValue) => {
+      if (newValue) {
+        // User is authenticated
 
-axios.get('http://127.0.0.1:9000/Teller', {
-headers: {
- Authorization: `Bearer ${localStorage.getItem('access_token')}`
-}
-})
-.then(response => {
-// Assuming response.data contains the user details
-teller.value = response.data
-})
-.catch(error => {
-console.error('Error fetching user:', error)
-})
+        router.push("/homeTeller");
+      } else {
+        // User is not authenticated
 
-   const logout = () => {
-     axios.post('http://127.0.0.1:9000/logout')
-       .then(response => {
-         // Handle successful logout
-         console.log(response.data.message)
-         // Remove access token from local storage
-         localStorage.removeItem('access_token')
-         // Redirect to the login page
-         router.push('/loginTeller')
-         
-         // window.location.href = '/'; // Not needed if using router.push
-         
-       })
-       .catch(error => {
-         // Handle logout error
-         console.error(error.response.data.message)
-       })
-   }
+        router.push("/loginTeller");
+      }
+    });
 
-   return {
-     authenticated,
-     logout
-   }
- }
-}
+    const teller = ref({
+      id: null,
+      username: "",
+      first_name: "",
+      last_name: "",
+    });
+
+    axios
+      .get("http://127.0.0.1:9000/Teller", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      })
+      .then((response) => {
+        // Assuming response.data contains the user details
+        teller.value = response.data;
+      })
+      .catch((error) => {
+        console.error("Error fetching user:", error);
+      });
+
+    const logout = () => {
+      axios
+        .post("http://127.0.0.1:9000/logout")
+        .then((response) => {
+          // Handle successful logout
+          console.log(response.data.message);
+          // Remove access token from local storage
+          localStorage.removeItem("access_token");
+          // Redirect to the login page
+          router.push("/loginTeller");
+
+          // window.location.href = '/'; // Not needed if using router.push
+        })
+        .catch((error) => {
+          // Handle logout error
+          console.error(error.response.data.message);
+        });
+    };
+
+    return {
+      authenticated,
+      logout,
+    };
+  },
+};
 </script>
-
-<style scoped>
-.card{
-width: 500px;
-height: 1px80;
-box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-transition: ease all 0.5s;
-margin-top: 10px;
-margin-left: 400px;
-text-align: center;
-}
-.card:hover{
-box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
-transition: ease all 0.5s;
-}
-.btn{
-  background-color:#015a1b;
-  color: #fff;
-  border: none;
-  text-align: center;
-  margin-left: 20px;
-  border-radius: 5px;
-  width: 320px;
-  text-transform: uppercase;
-  margin: 2px;
-}
-.btn:hover{
-  background-color: #fff;
-  color: #015a1b;
-  /* padding: 10px; */
-  transition: ease all 0.5s;
-  border: 1px solid #015a1b;
-  font-weight: bolder;
-}
-#top-card{
-  margin-top: 50px;
-}
-</style>

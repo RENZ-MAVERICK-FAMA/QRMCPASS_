@@ -1,104 +1,150 @@
 <template>
-   <!-- <button class="btn btn-dark"><RouterLink class="nav-link" t0="/home">Go Back</RouterLink></button> -->
-   <br>
-   <button class="btn btn-warning"> <RouterLink class="nav-link" to="/home">Go Back</RouterLink> </button>
-
-  <div class="container">
-
-    <div>
-    <!-- <p v-if="authenticated">Authenticated</p>
-    <p v-else>Not Authenticated</p> -->
-    <div v-if="error" class="alert alert-danger" role="alert">
-  {{ error }}
-  <button @click="clearError" class="close" data-dismiss="alert">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>  
-      <div v-if="success" class="alert alert-success" role="alert">
-  {{ success }}
-  <button @click="clearSuccess" class="close" data-dismiss="alert">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
-<div v-if="loginError" class="alert alert-danger" role="alert">
-          {{ loginError }}
-        </div>
-
-    <div>
-
-      <h1>Add Unit</h1>
-      <form @submit.prevent="addunit">
-        <label for="unittype">Unit Type:</label>
-        <select class="form-control"v-model="unittype" id="unittype">
-          <option value="motorela">Motorela</option>
-          <option value="multicab">Multicab</option>
-        </select><br>
-        <label for="color">Color:</label><br>
-        <input class="form-control"v-model="color" type="text" id="color" pattern="[a-zA-Z]*" required><br>
-        <label for="unitinfo">Body Information:</label><br>
-        <input class="form-control" v-model="unitinfo" type="text" id="unitinfo" pattern="[a-zA-Z0-9]*"  required >
-        <br>
-        <div class="form-group">
-          <label for="picture">Motorela Picture</label><br>
-          <input class="form-control" type="file" id="picture" name="picture" @change="handleFileChange" required />
-
-        </div>
-        <br>
-        <div class="form-group">
-          <label for="password1">Password</label>
-          <input
-            type="password"
-            class="form-control"
-            id="password1"
-            v-model="password1"
-            placeholder="Enter password"
-            required />
-        </div>
-        <br>
-        <div class="form-group">
-          <label for="password2">Password (Confirm)</label>
-          <input
-            type="password"
-            class="form-control"
-            id="password2"
-            v-model="password2"
-            placeholder="Confirm password"
-            required />
-        </div><br>
-        <div class="btn-option">
-          <button id="add-unit"type="submit" class="btn btn-success">Add Unit</button>
-        </div>
-       
-      </form>
-    </div>
-  </div>
-  </div>
-  
+  <main class="select-none flex justify-center p-4">
+    <form
+      @submit.prevent="addunit"
+      class="bg-white w-[500px] mt-10 p-5 rounded-[10px] shadow"
+    >
+      <h1 class="text-[25px] font-bold">ADD UNIT</h1>
+      <hr />
+      <div
+        v-if="error"
+        class="text-red-500 mt-3 relative bg-red-100 p-5 text-center rounded-[10px] text-[14px] font-light"
+        role="alert"
+      >
+        <i
+          @click="clearError"
+          class="pi pi-times-circle text-red-500 text-[18px] absolute top-1 right-1 cursor-pointer"
+        ></i>
+        {{ error }}
+      </div>
+      <div
+        v-if="success"
+        class="text-green-500 mt-3 relative bg-green-100 p-5 text-center rounded-[10px] text-[14px] font-light"
+        role="alert"
+      >
+        <i
+          @click="clearSuccess"
+          class="pi pi-times-circle text-green-500 text-[18px] absolute top-1 right-1 cursor-pointer"
+        ></i>
+        {{ success }}
+      </div>
+      <div class="mt-3">
+        <label>Unit Type</label>
+        <Select
+          v-model="unittype"
+          id="unittype"
+          placeholder="Select Unit Type"
+          :options="unitTypeOptions"
+          optionLabel="label"
+          optionValue="value"
+          class="w-full"
+        ></Select>
+      </div>
+      <div class="mt-3">
+        <label>Color</label>
+        <InputText
+          type="text"
+          v-model="color"
+          id="color"
+          pattern="[a-zA-Z]*"
+          required
+          class="w-full"
+        />
+      </div>
+      <div class="mt-3">
+        <label>Body Information</label>
+        <InputText
+          type="text"
+          v-model="unitinfo"
+          id="unitinfo"
+          pattern="[a-zA-Z0-9]*"
+          required
+          class="w-full"
+        />
+      </div>
+      <div class="mt-3">
+        <label>Motorela Picture</label>
+        <input
+          type="file"
+          id="picture"
+          name="picture"
+          @change="handleFileChange"
+          required
+          class="file:bg-slate-300 file:p-2 w-full file:border-none file:h-[40px] file:rounded"
+        />
+      </div>
+      <div class="mt-3">
+        <label>Password</label>
+        <InputText
+          type="password"
+          v-model="password1"
+          id="password1"
+          class="w-full"
+        />
+      </div>
+      <div class="mt-3">
+        <label>Confirm Password</label>
+        <InputText
+          type="password"
+          v-model="password2"
+          id="password2"
+          class="w-full"
+        />
+      </div>
+      <div class="grid grid-cols-2 gap-10 mt-3">
+        <Button
+          type="submit"
+          icon="pi pi-save"
+          label="Save"
+          severity="success"
+          class="w-full"
+        />
+        <RouterLink to="/home">
+          <Button
+            type="text"
+            icon="pi pi-times"
+            label="Cancel"
+            severity="secondary"
+            class="w-full"
+          />
+        </RouterLink>
+      </div>
+    </form>
+  </main>
 </template>
-
 <script>
-import axios from 'axios';
+import axios from "axios";
+import { defineAsyncComponent } from "vue";
 
 export default {
   data() {
     return {
-      unittype: '',
-      color: '',
-      unitinfo: '',
-      password1: '',
-      password2: '',
+      unittype: "",
+      color: "",
+      unitinfo: "",
+      password1: "",
+      password2: "",
       authenticated: true,
-      success: '',
-      error: '',
-      picture: null // Initialize picture as null
+      success: "",
+      error: "",
+      picture: null, // Initialize picture as null,
+      unitTypeOptions: [
+        { label: "Motorela", value: "motorela" },
+        { label: "Multicab", value: "multicab" },
+      ],
     };
+  },
+  components: {
+    AlertMessage: defineAsyncComponent(() =>
+      import("@/components/errors/AlertMessage.vue")
+    ),
   },
   methods: {
     clearError() {
-      this.error = '';
+      this.error = "";
     },
     clearSuccess() {
-      this.success = '';
+      this.success = "";
     },
     handleFileChange(event) {
       if (event.target.files.length > 0) {
@@ -110,64 +156,42 @@ export default {
       this.clearSuccess();
 
       let formData = new FormData();
-      formData.append('color', this.color);
-      formData.append('unitinfo', this.unitinfo);
-      formData.append('unittype', this.unittype);
-      formData.append('picture', this.picture);
-      formData.append('password1', this.password1);
-      formData.append('password2', this.password2);
+      formData.append("color", this.color);
+      formData.append("unitinfo", this.unitinfo);
+      formData.append("unittype", this.unittype);
+      formData.append("picture", this.picture);
+      formData.append("password1", this.password1);
+      formData.append("password2", this.password2);
 
       axios
-        .post('http://127.0.0.1:9000/addunit', formData, {
+        .post("http://127.0.0.1:9000/addunit", formData, {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('access_token')}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
         })
-        .then(response => {
-          this.color = '';
-          this.unitinfo = '';
-          this.unittype = '';
+        .then((response) => {
+          this.color = "";
+          this.unitinfo = "";
+          this.unittype = "";
           this.picture = null; // Reset picture to null
-          this.password1 = '';
-          this.password2 = '';
-          this.success = 'Unit Added Successfully!';
-          document.querySelector('.add-btn').removeAttribute('disabled');
+          this.password1 = "";
+          this.password2 = "";
+          this.success = "Unit Added Successfully!";
+          document.querySelector(".add-btn").removeAttribute("disabled");
         })
-        .catch(error => {
-          console.error('An error occurred:', error);
-          if (error.response && error.response.data && error.response.data.error) {
+        .catch((error) => {
+          console.error("An error occurred:", error);
+          if (
+            error.response &&
+            error.response.data &&
+            error.response.data.error
+          ) {
             this.error = error.response.data.error;
           } else {
-            this.error = 'An error occurred. Please try again.';
+            this.error = "An error occurred. Please try again.";
           }
         });
-    }
-  }
+    },
+  },
 };
 </script>
-
-<style scoped>
-.container{
-  width: 500px;
-  margin-top: 50px;
-  background-color: white; /* White background */
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); /* Gray shadow */
-  padding: 20px; /* Add padding for spacing */
-  border-radius: 5%;
-}
-h1{
-  text-align: center;
-  text-transform: uppercase;
-  margin-bottom: 40px;
-}
-  label{
- /* margin-bottom: 10px; */
-  text-transform: uppercase;
-  font-size: small;
-  font-weight: bold;
-}
-#add-unit{
-  width: 27pc;
-  margin-left: 10px;
-}
-</style>

@@ -1,132 +1,163 @@
-
 <template>
-  <button class="btn btn-warning"> <RouterLink class="nav-link" to="/homeTeller"> Go Back</RouterLink> </button>
-  <div class="container-fluid">
-    <!-- <h1 class="title-h1">Motorela QR Code Scanner</h1> -->
-    <p class="error">{{ scannerError }}</p>
-    <div v-if="error" id="alert-top" class="alert alert-warning " role="alert">
-
+  <main class="mt-10 p-5 md:px-[5%] lg:px-[15%]">
+    <div class="bg-white rounded-[10px] p-5">
+      <RouterLink to="/homeTeller">
+        <Button icon="pi pi-arrow-left" label="Go Back" text class="mb-2" />
+      </RouterLink>
+      <p class="text-red-500">{{ scannerError }}</p>
+      <div
+        v-if="error"
+        class="text-red-500 mt-3 relative bg-red-100 p-5 text-center rounded-[10px] text-[14px] font-light"
+        role="alert"
+      >
+        <i
+          @click="clearError"
+          class="pi pi-times-circle text-red-500 text-[18px] absolute top-1 right-1 cursor-pointer"
+        ></i>
         {{ error }}
-        <button @click="clearError" class="btn-close" data-dismiss="alert">
-          <span aria-hidden="true">&times;</span>
-        </button>
       </div>
-      <div v-if="success" class="alert alert-success" role="alert" id="success">
+      <div
+        v-if="success"
+        class="text-green-500 mt-3 relative bg-green-100 p-5 text-center rounded-[10px] text-[14px] font-light"
+        role="alert"
+      >
+        <i
+          @click="clearSuccess"
+          class="pi pi-times-circle text-green-500 text-[18px] absolute top-1 right-1 cursor-pointer"
+        ></i>
         {{ success }}
-        <button @click="clearSuccess" class="btn-close" aria-label="close">
-          <span aria-hidden="true">&times;</span>
-        </button>
       </div>
-  </div>
-  <!-- payment part with the camera -->
-  <div class="container">
-    <div class="container-sm">
-      <h2 class="display-1">Multicab Payment</h2>
-    
-      <div>
-          <form @submit.prevent="onFormSubmit">
-    <div class="form-group">
-      <label class="display-3" for="unit">Select Unit</label>
-      <select v-model="selectedUnit" class="form-control" id="unit" name="unit" required>
-        <option v-for="unit in filteredUnits" :key="unit.id" :value="unit">{{ unit.unit_info }}</option>
-      </select>
-      <br>
-      <label class="display-3" for="branch">Tool Booth</label>
-      <br>
-      <input v-model="selectedBranch" class="form-control" name="branch" id="branch" value="Market" placeholder="Market" required readonly>
-    </div>
-    <br>
-    <div class="form-group">
-      <label class="display-3" for="date">Date:</label>
-      <input v-model="date" type="date" class="form-control" id="date" name="date" required  readonly>
-    </div>
-    <div class="btn-option">
-      <button id="btn-pay" type="submit" @click="deduct" class="btn btn-success">Payment</button>
-      <button id="btn-pay" type="submit" @click="manual" class="btn btn-success">Manual Payment</button>
-    </div>
-  </form>
+      <div class="grid md:grid-cols-[350px,1fr] gap-5">
+        <div
+          class="md:p-3 w-full grid grid-rows-[1fr,auto] md:bg-slate-100 md:shadow rounded-[10px]"
+        >
+          <qrcode-stream
+            class="bg-slate-100 rounded-[10px]"
+            :key="qrCodeKey"
+            :constraints="{
+              deviceId: selectedDevice ? selectedDevice.deviceId : null,
+            }"
+            @error="onScannerError"
+            @detect="onDetect"
+            v-if="selectedDevice !== null"
+          />
+          <p v-else class="no-camera-error">
+            No cameras available on this device
+          </p>
+          <div>
+            <div class="mt-3 w-full">
+              <select v-model="selectedDevice"  class="h-[45px] w-full border rounded hover:border-slate-400 outline-none border-slate-200">
+                <option disabled value="">Select Camera</option>
+                <option v-for="device in devices" :key="device.deviceId" :value="device">{{ device.label }}</option>
+              </select>
+            </div>
+            <Button
+              type="submit"
+              @click="generateAndDownloadPDF"
+              label="Generate PDF Report"
+              icon="pi pi-file-pdf"
+              severity="success"
+              class="mt-3 w-full"
+            />
+            <Button
+              type="submit"
+              @click="clearDetectedCodes"
+              label="Reset Scanned Data"
+              icon="pi pi-refresh"
+              severity="danger"
+              outlined
+              class="mt-3 w-full"
+            />
+          </div>
         </div>
+        <form @submit.prevent="onFormSubmit" class="mt-5 md:mt-0">
+          <h1 class="text-[20px]">Multicab Payment</h1>
+          <div class="grid mt-3">
+            <label>Unit</label>
+            <select v-model="selectedUnit" class="h-[45px] w-full md:max-w-[400px] border rounded hover:border-slate-400 outline-none border-slate-200" id="unit" name="unit" required>
+              <option v-for="unit in filteredUnits" :key="unit.id" :value="unit">{{ unit.unit_info }}</option>
+            </select>
+          </div>
+          <div class="grid mt-3">
+            <label>Branch</label>
+            <InputText
+              v-model="selectedBranch"
+              class="w-full md:max-w-[400px]"
+              placeholder="Market"
+              value="Market"
+              required
+              readonly
+            />
+          </div>
+          <div class="mt-3 grid">
+            <label for="">Payment Date</label>
+            <input
+              v-model="date"
+              type="date"
+              class="h-[45px] border border-slate-200 px-2 rounded outline-none md:max-w-[400px]"
+              id="date"
+              name="date"
+              required
+              readonly
+            />
+          </div>
+          <div class="grid gap-5 mt-3 md:max-w-[400px]">
+            <Button
+              type="submit"
+              @click="deduct"
+              label="Payment"
+              icon="pi pi-money-bill"
+              severity="success"
+              class=""
+            />
+            <Button
+              type="submit"
+              @click="manual"
+              label="Manually Payment"
+              icon="pi pi-money-bill"
+              severity="success"
+              class=""
+            />
+          </div>
+        </form>
       </div>
-      <div class="container-md" style="position: flex; top: 0; right: 0; width:400px;height: 300px;">
-    <qrcode-stream
-        :key="qrCodeKey"
-        :constraints="{ deviceId: selectedDevice ? selectedDevice.deviceId : null }"
-        @error="onScannerError"
-        @detect="onDetect"
-        v-if="selectedDevice !== null"
-    />
-    <p v-else class="no-camera-error">No cameras available on this device</p>
-    
-    <select v-model="selectedDevice" class="form-select form-select-sm">
-          <option disabled value="">Select Camera</option>
-          <option v-for="device in devices" :key="device.deviceId" :value="device">{{ device.label }}</option>
-        </select>
-        <button @click="generateAndDownloadPDF" class="btn btn-success" style=" margin-top: 24px; margin-left: 90px;">Generate PDF Report</button>
-        <button @click="clearDetectedCodes" class="btn btn-success" style=" margin-top: 0px; margin-left: 90px;">Reset Scanned Data</button>
-
+      <div class="p-5 bg-slate-100 mt-3 shadow rounded">
+        <table class="table">
+          <thead>
+            <tr>
+              <th><strong class="text-[40px]">Multicab</strong></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <template v-if="showMulticab">
+                  <table class="w-full">
+                    <tbody>
+                      <div class="flex gap-2">
+                        <tr v-for="unit in sortedUnits" :key="unit.id">
+                          <td
+                            :class="{
+                              'bg-green-400 text-white p-2':
+                                unit.has_toll_payment_today, // Payment is done
+                              'bg-red-400 text-white p-2':
+                                unit.has_delinquency_unpaid, // Unpaid delinquency
+                            }"
+                          >
+                            {{ unit.unit_info }}
+                          </td>
+                        </tr>
+                      </div>
+                    </tbody>
+                  </table>
+                </template>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
-    <div class="modal" v-if="showModal">
-    <div class="modal-content">
-      <div class="center-image">
-        <img :src="modalImage" alt="Unit Picture" style="width: 200px; height: 200px;" />
-      </div>
-      <strong><h2>Body Number: {{ ModalUnit }}</h2></strong>
-      <strong><h3>Balance: {{ Balance }}</h3></strong>
-      <strong><h3>Unit Type: {{ unit_type }}</h3></strong>
-      <div class="modal-content-container">
-        <div class="modal-content-left" >
-          {{ modalContent}}
-        </div>
-        <br>
-        <br>
-        <br>
-        <div class="modal-content-right">
-          {{ payment }}
-        </div>
-      </div>
-
-      <button class="approve-button" @click="closeModal">Approve</button>
-    </div>
-  </div>
-
-  <div class="container-lg">
-    <!-- Table for Units -->
-   
-       <table class="table">
-  <thead>
-    <tr>
-      <th><strong class="display-1">Multicab</strong></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        
-        <template v-if="showMulticab">
-          <table class="inner-table">
-            <tbody>
-              <div class="unit-list">
-                <tr v-for="unit in sortedUnits" :key="unit.id">
-    <td
-        :class="{
-            'green-cell': unit.has_toll_payment_today, // Payment is done
-            'red-cell': unit.has_delinquency_unpaid // Unpaid delinquency
-        }"
-    >
-        {{ unit.unit_info }}
-    </td>
-</tr></div>
-            </tbody>
-          </table>
-        </template>
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-   
-  </div>
+  </main>
 </template>
 
 <script>
@@ -730,173 +761,3 @@ resetScannedData() {
 };
 </script>
 
-<style scoped>
-
-.container-fluid{
-text-align: center;
-margin-top: 15px;
-}
-.container{
-  display: flex;
-  gap: 50px;
-  /* align-items: center; */
-  /* padding: 50px; */
-}
-.container-sm{
-  width: 500px;
-  padding: 50px;
-  align-items: center;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
-  border-radius: 5%;
-  /* background-color: aliceblue; */
-  margin-left: 150px;
-  background-color: #fff
-}
-.btn-option{
-  display: flex;
-  margin-top: 10px;
-}
-.btn{
-  margin: 10px;
-}
-.container-md{
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 15px;
-  margin-top: 55px;
-}
-.form-select{
-  margin-top: 30px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
-}
-.display-3{
-  font-size: 20px;
-}
-.display-1{
-  font-size: 30px;
-  text-transform: uppercase;
-  text-align: center;
-}
-button{
-  margin: 10px;
-}
-.container-lg{
-  margin-top: 20px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-}.green-cell {
-    background-color: lightgreen;
-    color: black;
-}
-.red-cell {
-    background-color: red;
-    color: white;
-}
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
-table th,
-table td {
-  padding: 12px;
-  border: 1px solid #ddd; /* Add a border to all cells */
-  text-align: left;
-}
-
-table th.header-cell {
-  background-color: #3498db; /* Change background color of header cells */
-  color: white; /* Change text color of header cells */
-}
-
-table tbody tr:nth-child(even) {
-  background-color: #f9f9f9; /* Alternate row background color */
-}
-
-table tbody tr:hover {
-  background-color: #f5f5f5; /* Hover effect for rows */
-}
-th{
-  text-transform: uppercase;
-  font-weight: bold;
-  font-size: medium;
-  text-align: center;
-}
-td{
-  text-transform: uppercase;
-  font-weight: normal;
-  font-size: medium;
-  text-align: center;
-}
-.container{
-  display: flex;
-  /* justify-content: center; */
-  width: min-content;
-}
-.inner-table td {
-width: auto;
-height: auto;
-padding: 5px;
-}
-.unit-list {
-display: flex;
-flex-wrap: wrap;
-}
-
-.unit-list span {
-
-
-border: 1px solid black;
-padding: 5px;
-width:60px;
-}
-
-
-.close {
-  /* Button styles */
-  cursor: pointer;
-  padding: 10px 20px;
-  background-color: #4CAF50;
-  color: white;
-  text-align: center;
-  border-radius: 5px;
-  margin-top: auto; /* Push the button to the bottom */
-}
-
-  .close:hover,
-  .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-  }
-  .center-image {
-  display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-  margin-bottom: 20px; /* Optional margin below the image */
-}
-
-.approve-button {
-  margin-top: 20px;
-  padding: 10px 20px;
-  border: 2px solid #007bff; /* Border style */
-  border-radius: 5px;
-  background-color: transparent;
-  color: #007bff;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-}
-.modal-content-left, .modal-content-right {
-  flex: 1;
-  white-space: pre-line;
-  overflow: auto;
-}.modal-content-container {
-  display: flex;
-}
-#btn-pay{
-  width: 50pc;
-  margin-top: 20px;
-}
-</style>

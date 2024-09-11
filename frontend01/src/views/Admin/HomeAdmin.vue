@@ -1,91 +1,88 @@
 <template>
-  <div class="container-md">
-    <p class="display-3">Unit Count</p>
-    <div class="cont-m">
-      <p class="card-text"><strong>Motorela:  {{ motorelaCount }}</strong></p>
-      <p class="card-text"><strong>Multicab:  {{ multicabCount }}</strong></p>
+  <main class=" md:mt-10 p-[20px] lg:px-[5%]" >
+    <div class="" >
+      <div class="grid grid-cols-2 gap-5 md:gap-10" >
+        <div class="bg-white p-5 rounded-[10px] shadow " >
+          <h1 class="text-[40px] font-bold text-center" >{{ motorelaCount }}</h1>
+          <p class="text-center md:text-left text-[20px] font-light" >Motorela</p>
+        </div>
+        <div class="bg-white p-5 rounded-[10px] shadow " >
+          <h1 class="text-[40px] font-bold text-center" >{{ multicabCount }}</h1>
+          <p class="text-center md:text-left text-[20px] font-light" >Multicab</p>
+        </div>
+      </div>
+      <div class="bg-white shadow mt-5 md:mt-10 p-5 rounded-[20px]" >
+          <p>Generate a daily report for payments and delinquency of both Multicab and Motorela.</p>
+          <div class="grid md:grid-cols-3 gap-5" >
+            <Fieldset legend="Daily" class="mt-3" >
+              <div >
+                <div class="" >
+                  <label for="">Start Date</label>
+                  <!-- <DatePicker v-model="startDate" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" /> -->
+                  <input class="h-[40px] p-2 border w-full rounded-[5px]" type="date" id="startDate" v-model="startDate">
+                </div>
+                <div class="mt-3" >
+                  <label for="">End Date</label>
+                  <!-- <DatePicker v-model="endDate" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" /> -->
+                  <input class="h-[40px] p-2 border w-full rounded-[5px]" type="date" id="endDate" v-model="endDate">
+                </div>
+                <div class="mt-3" >
+                  <span>Motorela</span>
+                  <div class="grid lg:grid-cols-2 gap-3 mt-2" >
+                    <Button @click="generatedailyMotorelapayment(startDate, endDate)" label="Payment" icon="pi pi-wallet" severity="success"/>
+                    <Button @click="generateDelReportMotorelaRange(startDate, endDate)" label="Deliquency" icon="pi pi-money-bill" severity="secondary"/>
+                  </div>
+                </div>
+                <div class="mt-3" >
+                  <span>Multicab</span>
+                  <div class="grid lg:grid-cols-2 gap-3 mt-2" >
+                    <Button @click="generatedailyMulticabpayment(startDate, endDate)" label="Payment" icon="pi pi-wallet" severity="success"/>
+                    <Button @click="generateDelReportMulticabRange(startDate, endDate)" label="Deliquency" icon="pi pi-money-bill" severity="secondary"/>
+                  </div>
+                </div>
+              </div>
+            </Fieldset>
+            <Fieldset legend="Monthly" class="mt-3" >
+              <div >
+                <div class="" >
+                  <label for="">Choose month</label>
+                  <input class="h-[40px] p-2 border w-full rounded-[5px]" type="month" v-model="monthlyMonth">
+                </div>
+                <div class="mt-3" >
+                  <span>Motorela</span>
+                  <div class="grid lg:grid-cols-2 gap-3 mt-2" >
+                    <Button @click="generatemonthlyMotorelaPaymentReport(monthlyMonth)" label="Payment" icon="pi pi-wallet" severity="success"/>
+                    <Button @click="generatemonthlyMotorelaDelinquenciesReport(monthlyMonth)" label="Deliquency" icon="pi pi-money-bill" severity="secondary"/>
+                  </div>
+                </div>
+                <div class="mt-3" >
+                  <span>Multicab</span>
+                  <div class="grid lg:grid-cols-2 gap-3 mt-2" >
+                    <Button @click="generatemonthlyMulticabPaymentReport(monthlyMonth)" label="Payment" icon="pi pi-wallet" severity="success"/>
+                    <Button @click="generatemonthlyMulticabDelinquenciesReport(monthlyMonth)" label="Deliquency" icon="pi pi-money-bill" severity="secondary"/>
+                  </div>
+                </div>
+              </div>
+            </Fieldset>
+            <Fieldset legend="Annually" class="mt-3" >
+              <div class="" >
+                <label for="">Year</label>
+                <Select  v-model="selectedYear" :options="availableYears" class="w-full" ></Select>
+                <Button  @click="GenerateOverall(selectedYear)" label="Generate Report" icon="pi pi-file-pdf" severity="success" class="mt-3 w-full" />
+              </div>
+            </Fieldset>
+          </div>
+      </div>
     </div>
-      
-  </div>
-  <div class="container-fluid">
-    <div class="card">
-            <h5 class="card-title">Daily</h5>
-            <h6 class="card-subtitle mb-2 text-body-secondary">Motorela & Multicab</h6>
-            <p class="display-4">Generate a daily report for payments and delinquency of both Multicab and Motorela.</p>
-            
-            <div class="cont">
-              <div class="daily">
-                <label class="display-6" for="startDate">Start Date</label>
-                <input class="form-control" type="date" id="startDate" v-model="startDate">
-                <br>
-                <label class="display-6" for="endDate">End Date</label>
-                <input class="form-control" type="date" id="endDate" v-model="endDate">
-              </div>
-              <div class="btn-option">
-                <button class="btn btn-success" @click="generateDelReportMotorelaRange(startDate, endDate)">Motorela Deliquency</button>
-                <br>
-                <button class="btn btn-success" @click="generatedailyMotorelapayment(startDate, endDate)">Motorela Payment</button>
-                <br>
-                <button class="btn btn-success" @click="generateDelReportMulticabRange(startDate, endDate)">Multicab Deliquency</button>
-                <br>
-                <button class="btn btn-success" @click="generatedailyMulticabpayment(startDate, endDate)">Multicab Payment</button>
-              </div>
-              
-            </div>
-          </div>
-      </div>
-      <div class="container-fluid">
-    <div class="card">
-            <h5 class="card-title">Monthly</h5>
-            <h6 class="card-subtitle mb-2 text-body-secondary">Moterela & Multicab</h6>
-            <p class="display-4">Generate monthly report for payments and delinquency of both Multicab and Motorela.</p>
-            
-            <div class="cont-sm">
-              <div class="daily">
-                <br>
-                <br>
-                <label  class="display-6" for="month">Choose Month</label>
-                <br>
-                <input type="month" v-model="monthlyMonth">
-              </div>
-              <div class="btn-option">
-                <button class="btn btn-success" @click="generatemonthlyMotorelaDelinquenciesReport(monthlyMonth)">Motorela Deliquency</button>
-                <br>
-                <button class="btn btn-success" @click="generatemonthlyMotorelaPaymentReport(monthlyMonth)">Motorela Payment</button>
-                <br>
-                <button class="btn btn-success" @click="generatemonthlyMulticabDelinquenciesReport(monthlyMonth)">Multicab Deliquency</button>
-                <br>
-                <button class="btn btn-success" @click="generatemonthlyMulticabPaymentReport(monthlyMonth)">Multicab Payment</button>
-              </div>
-            </div>
-          </div>
-      </div>
-      <div class="container-fluid">
-    <div class="card">
-            <h5 class="card-title">Annually</h5>
-            <h6 class="card-subtitle mb-2 text-body-secondary">Moterela & Multicab</h6>
-            <p class="display-4">Generate Annually report for payments and delinquency of both Multicab and Motorela.</p>
-            
-            <div class="cont">
-              <div class="daily">
-                <label class="display-6" for="select">Year</label>
-                <select class="form-control" v-model="selectedYear">
-                  <option v-for="year in availableYears" :key="year" :value="year">{{ year }}</option>
-                </select>
-              </div>
-              <div class="btn-option">
-                <button class="btn btn-success" id="annual-gen-btn" @click="GenerateOverall(selectedYear)">Generate Report</button>
-              </div>
-            </div>
-          </div>
-      </div>
-
+  </main>
 </template>
 <script>
 import axios from 'axios';
 import * as XLSX from 'xlsx';
 import pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts.js';
+
+
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 export default {
   data() {
@@ -547,6 +544,7 @@ pdfMake.createPdf(docDefinition).download(filename);
 
 
   generateMonthlyReports(dailyReport, overallReport, month, year) {
+    
     const docDefinition = {
         content: [],
         styles: {
@@ -994,80 +992,5 @@ generateMonthlymulticabReports(dailyReport, overallReport, month, year) {
   },
 };
 </script>
-
-<style scoped>
-.container-fluid{
- margin-top: 10px;
-}
-.card{
-  width: 900px;
-  height: 350px;
-  margin-left: 220px;
-}
-.form-control{
-  width: 300px;
-}
- .container-sm{
-  display: flex;
-  gap: 50px;
-} 
-label{
-  text-align: left;
-}
-.display-6{
-  font-size: 20px;
-}
-.btn{
-  margin-top: 10px;
-  width: 300px;
-}
-select{
-  margin-top: 10px;
-}
-#annual-gen-btn{
-  margin-top: 35px;
-}
-.container-md{
-  width: 600px;
-  height: 150px;
-  margin-top: 10px;
-  text-align: center;
-}
-.daily, .btn-option{
-  margin-left: 100px;
-}
-.display-3{
-  font-weight: bold;
-  text-transform: uppercase;
-}
-.cont{
-  display: flex;
-  /* margin-left: 250px; */
-}
-.cont-sm{
-  display: flex;
-  margin-left: 150px;
-}
-.card-title{
-  font-size: 35px;
-  margin-top: 15px;
-}
-.cont-m{
-  display: flex;
-  gap: 50px;
-  margin-left: 100px;
-}
-.card-text{
-  font-size: 30px;
-}
-.display-4{
-  font-size: 20px;
-}
-.card-subtitle, .display-4, .card-title{
-  text-align: center;
-}
-
-
-</style>
 
 

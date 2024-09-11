@@ -1,97 +1,165 @@
-  <template>
-    <div class="container">
+<template>
+  <div class="container">
+    <div>
+      <!-- Unit information -->
+      <strong><img :src="unit.picture" alt="Picture" /></strong>
+      <p class="par-unit">
+        Unit: <span class="unit-num">{{ unit.unit_info }}</span>
+      </p>
       <div>
-        <!-- Unit information -->
-        <strong><img :src="unit.picture" alt="Picture"></strong>
-        <p class="par-unit">Unit: <span class="unit-num">{{ unit.unit_info }}</span></p>
-        <div>
-          <strong>Balance: ₱ <span class="par-balance">{{ balance }}</span></strong>
-        </div>
-        <strong><img :src="unit.qrcode" alt="QR Code"></strong>
-        
-        <div class="btn-unit">
-          <button id="btn-unit" class="btn btn-success" @click="showModalDelinquencies = true">Show Delinquencies</button>
-          <button id="btn-unit" class="btn btn-success" @click="showModalTransactions = true">Transactions</button>
-        </div>
+        <strong
+          >Balance: ₱ <span class="par-balance">{{ balance }}</span></strong
+        >
       </div>
+      <strong><img :src="unit.qrcode" alt="QR Code" /></strong>
 
-      <!-- Modal for Delinquencies -->
-      <div v-if="showModalDelinquencies" class="modal">
-        <div class="modal-content">
-          <span class="close" @click="showModalDelinquencies = false">&times;</span>
-          <div class="calendar-container">
-            <div class="calendar-header">
-              <button id="previous"class="btn btn-dark" @click="goToPreviousMonth">Previous</button>
-              <span>{{ currentMonthName }} {{ currentYear }}</span>
-              <button id="next" class="btn btn-dark" @click="goToNextMonth">Next</button>
-            </div>
+      <div class="btn-unit">
+        <button
+          id="btn-unit"
+          class="btn btn-success"
+          @click="showModalDelinquencies = true"
+        >
+          Show Delinquencies
+        </button>
+        <button
+          id="btn-unit"
+          class="btn btn-success"
+          @click="showModalTransactions = true"
+        >
+          Transactions
+        </button>
+      </div>
+    </div>
 
-            <table class="calendar-table">
-              <thead>
-                <tr>
-                  <th v-for="day in weekDays" :key="day">{{ day }}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="week in calendarWeeks" :key="week">
-                  <td v-for="day in week" :key="day" :class="getCellClass(day)">
-    <strong v-if="day">{{ day }}</strong>
-                    
-  </td>
-                </tr>
-              </tbody>
-            </table>
+    <!-- Modal for Delinquencies -->
+    <div v-if="showModalDelinquencies" class="modal">
+      <div class="modal-content">
+        <span class="close" @click="showModalDelinquencies = false"
+          >&times;</span
+        >
+        <div class="calendar-container">
+          <div class="calendar-header">
+            <button
+              id="previous"
+              class="btn btn-dark"
+              @click="goToPreviousMonth"
+            >
+              Previous
+            </button>
+            <span>{{ currentMonthName }} {{ currentYear }}</span>
+            <button id="next" class="btn btn-dark" @click="goToNextMonth">
+              Next
+            </button>
           </div>
-        </div>
-      </div>
 
-      <!-- Modal for Transactions -->
-      <div v-if="showModalTransactions" class="modal">
-        <div class="modal-content">
-          <span class="close" @click="showModalTransactions = false">&times;</span>
-          <h2>Transactions</h2>
-          <table>
+          <table class="calendar-table">
             <thead>
               <tr>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Amount</th>
-                <th>Toll-Booth</th>
-                <th>Reference Number </th>
-                <th>Teller</th>
-                <th>Type</th>
-                <th>Receipt</th>
+                <th v-for="day in weekDays" :key="day">{{ day }}</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(transaction, index) in paginatedTransactions" :key="index" :class="getTransactionClass(transaction)">
-                <td>{{ new Date(transaction.date_of_payment).toISOString().split('T')[0] }}</td>
-
-    <td>{{ new Date(transaction.date_of_payment).toLocaleTimeString('en-US', { timeZone: 'GMT' }) }}</td> 
-
-
-
-                <td>{{ transaction.amount }}</td>
-                <td>{{ transaction.branch }}</td>
-                <td>{{ transaction.reference_key }}</td>
-                <td>{{ transaction.teller  }}</td>
-                <td><strong>{{ transaction.type.toUpperCase() }}</strong></td>
-                <td><button class="btn btn-success" @click="generateReceipt(transaction,unit)">Generate Receipt</button></td>
+              <tr v-for="week in calendarWeeks" :key="week">
+                <td v-for="day in week" :key="day" :class="getCellClass(day)">
+                  <strong v-if="day">{{ day }}</strong>
+                </td>
               </tr>
             </tbody>
           </table>
-          <!-- Pagination controls for transactions -->
-          <div>
-            <button id="previous-1"class="btn btn-dark" @click="prevPageTransactions" :disabled="currentPageTransactions === 0">Previous</button>
-            <span>Page {{ currentPageTransactions + 1 }} of {{ totalPagesTransactions }}</span>
-            <button  id="next-1" class="btn btn-dark" @click="nextPageTransactions" :disabled="currentPageTransactions === totalPagesTransactions - 1">Next</button>
-          </div>
         </div>
       </div>
     </div>
-  </template>
 
-  <script>
+    <!-- Modal for Transactions -->
+    <div v-if="showModalTransactions" class="modal">
+      <div class="modal-content">
+        <span class="close" @click="showModalTransactions = false"
+          >&times;</span
+        >
+        <h2>Transactions</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Amount</th>
+              <th>Toll-Booth</th>
+              <th>Reference Number</th>
+              <th>Teller</th>
+              <th>Type</th>
+              <th>Receipt</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="(transaction, index) in paginatedTransactions"
+              :key="index"
+              :class="getTransactionClass(transaction)"
+            >
+              <td>
+                {{
+                  new Date(transaction.date_of_payment)
+                    .toISOString()
+                    .split("T")[0]
+                }}
+              </td>
+
+              <td>
+                {{
+                  new Date(transaction.date_of_payment).toLocaleTimeString(
+                    "en-US",
+                    { timeZone: "GMT" }
+                  )
+                }}
+              </td>
+
+              <td>{{ transaction.amount }}</td>
+              <td>{{ transaction.branch }}</td>
+              <td>{{ transaction.reference_key }}</td>
+              <td>{{ transaction.teller }}</td>
+              <td>
+                <strong>{{ transaction.type.toUpperCase() }}</strong>
+              </td>
+              <td>
+                <button
+                  class="btn btn-success"
+                  @click="generateReceipt(transaction,unit)"
+                >
+                  Generate Receipt
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- Pagination controls for transactions -->
+        <div>
+          <button
+            id="previous-1"
+            class="btn btn-dark"
+            @click="prevPageTransactions"
+            :disabled="currentPageTransactions === 0"
+          >
+            Previous
+          </button>
+          <span
+            >Page {{ currentPageTransactions + 1 }} of
+            {{ totalPagesTransactions }}</span
+          >
+          <button
+            id="next-1"
+            class="btn btn-dark"
+            @click="nextPageTransactions"
+            :disabled="currentPageTransactions === totalPagesTransactions - 1"
+          >
+            Next
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
   import { ref, computed, watch, onUnmounted } from 'vue';
   import axios from 'axios';
   import { useRouter } from 'vue-router';
@@ -459,31 +527,31 @@ const pageWidth = doc.internal.pageSize.getWidth();
   };
   </script>
 
-    <style scoped>
 
-    .container{
-      width: 500px;
-      margin-top: 50px;
-      background-color: white; /* White background */
-      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); /* Gray shadow */
-      padding: 20px; /* Add padding for spacing */
-      border-radius: 5%;
-    }
-    /* Modal styles (customize as needed) */
-    .modal {
-      display: block; /* Displayed by default */
-      position: fixed; /* Stay in place */
-      z-index: 1; /* Sit on top */
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto; /* Enable scroll if needed */
-      background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-    }
+<style scoped>
+.container {
+  width: 500px;
+  margin-top: 50px;
+  background-color: white; /* White background */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); /* Gray shadow */
+  padding: 20px; /* Add padding for spacing */
+  border-radius: 5%;
+}
+/* Modal styles (customize as needed) */
+.modal {
+  display: block; /* Displayed by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
 
-    /* Modal content box (customize as needed) */
-    .modal-content {
+/* Modal content box (customize as needed) */
+.modal-content {
   background-color: #fefefe;
   margin: 5% auto; /* 5% from the top and centered */
   padding: 20px;
@@ -494,8 +562,8 @@ const pageWidth = doc.internal.pageSize.getWidth();
   overflow-y: auto; /* Enable vertical scroll if needed */
 }
 
-    /* Close button (customize as needed) */
-    .close {
+/* Close button (customize as needed) */
+.close {
   color: #aaa;
   float: right;
   font-size: 28px;
@@ -510,116 +578,118 @@ const pageWidth = doc.internal.pageSize.getWidth();
   cursor: pointer;
 }
 
-    /* Table styles */
-    table {
-      border-collapse: collapse; /* Collapse table borders */
-      width: 100%; /* Table takes full width */
-    }
+/* Table styles */
+table {
+  border-collapse: collapse; /* Collapse table borders */
+  width: 100%; /* Table takes full width */
+}
 
-    table, th, td {
-      border: 1px solid black; /* Add border to table, th, and td elements */
-    }
-  
-    img{
-      margin-left: 80px;
-      width: 300px;
-      height: 300px;
-    }
-    .par-unit{
-      text-transform: uppercase;
-      font-weight: bold;
-      font-size: 50px;
-    }
-    .unit-num{
-      color: #04791e;
-      font-weight: bold;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
+table,
+th,
+td {
+  border: 1px solid black; /* Add border to table, th, and td elements */
+}
 
-    table th,
-    table td {
-      padding: 12px;
-      border: 1px solid #ddd; /* Add a border to all cells */
-      text-align: left;
-    }
+img {
+  margin-left: 80px;
+  width: 300px;
+  height: 300px;
+}
+.par-unit {
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 50px;
+}
+.unit-num {
+  color: #04791e;
+  font-weight: bold;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
 
-    table th.header-cell {
-      background-color: #3498db; /* Change background color of header cells */
-      color: white; /* Change text color of header cells */
-    }
+table th,
+table td {
+  padding: 12px;
+  border: 1px solid #ddd; /* Add a border to all cells */
+  text-align: left;
+}
 
-    table tbody tr:nth-child(even) {
-      background-color: #f9f9f9; /* Alternate row background color */
-    }
+table th.header-cell {
+  background-color: #3498db; /* Change background color of header cells */
+  color: white; /* Change text color of header cells */
+}
 
-    table tbody tr:hover {
-      background-color: #f5f5f5; /* Hover effect for rows */
-    }
-    th{
-      text-transform: uppercase;
-      font-weight: bold;
-      font-size: medium;
-      text-align: center;
-    }
-    td{
-      text-transform: uppercase;
-      font-weight: normal;
-      font-size: medium;
-      text-align: center;
-    }
-    strong{
-      text-transform: uppercase;
-      font-weight: bold;
-      font-size: 20px;
-    }
-    .par-balance{
-      color: #000;
-      font-weight: bold;
-      font-style: italic;
-    }
-    .custom-table {
-      width: 100%; /* Set table width to fill the container */
-      border-collapse: collapse; /* Collapse cell borders */
-    }
+table tbody tr:nth-child(even) {
+  background-color: #f9f9f9; /* Alternate row background color */
+}
 
-    /* Style the table cells */
-    .custom-table td {
-      padding: 10px; /* Padding inside each cell */
-      border: 1px solid #ccc; /* Light gray border around each cell */
-      text-align: center; /* Center text within each cell */
-    }
-    .calendar-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-top: 20px;
-    }
+table tbody tr:hover {
+  background-color: #f5f5f5; /* Hover effect for rows */
+}
+th {
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: medium;
+  text-align: center;
+}
+td {
+  text-transform: uppercase;
+  font-weight: normal;
+  font-size: medium;
+  text-align: center;
+}
+strong {
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 20px;
+}
+.par-balance {
+  color: #000;
+  font-weight: bold;
+  font-style: italic;
+}
+.custom-table {
+  width: 100%; /* Set table width to fill the container */
+  border-collapse: collapse; /* Collapse cell borders */
+}
 
-    .calendar-header {
-      font-weight: bold;
-      font-size: 18px;
-      margin-bottom: 10px;
-    }
+/* Style the table cells */
+.custom-table td {
+  padding: 10px; /* Padding inside each cell */
+  border: 1px solid #ccc; /* Light gray border around each cell */
+  text-align: center; /* Center text within each cell */
+}
+.calendar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
 
-    .calendar-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
+.calendar-header {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
 
-    .calendar-table th,
-    .calendar-table td {
-      text-align: center;
-      padding: 10px;
-      border: 1px solid #ccc;
-    }
+.calendar-table {
+  width: 100%;
+  border-collapse: collapse;
+}
 
-    .calendar-table th {
-      background-color: #f4f4f4;
-    }
-    .cell-red {
+.calendar-table th,
+.calendar-table td {
+  text-align: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.calendar-table th {
+  background-color: #f4f4f4;
+}
+.cell-red {
   background-color: red;
   color: white;
 }
@@ -628,39 +698,39 @@ const pageWidth = doc.internal.pageSize.getWidth();
   background-color: lightgreen;
   color: black;
 }
-  #btn-unit{
-    width: 25pc;
-    margin-top: -10px;
-    margin-left: 30px;
-  }
-  .btn{
-    width: 10pc;
-    margin:30px;
-  }
-  #previous{
-    /* float: left;
+#btn-unit {
+  width: 25pc;
+  margin-top: -10px;
+  margin-left: 30px;
+}
+.btn {
+  width: 10pc;
+  margin: 30px;
+}
+#previous {
+  /* float: left;
     position: relative; */
-    margin-right: 200px;
-  }
-  #next{
-    /* float: right;
+  margin-right: 200px;
+}
+#next {
+  /* float: right;
     position: relative; */
-    margin-left: 200px;
-  }
-  span{
-    text-align: center;
-    font-weight: bold;
-    text-transform: uppercase;
-  }
-  #previous-1{
-    /* float: left;
+  margin-left: 200px;
+}
+span {
+  text-align: center;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+#previous-1 {
+  /* float: left;
     position: relative; */
-    margin-right: 200px;
-    margin-left: 170px;
-  }
-  #next-1{
-    /* float: right;
+  margin-right: 200px;
+  margin-left: 170px;
+}
+#next-1 {
+  /* float: right;
     position: relative; */
-    margin-left: 200px;
-  }
-    </style>
+  margin-left: 200px;
+}
+</style>

@@ -1,6 +1,4 @@
-import { createRouter, createWebHistory } from 'https://unpkg.com/vue-router@4.0.0/dist/vue-router.esm-browser.js';
-import { createApp } from 'https://unpkg.com/vue@3.0.0/dist/vue.esm-browser.js';
-
+import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/Operator/HomeView.vue'
 import LoginView from '../views/Operator/LoginView.vue'
 import SignupView from '../views/Operator/SignupView.vue'
@@ -90,7 +88,7 @@ const router = createRouter({
     }, {
       path: '/login',
       name: 'login',
-      component: Test
+      component: LoginView
     },{
       path: '/test',
       name: 'test',
@@ -214,68 +212,69 @@ const router = createRouter({
     }
   ]
 })
-router.beforeEach((to, from, next) => {
-  const isAuthenticated = localStorage.getItem('access_token');
-  const accountType = localStorage.getItem('accountType');
 
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (!isAuthenticated) {
-      next({ name: 'login' });
-    } else if (!['unit', 'operator', 'admin', 'teller','kiosk','SuperAdmin'].includes(accountType)) {
-      next({ name: 'login' });
-    } else {
-      switch (accountType) {
-        case 'unit':
-          if (to.meta.accountType && to.meta.accountType !== 'unit') {
-            next({ name: 'homeunit' });
-          } else {
-            next();
-          }
-          break;
-        case 'operator':
-          if (to.meta.accountType && to.meta.accountType !== 'operator') {
-            next({ name: 'home' });
-          } else {
-            next();
-          }
-          break;
-        case 'admin':
-          if (to.meta.accountType && to.meta.accountType !== 'admin') {
-            next({ name: 'homeadmin' });
-          } else {
-            next();
-          }
-          break;
-        case 'teller':
-          if (to.meta.accountType && to.meta.accountType !== 'teller') {
-            next({ name: 'homeTeller' });
-          } else {
-            next();
-          }
-          break;
-          case 'SuperAdmin':
-            if (to.meta.accountType && to.meta.accountType !== 'SuperAdmin') {
-              next({ name: 'HomeSuperAdmin' });
-            } else {
-              next();
-            }
-            break;
-          case 'kiosk':
-            if (to.meta.accountType && to.meta.accountType !== 'kiosk') {
-              next({ name: 'kioskminimum' });
-            } else {
-              next();
-            }
-            break;
-        default:
-          next({ name: 'login' });
-          break;
-      }
-    }
-  } else {
-    next();
-  }
-});
+// router.beforeEach((to, from, next) => {
+//   const isAuthenticated = localStorage.getItem('access_token');
+//   const accountType = localStorage.getItem('accountType');
+
+//   if (to.matched.some(record => record.meta.requiresAuth)) {
+//     if (!isAuthenticated) {
+//       next({ name: 'login' });
+//     } else if (!['unit', 'operator', 'admin', 'teller','kiosk','SuperAdmin'].includes(accountType)) {
+//       next({ name: 'login' });
+//     } else {
+//       switch (accountType) {
+//         case 'unit':
+//           if (to.meta.accountType && to.meta.accountType !== 'unit') {
+//             next({ name: 'homeunit' });
+//           } else {
+//             next();
+//           }
+//           break;
+//         case 'operator':
+//           if (to.meta.accountType && to.meta.accountType !== 'operator') {
+//             next({ name: 'home' });
+//           } else {
+//             next();
+//           }
+//           break;
+//         case 'admin':
+//           if (to.meta.accountType && to.meta.accountType !== 'admin') {
+//             next({ name: 'homeadmin' });
+//           } else {
+//             next();
+//           }
+//           break;
+//         case 'teller':
+//           if (to.meta.accountType && to.meta.accountType !== 'teller') {
+//             next({ name: 'homeTeller' });
+//           } else {
+//             next();
+//           }
+//           break;
+//           case 'SuperAdmin':
+//             if (to.meta.accountType && to.meta.accountType !== 'SuperAdmin') {
+//               next({ name: 'HomeSuperAdmin' });
+//             } else {
+//               next();
+//             }
+//             break;
+//           case 'kiosk':
+//             if (to.meta.accountType && to.meta.accountType !== 'kiosk') {
+//               next({ name: 'kioskminimum' });
+//             } else {
+//               next();
+//             }
+//             break;
+//         default:
+//           next({ name: 'login' });
+//           break;
+//       }
+//     }
+//   } else {
+//     next();
+//   }
+// });
 
 
 
