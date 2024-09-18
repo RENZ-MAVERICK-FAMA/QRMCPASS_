@@ -265,7 +265,7 @@ this.fetchDelinquencies();
   setup(){
     const teller = ref({ id: null, username: '', first_name: '', last_name: '' })
 
-axios.get('http://127.0.0.1:9000/Teller', {
+axios.get('https://qrmcpass.loca.lt/Teller', {
 headers: {
   Authorization: `Bearer ${localStorage.getItem('access_token')}`
 }
@@ -491,7 +491,7 @@ generateAndDownloadPDF() {
     saveDetectedCodesToLocalStorage() {
 localStorage.setItem('detectedCodesMulticab', JSON.stringify(this.detectedCodes));
 }, fetchDelinquencies() {
-      axios.get('http://127.0.0.1:9000/admin/delinquencies/multicab/daily', {
+      axios.get('https://qrmcpass.loca.lt/admin/delinquencies/multicab/daily', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('access_token')}`,
         },
@@ -504,7 +504,7 @@ localStorage.setItem('detectedCodesMulticab', JSON.stringify(this.detectedCodes)
       });
     },
     fetchUnits() {
-      axios.get('http://127.0.0.1:9000/unitpaid', {
+      axios.get('https://qrmcpass.loca.lt/unitpaid', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('access_token')}`,
         },
@@ -552,7 +552,7 @@ let data = {
 
 console.log('data to be sent:', data);
 
-axios.post('http://127.0.0.1:9000/deduct', data, {
+axios.post('https://qrmcpass.loca.lt/deduct', data, {
   headers: {
     Authorization: `Bearer ${localStorage.getItem('access_token')}`,
     'Content-Type': 'application/json',
@@ -601,7 +601,7 @@ axios.post('http://127.0.0.1:9000/deduct', data, {
     
     console.log('data to be sent:', data);
     
-    axios.post('http://127.0.0.1:9000/manualpay', data, {
+    axios.post('https://qrmcpass.loca.lt/manualpay', data, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('access_token')}`,
         'Content-Type': 'application/json',
@@ -651,7 +651,7 @@ axios.post('http://127.0.0.1:9000/deduct', data, {
     const detectedWrCode = detectedStrings[0];
 
     try {
-        const response = await axios.get(`http://127.0.0.1:9000/api/check-unit/multicab?unit_info=${detectedWrCode}`);
+        const response = await axios.get(`https://qrmcpass.loca.lt/api/check-unit/multicab?unit_info=${detectedWrCode}`);
 
         if (!response.data.exists) {
             this.error = `Unit with QR code "${detectedWrCode}" is not a Multicab unit.`;
@@ -668,7 +668,7 @@ axios.post('http://127.0.0.1:9000/deduct', data, {
                 return;
             }
 
-            const paymentResponse = await axios.get(`http://127.0.0.1:9000/payment-details?unit_info=${detectedWrCode}`);
+            const paymentResponse = await axios.get(`https://qrmcpass.loca.lt/payment-details?unit_info=${detectedWrCode}`);
 
 
                 const paymentDetails = paymentResponse.data;
