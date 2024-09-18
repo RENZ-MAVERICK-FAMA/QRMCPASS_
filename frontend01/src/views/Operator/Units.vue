@@ -336,7 +336,7 @@ export default {
         });
     },
     fetchUnits() {
-      axios.get("http://127.0.0.1:9000/user_units", {
+      axios.get("https://qrmcpass.loca.lt/user_units", {
         headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
       })
         .then((response) => {
@@ -349,7 +349,7 @@ export default {
         });
     },
     fetchBalance(unit) {
-      axios.get(`http://127.0.0.1:9000/unit/${unit.id}/balances`, {
+      axios.get(`https://qrmcpass.loca.lt/unit/${unit.id}/balances`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
       })
         .then((response) => {
@@ -365,10 +365,10 @@ export default {
 
       // Fetch delinquencies and transactions concurrently using Promise.all
       Promise.all([
-        axios.get(`http://127.0.0.1:9000/unit/${unit.id}/delinquencies`, {
+        axios.get(`https://qrmcpass.loca.lt/unit/${unit.id}/delinquencies`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         }),
-        axios.get(`http://127.0.0.1:9000/unit/${unit.id}/transactions`, {
+        axios.get(`https://qrmcpass.loca.lt/unit/${unit.id}/transactions`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         })
       ])
@@ -423,7 +423,7 @@ export default {
     },
     showTransactions(unit) {
       this.selectedUnit = unit; // Set the selected unit
-      axios.get(`http://127.0.0.1:9000/unit/${unit.id}/transactions`, {
+      axios.get(`https://qrmcpass.loca.lt/unit/${unit.id}/transactions`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
       })
         .then((response) => {
