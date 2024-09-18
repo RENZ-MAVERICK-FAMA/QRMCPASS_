@@ -61,7 +61,7 @@ export default {
     'X-Frontend-URL': currentUrl,
     'X-Client-IP': clientIp  // Assuming 'window.ipAddress' is the client's IP address
   };
-    axios.post(' https://b6f6-180-194-151-0.ngrok-free.app/loginall', this.formData, { headers })
+    axios.post('https://e63a-180-194-151-0.ngrok-free.app/loginall', this.formData, { headers })
       .then(response => {
         // Store the access token in local storage
         localStorage.setItem('access_token', response.data.access_token);
