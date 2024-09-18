@@ -4,7 +4,7 @@
     <nav  class="bg-white h-[80px] z-50 shadow" >
       <div class="px-[5%] flex items-center justify-between h-full">
         <router-link class="flex items-center gap-3" to="/" >
-          <img src="\src\assets\ceedmo-logo.png" alt="" class="w-[45px] h-[35px]">
+         
           <h2 class="font-bold" >QRMCPASS</h2>
         </router-link>
         

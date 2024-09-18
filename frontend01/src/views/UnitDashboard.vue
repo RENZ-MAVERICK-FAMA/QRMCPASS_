@@ -186,7 +186,7 @@
         // Function to fetch units data
         const fetchUnitsData = async () => {
           try {
-            const response = await axios.get('http://127.0.0.1:9000/paid', {
+            const response = await axios.get('https://qrmcpass.loca.lt/paid', {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem('access_token')}`
               }
@@ -200,7 +200,7 @@
         // Function to fetch balances
         const fetchBalances = async (unitId) => {
           try {
-            const response = await axios.get(`http://127.0.0.1:9000/unit/${unitId}/balances`, {
+            const response = await axios.get(`https://qrmcpass.loca.lt/unit/${unitId}/balances`, {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem('access_token')}`
               }
@@ -214,7 +214,7 @@
         // Function to fetch delinquencies
         const fetchDelinquencies = async (unitId) => {
           try {
-            const response = await axios.get(`http://127.0.0.1:9000/unit/${unitId}/delinquencies`, {
+            const response = await axios.get(`https://qrmcpass.loca.lt/unit/${unitId}/delinquencies`, {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem('access_token')}`
               }
@@ -228,7 +228,7 @@
         // Function to fetch transactions
         const fetchTransactions = async (unitId) => {
           try {
-            const response = await axios.get(`http://127.0.0.1:9000/unit/${unitId}/transactions`, {
+            const response = await axios.get(`https://qrmcpass.loca.lt/unit/${unitId}/transactions`, {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem('access_token')}`
               }
@@ -243,7 +243,7 @@
         // Function to fetch unit details
         const fetchUnitDetails = async () => {
           try {
-            const response = await axios.get('http://127.0.0.1:9000/unitdetails', {
+            const response = await axios.get('https://qrmcpass.loca.lt/unitdetails', {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem('access_token')}`
               }

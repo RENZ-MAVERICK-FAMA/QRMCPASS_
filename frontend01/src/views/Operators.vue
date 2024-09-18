@@ -169,7 +169,7 @@ export default {
   methods: {
     async fetchUsers() {
 try {
-  const response = await axios.get('http://localhost:9000/users');
+  const response = await axios.get('https://qrmcpass.loca.lt/users');
   this.users = response.data.users.map(user => ({
     id: user.id,
     username: user.username,

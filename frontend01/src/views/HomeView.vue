@@ -79,7 +79,7 @@ export default {
 
     const user = ref({ id: null, email: '', first_name: '', last_name: '' })
 
-    axios.get('http://127.0.0.1:9000/user', {
+    axios.get('https://qrmcpass.loca.lt/user', {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('access_token')}`,
         'X-Frontend-URL': window.location.href,
@@ -93,7 +93,7 @@ export default {
     .catch(error => {
       console.error('Error fetching user:', error)
     })
-    axios.get('http://127.0.0.1:9000/operator/analytics', {
+    axios.get('https://qrmcpass.loca.lt/operator/analytics', {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('access_token')}`
       }
@@ -105,7 +105,7 @@ export default {
     .catch(error => {
       console.error('Error fetching analytics:', error)
     })
-    axios.get('http://127.0.0.1:9000/operator/paid_units_today', {
+    axios.get('https://qrmcpass.loca.lt/operator/paid_units_today', {
   headers: {
     Authorization: `Bearer ${localStorage.getItem('access_token')}`
   }
@@ -117,7 +117,7 @@ export default {
 .catch(error => {
   console.error('Error fetching paid units count:', error)
 })
-axios.get('http://127.0.0.1:9000/operator/delinquent_units_today', {
+axios.get('https://qrmcpass.loca.lt/operator/delinquent_units_today', {
   headers: {
     Authorization: `Bearer ${localStorage.getItem('access_token')}`
   }
@@ -130,7 +130,7 @@ axios.get('http://127.0.0.1:9000/operator/delinquent_units_today', {
   console.error('Error fetching paid units count:', error)
 })
     const logout = () => {
-      axios.post('http://127.0.0.1:9000/logout')
+      axios.post('https://qrmcpass.loca.lt/logout')
         .then(response => {
           // Handle successful logout
           console.log(response.data.message)

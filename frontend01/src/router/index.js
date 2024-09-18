@@ -144,12 +144,6 @@ const router = createRouter({
       component: Deduct,
       meta: { requiresAuth: true, accountType: 'teller' },
   props: (route) => ({ teller: route.params.teller })
-    },{
-      path: '/test',
-      name: 'test',
-      component: Test,
-      meta: { requiresAuth: true, accountType: 'teller' },
-      props: (route) => ({ teller: route.params.teller })
     },
     {
       path: '/motorelascan',
