@@ -81,7 +81,7 @@ import axios from 'axios';
 import logos from './base64-logos.json';
 import * as XLSX from 'xlsx';
 import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
+import { default as pdfFonts } from 'pdfmake/build/vfs_fonts';
 // import { logoPath } from 'frontend\src\assetsassets';
  
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
