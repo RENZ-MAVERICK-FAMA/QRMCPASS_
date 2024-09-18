@@ -120,7 +120,7 @@ export default {
     });
 
     axios
-      .get("http://127.0.0.1:9000/Teller", {
+      .get("https://qrmcpass.loca.lt/Teller", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
@@ -156,7 +156,7 @@ export default {
     },
     fetchUnits() {
       axios
-        .get("http://127.0.0.1:9000/units", {
+        .get("https://qrmcpass.loca.lt/units", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
           },
@@ -174,7 +174,7 @@ export default {
       // Fetch balances for each unit
       this.units.forEach((unit) => {
         axios
-          .get(`http://127.0.0.1:9000/unit/${unit.id}/balances`, {
+          .get(`https://qrmcpass.loca.lt/unit/${unit.id}/balances`, {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("access_token")}`,
               "Content-Type": "application/json",
@@ -214,7 +214,7 @@ export default {
       };
 
       axios
-        .post("http://127.0.0.1:9000/topup", data, {
+        .post("https://qrmcpass.loca.lt/topup", data, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
             "Content-Type": "application/json",
@@ -250,7 +250,7 @@ export default {
     },
     fetchRecentTransactions() {
       axios
-        .get("http://127.0.0.1:9000/recent_topup_transactions", {
+        .get("https://qrmcpass.loca.lt/recent_topup_transactions", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
           },
