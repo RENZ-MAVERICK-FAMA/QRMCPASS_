@@ -98,7 +98,7 @@ export default {
     });
 
     axios
-      .get("http://127.0.0.1:9000/Teller", {
+      .get("https://qrmcpass.loca.lt/Teller", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
@@ -114,7 +114,7 @@ export default {
 
     const logout = () => {
       axios
-        .post("http://127.0.0.1:9000/logout")
+        .post("https://qrmcpass.loca.lt/logout")
         .then((response) => {
           // Handle successful logout
           console.log(response.data.message);
