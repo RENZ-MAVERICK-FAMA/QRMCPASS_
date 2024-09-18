@@ -80,8 +80,8 @@
 import axios from 'axios';
 import logos from './base64-logos.json';
 import * as XLSX from 'xlsx';
-import pdfMake from "pdfmake/build/pdfmake";
-import * from "pdfmake/build/vfs_fonts";
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 export default {
   data() {
