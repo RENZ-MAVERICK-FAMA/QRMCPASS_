@@ -46,7 +46,7 @@
      
      
       const logout = () => {
-        axios.post('http://127.0.0.1:9000/logout')
+        axios.post('https://qrmcpass.loca.lt/logout')
           .then(response => {
             // Handle successful logout
             console.log(response.data.message)
