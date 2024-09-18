@@ -65,7 +65,7 @@ export default {
         this.loginError = 'Passwords do not match.';
         return;
       }
-      axios.get(`http://127.0.0.1:9000/check_email/${this.email}`)
+      axios.get(`https://qrmcpass.loca.lt/check_email/${this.email}`)
         .then(response => {
           if (response.data.exists) {
             this.loginError = 'Email already exists.';
@@ -80,7 +80,7 @@ export default {
             formData.append('password1', this.password1);
             formData.append('password2', this.password2);
 
-            axios.post('http://127.0.0.1:9000/signup', formData)
+            axios.post('https://qrmcpass.loca.lt/signup', formData)
               .then(response => {
                 this.email = '';
                 this.firstName = '';
