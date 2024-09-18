@@ -39,7 +39,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: '',
+      name: 'index',
       component: Test
     },
     
@@ -88,7 +88,7 @@ const router = createRouter({
     }, {
       path: '/login',
       name: 'login',
-      component: Test
+      component: LoginView
     },{
       path: '/test',
       name: 'test',
@@ -144,12 +144,6 @@ const router = createRouter({
       component: Deduct,
       meta: { requiresAuth: true, accountType: 'teller' },
   props: (route) => ({ teller: route.params.teller })
-    },{
-      path: '/test',
-      name: 'test',
-      component: Test,
-      meta: { requiresAuth: true, accountType: 'teller' },
-      props: (route) => ({ teller: route.params.teller })
     },
     {
       path: '/motorelascan',
@@ -212,15 +206,16 @@ const router = createRouter({
     }
   ]
 })
+
 router.beforeEach((to, from, next) => {
   const isAuthenticated = localStorage.getItem('access_token');
   const accountType = localStorage.getItem('accountType');
 
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (!isAuthenticated) {
-      next({ name: 'login' });
+      next({ name: 'index' });
     } else if (!['unit', 'operator', 'admin', 'teller','kiosk','SuperAdmin'].includes(accountType)) {
-      next({ name: 'login' });
+      next({ name: 'index' });
     } else {
       switch (accountType) {
         case 'unit':
@@ -266,7 +261,7 @@ router.beforeEach((to, from, next) => {
             }
             break;
         default:
-          next({ name: 'login' });
+          next({ name: 'index' });
           break;
       }
     }

@@ -1,206 +1,265 @@
 <template>
-  <button class="btn btn-warning">
-    <RouterLink class="nav-link" to="/homeTeller"> Go Back</RouterLink>
-  </button>
-  <div class="container">
-    <div>
-    <h2 align="center">Pay Delinquency</h2>
+  <main class="p-5 flex justify-center">
+    <div class="bg-white mt-5 md:mt-10 p-5 shadow rounded-[10px] w-full md:w-[600px]">
+      <form @submit.prevent="deduct" class="mt-3">
+        <h1 class="text-[20px] font-bold">Pay Delinquency</h1>
 
-    <div v-if="error" class="alert alert-danger" role="alert">
-  {{ error }}
-  <button @click="clearError" class="close" data-dismiss="alert">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>  
-<div v-if="success" class="alert alert-success" role="alert">
-  {{ success }}
-  <button @click="clearSuccess" class="close" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
-<br>
-    <div class="container-two">
-      <div class="row">
-        <div class="col-md-6">
-          <form @submit.prevent="deduct">
-            <div class="form-group">
-              <label class="display-3" for="unit">Select Unit</label>
-              <select v-model="selectedUnit" class="form-control"  id="unit" name="unit" required>
-                <option v-for="unit in units" :key="unit.id" :value="unit">{{ unit.unit_info }}</option>
-              </select>
-            </div>
-            <br>
-
-            <label class="display-3" for="branch">Toll Booth</label>
-            <select class="form-control" v-model="selectedBranch" name="branch" id="branch" required>
-              <option value="Office">Office</option>
-            </select><br> 
-            <div class="form-group">
-              <label class="display-3" for="date">Payment Date</label>
-              <input v-model="date" type="date" class="form-control" id="date" name="date" required>
-            </div>
-            <button id="deduct" type="submit" class="btn btn-success">Deduct</button>
-          </form>
+        <!-- Error Message -->
+        <div
+          v-if="error"
+          class="text-red-500 mt-3 relative bg-red-100 p-5 text-center rounded-[10px] text-[14px] font-light"
+          role="alert"
+        >
+          <i
+            @click="clearError"
+            class="pi pi-times-circle text-red-500 text-[18px] absolute top-1 right-1 cursor-pointer"
+          ></i>
+          {{ error }}
         </div>
-      </div>
+
+        <!-- Success Message -->
+        <div
+          v-if="success"
+          class="text-green-500 mt-3 relative bg-green-100 p-5 text-center rounded-[10px] text-[14px] font-light"
+          role="alert"
+        >
+          <i
+            @click="clearSuccess"
+            class="pi pi-times-circle text-green-500 text-[18px] absolute top-1 right-1 cursor-pointer"
+          ></i>
+          {{ success }}
+        </div>
+
+        <!-- Select Unit -->
+        <div class="mt-3 grid">
+          <label for="unit">Unit</label>
+          <Select
+            v-model="selectedUnit"
+            :options="units"
+            optionLabel="unit_info"
+            placeholder="Select Unit"
+            @change="fetchUnitDelinquencies"
+          />
+        </div>
+
+        <!-- Select Toll Booth -->
+        <div class="mt-3 grid">
+          <label for="branch">Toll Booth</label>
+          <Select
+            v-model="selectedBranch"
+            :options="branches"
+            optionValue="value"
+            optionLabel="label"
+            placeholder="Select Toll Booth"
+            required
+            readonly
+          ></Select>
+        </div>
+
+        <!-- Payment Date -->
+        <div class="mt-3 grid">
+          <label for="date">Payment Date</label>
+          <input
+            v-model="date"
+            type="date"
+            class="h-[45px] border border-slate-200 px-2 rounded outline-none"
+            id="date"
+            name="date"
+            required
+          />
+        </div>
+
+        <!-- Confirm and Cancel Buttons -->
+        <div class="grid sm:grid-cols-2 gap-5 mt-3">
+          <Button
+            type="submit"
+            icon="pi pi-check"
+            severity="success"
+            label="Confirm"
+            class="w-full"
+          />
+          <RouterLink to="/homeTeller">
+            <Button
+              severity="secondary"
+              icon="pi pi-times"
+              label="Cancel"
+              class="w-full"
+            />
+          </RouterLink>
+        </div>
+      </form>
     </div>
 
-    
+    <!-- Delinquencies Sidebar -->
+    <div class="ml-5 mt-5 p-5 shadow bg-white rounded-[10px] w-[300px]">
+    <h2 class="text-[18px] font-bold">Delinquencies</h2>
+    <ul>
+      <li
+        v-for="(delinquency, index) in visibleDelinquencies"
+        :key="delinquency.id"
+        class="mt-2 p-2 border rounded"
+      >
+        <p><strong>Date:</strong> {{ delinquency.date_of_payment }}</p>
+        <p><strong>Status:</strong> {{ delinquency.status }}</p>
+      </li>
+    </ul>
+    <p v-if="delinquencies.length === 0" class="text-gray-500">
+      No delinquencies for the selected unit.
+    </p>
+    <button
+      v-if="delinquencies.length > 5"
+      @click="toggleShowMore"
+      class="mt-3 px-4 py-2 bg-blue-500 text-white rounded"
+    >
+      {{ showMore ? 'Show Less' : 'See More' }}
+    </button>
   </div>
-  </div>
- 
-
-
+  </main>
 </template>
 
 <script>
-import { ref } from 'vue'
-import axios from 'axios'
+import { ref } from "vue";
+import axios from "axios";
 
 export default {
-data() {
-  return {
-    units: [],
-    selectedUnit: '',
-    selectedBranch: '',
-    date: '',
-    error: '',
-    success: '',
-    teller:''
-  }
-},
-
-created() {
-  this.fetchUnits()
-},
-
-setup() {
-  const teller = ref({ id: null, username: '', first_name: '', last_name: '' })
-
-  axios.get('http://127.0.0.1:9000/Teller', {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('access_token')}`
-    }
-  })
-  .then(response => {
-    teller.value = response.data
-  })
-  .catch(error => {
-    console.error('Error fetching user:', error)
-  })
-
-  return { teller }
-},
-
-methods: { 
-  clearError() {
-    this.error = '';
-  },
-
-  clearSuccess() {
-    this.success = '';
-  },
-
-  fetchUnits() {
-    axios.get('http://127.0.0.1:9000/units', {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('access_token')}`
-      }
-    })
-    .then(response => {
-      console.log(response.data.units);
-      this.units = response.data.units;
-      this.fetchBalances();
-    })
-    .catch(error => {
-      console.error('Error fetching user units:', error);
-    });
-  },
-
-  deduct() {
-    if (!this.selectedUnit) {
-      this.error = 'Please select a unit';
-      return;
-    }
-
-    let unitType = this.selectedUnit.unit_type;
-    let amount = unitType === 'motorela' ? 6 : (unitType === 'multicab' ? 11 : 0);
-    
-    let data = {
-      unit_id: this.selectedUnit.id,
-      date: this.date,
-      unit_type: this.selectedUnit.unit_type,
-      selectedBranch: this.selectedBranch,
-      amount: amount,
-      teller: this.teller.id,
+  data() {
+    return {
+      units: [],
+      selectedUnit: null,
+      branches: [{ label: "Office", value: "office" }],
+      date: "",
+      error: "",
+      success: "",
+      teller: "",
+      delinquencies: []
     };
+  },
 
-    console.log('data to be sent:', data);
+  created() {
+    this.fetchUnits();
+  },
 
-    axios.post('http://127.0.0.1:9000/paymentdel', data, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('access_token')}`,
-        'Content-Type': 'application/json',
-        'X-Frontend-URL': window.location.href,
-        'X-Forwarded-For': window.ipAddress, 
-      }
-    })
-    .then(response => {
-      console.log('Deduct response:', response.data);
-      if (response.data.message === 'Payment Successful with Delinquency') {
-        this.selectedUnit = '';
-        this.date = '';
-        this.success = response.data.message;
-      } else {
-        console.error('Deduct failed:', response.data.message);
-        this.error = response.data.message;
-      }
-    })
-    .catch(error => {
-      console.error('An error occurred:', error);
-      if (error.response && error.response.data && error.response.data.error) {
-        this.error = error.response.data.error;
-      } else {
-        this.error = 'An error occurred. Please try again.';
-      }
+  setup() {
+    const teller = ref({
+      id: null,
+      username: "",
+      first_name: "",
+      last_name: "",
     });
-  }
-}
-}
-</script>
 
-<style scoped>
-.container{
-  width: 500px;
-  margin-top: 50px;
-  background-color: white; /* White background */
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); /* Gray shadow */
-  padding: 20px; /* Add padding for spacing */
-  border-radius: 5%;
-}
-h2{
-  text-transform: uppercase;
-  font-weight: bold;
-  text-align: center;
-}
-.btn{
-  margin-top: 10px;
-}
-/* .container-two{
-  align-items: center;
-} */
-/* #deduct{
-  margin-left: 70px;
-  margin-top: 20px;
-} */
-.display-3{
-  font-size: 20px;
-}
-.form-control{
-  width: 450px;
-}
-#deduct{
-  width: 450px;
-  margin-top: 20px;
-}
-</style>
+    axios
+      .get("https://qrmcpass.loca.lt/Teller", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      })
+      .then((response) => {
+        teller.value = response.data;
+      })
+      .catch((error) => {
+        console.error("Error fetching user:", error);
+      });
+
+    return { teller };
+  },mounted() {
+    
+    this.fetchUnitDelinquencies();
+    setInterval(() => {
+      this.fetchUnitDelinquencies();
+    }, 2000); 
+  },
+  computed: {
+    visibleDelinquencies() {
+      return this.showMore ? this.delinquencies : this.delinquencies.slice(0, 5);
+    },
+  },
+  methods: {
+    toggleShowMore() {
+      this.showMore = !this.showMore;
+    },
+    clearError() {
+      this.error = "";
+    },
+
+    clearSuccess() {
+      this.success = "";
+    },
+
+    fetchUnits() {
+      axios
+        .get("https://qrmcpass.loca.lt/units", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        })
+        .then((response) => {
+          this.units = response.data.units;
+        })
+        .catch((error) => {
+          console.error("Error fetching units:", error);
+        });
+    },
+
+    fetchUnitDelinquencies() {
+      if (this.selectedUnit) {
+        axios
+          .get(`https://qrmcpass.loca.lt/units/${this.selectedUnit.id}/delinquencies`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          })
+          .then((response) => {
+            this.delinquencies = response.data.delinquencies;
+            console.log(this.delinquencies);
+          })
+          .catch((error) => {
+            console.error("Error fetching delinquencies:", error);
+          });
+      }
+    },
+
+    deduct() {
+      if (!this.selectedUnit) {
+        this.error = "Please select a unit";
+        return;
+      }
+
+      let unitType = this.selectedUnit.unit_type;
+      let amount = unitType === "motorela" ? 6 : unitType === "multicab" ? 11 : 0;
+
+      let data = {
+        unit_id: this.selectedUnit.id,
+        date: this.date,
+        unit_type: this.selectedUnit.unit_type,
+        selectedBranch: this.selectedBranch,
+        amount: amount,
+        teller: this.teller.id,
+      };
+
+      axios
+        .post("https://qrmcpass.loca.lt/paymentdel", data, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => {
+          if (response.data.message === "Payment Successful with Delinquency") {
+            this.selectedUnit = null;
+            this.date = "";
+            this.success = response.data.message;
+          } else {
+            this.error = response.data.message;
+          }
+        })
+        .catch((error) => {
+          if (error.response && error.response.data.error) {
+            this.error = error.response.data.error;
+          } else {
+            this.error = "An error occurred. Please try again.";
+          }
+        });
+    },
+  },
+};
+</script>

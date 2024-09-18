@@ -1,78 +1,41 @@
 <template>
-    <ToastProvider>
-      <div class="container">
-        <div>
-      <form @submit.prevent="addTeller">
-
-        <h3 align="center"> admin Sign Up</h3>
-        <div class="form-group">
-          <label for="username">username</label>
-          <input
-            type="username"
-            class="form-control"
-            id="username"
-            v-model="username"
-            placeholder="Enter username"
-            required />
+  <main  class=" select-none flex justify-center p-4" >
+      <form @submit.prevent="addTeller" class="bg-white w-[500px] mt-10 p-5 rounded-[10px] shadow">
+        <h1 class="text-[25px] font-bold" >ADMIN SIGN UP</h1>
+        <hr>
+        <div class="mt-3" >
+          <label>Username</label>
+          <InputText type="text" v-model="username" id="username" required class="w-full" />
         </div>
-        <div class="form-group">
-          <label for="firstName">First Name</label>
-          <input
-            type="text"
-            class="form-control"
-            id="firstName"
-            v-model="firstName"
-            placeholder="Enter first name"
-            required />
+        <div class="mt-3" >
+          <label>Firstname</label>
+          <InputText type="text" v-model="firstName" id="firstname" required class="w-full" />
         </div>
-        <div class="form-group">
-          <label for="lastName">Last Name</label>
-          <input
-            type="text"
-            class="form-control"
-            id="lastName"
-            v-model="lastName"
-            placeholder="Enter last name"
-            required />
+        <div class="mt-3" >
+          <label>Lastname</label>
+          <InputText type="text" v-model="lastName" id="lastname" required class="w-full" />
         </div>
-        <div class="form-group">
-          <label for="address">Address</label>
-          <input
-            type="text"
-            class="form-control"
-            id="address"
-            v-model="address"
-            placeholder="Enter address"
-            required />
+        <div class="mt-3" >
+          <label>Address</label>
+          <InputText type="text" v-model="address" id="address" required class="w-full" />
         </div>
-        <div class="form-group">
-          <label for="password1">Password</label>
-          <input
-            type="password"
-            class="form-control"
-            id="password1"
-            v-model="password1"
-            placeholder="Enter password"
-            required />
+        <div class="mt-3" >
+          <label>Password</label>
+          <InputText type="password" v-model="password1" id="password1"  class="w-full" />
         </div>
-        <div class="form-group">
-          <label for="password2">Password (Confirm)</label>
-          <input
-            type="password"
-            class="form-control"
-            id="password2"
-            v-model="password2"
-            placeholder="Confirm password"
-            required />
+        <div class="mt-3" >
+          <label>Confirm Password</label>
+          <InputText type="password" v-model="password2" id="password2" class="w-full" />
         </div>
-        <br />
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <div class="mt-3" >
+          <Button type="submit" icon="pi pi-save" label="Save" severity="success" class="w-full" />
+          <!-- <RouterLink to="/home" >
+            <Button type="text" icon="pi pi-times" label="Cancel" severity="secondary" class="w-full" />
+          </RouterLink> -->
+        </div>
       </form>
-    </div>
-      </div>
-    
-  </ToastProvider>
-  </template>
+  </main>
+</template>
 
   <script>
 
@@ -101,7 +64,7 @@ import axios from 'axios';
       formData.append('password1', this.password1);
       formData.append('password2', this.password2);
 
-      axios.post('http://127.0.0.1:9000/addSuperAdmin', formData)
+      axios.post('https://qrmcpass.loca.lt/addSuperAdmin', formData)
         .then(response => {
       this.username = '';
       this.firstName = '';
@@ -121,43 +84,3 @@ import axios from 'axios';
   }
 };
   </script>
-
-<style scoped>
-.container{
-  width: 500px;
-  margin-top: 50px;
-  background-color: white; /* White background */
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5); /* Gray shadow */
-  padding: 20px; /* Add padding for spacing */
-  border-radius: 5%;
-}
-label{
-  margin-bottom: 10px;
-  margin-top: 10px;
-  text-transform: uppercase;
-  font-size: small;
-  font-weight: bold;
-}
-h3{
-  text-transform: uppercase;
-  text-align: center;
-}
-button{
-  background-color: #4CAF50; /* Green background */
-  border: none; /* Remove borders */
-  color: white; /* White text */
-  padding: 10px 35px; /* Padding */
-  text-align: center; /* Center text */
-  text-decoration: none; /* Remove underline */
-  display: inline-block; /* Make the button a block element */
-  font-size: 16px; /* Font size */
-  border-radius: 20px; /* Rounded corners */
-  cursor: pointer; /* Add cursor pointer */
-  transition: background-color 0.3s ease;
-  margin: auto;
-  margin-top: 10px;
-}
-button:hover{
-  background-color: #2BA842;
-}
-</style>

@@ -119,7 +119,7 @@
   
       const user = ref({ id: null, email: '', first_name: '', last_name: '', address: '', license: '', password: '', permit: '' })
   
-      axios.get('http://127.0.0.1:9000/user', {
+      axios.get('https://qrmcpass.loca.lt/user', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('access_token')}`
         }
@@ -133,7 +133,7 @@
         })
   
       const updateUser = () => {
-        axios.put('http://127.0.0.1:9000/updateuser', user.value, {
+        axios.put('https://qrmcpass.loca.lt/updateuser', user.value, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('access_token')}`
           }
@@ -154,7 +154,7 @@
       }
   
       const logout = () => {
-        axios.post('http://127.0.0.1:9000/logout')
+        axios.post('https://qrmcpass.loca.lt/logout')
           .then(response => {
             // Handle successful logout
             console.log(response.data.message)

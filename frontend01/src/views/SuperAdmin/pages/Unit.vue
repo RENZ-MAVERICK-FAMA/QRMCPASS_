@@ -1,54 +1,35 @@
 <template>
-  <div>
-    <br>
-    <button class="btn btn-warning">
-      <RouterLink class="nav-link" to="/HomeSuperAdmin">Go Back</RouterLink>
-    </button>
-    <div class="container-sm">
-      <h1 class="display-1">All Units</h1>
-      <div>
+  <main class="p-5 md:px-[10%]" >
+    <div class="bg-white mt-5 md:mt-10 p-5 shadow rounded-[10px]" >
+      <RouterLink to="/HomeSuperAdmin" >
+          <div class="flex gap-5 h-[40px] items-center hover:text-slate-300" >
+            <i class="pi pi-arrow-left" ></i>
+            <span>Go Back</span>
+          </div>
+      </RouterLink>
+      <DataTable showGridlines :value="filteredUnit" paginator :rows="5" :rowsPerPageOptions="[5, 10, 20, 50]" class="mt-3">
+        <template #header >
+          <div class="flex items-center justify-between" >
+            <span>ALL UNITS</span>
+          </div>
+          <div>
         <input type="text" v-model="searchTerm" placeholder="Search...">
       </div>
-      <br>
-      <table class="units-table">
-        <thead>
-          <tr>
-            <th>Unit Info</th>
-            <th>Unit Type</th>
-            <th>Color</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="unit in filteredUnits" :key="unit.id">
-            <td>{{ unit.unit_info }}</td>
-            <td>{{ unit.unit_type }}</td>
-            <td>{{ unit.color }}</td>
-            <td>  <button @click="editAdmin(unit)" class="add-operator-btn">Edit</button></td>
-          </tr>
-        </tbody>
-      </table>
+        </template>
+        <template #empty>
+          <div class="flex justify-center" >
+            <small class="font-extralight capitalize" >no data found. </small>
+          </div>
+        </template>
+        
+        <Column header="Unit Info" field="unit_info" />
+        <Column header="Unit Type" field="unit_type" />
+        <Column header="Color" field="color" />
+        
+      </DataTable>
     </div>
-  </div>
-    <!-- Edit Teller Modal -->
-<div v-if="showEditModal" class="modal">
-  <div class="modal-content">
-    <span class="close" @click="closeModal">&times;</span>
-    <h2>Edit Unit</h2>
-    <form @submit.prevent="updateTeller">
-    
-      <br />
-      <div class="form-group">
-        <label for="editPassword">Password</label>
-        <input type="text" class="form-control" id="editPassword" v-model="editedTeller.password" required />
-      </div>
-      <br />
-      <button type="submit" class="btn btn-primary">Update</button>
-    </form>
-  </div>
-</div>
+  </main>
 </template>
-
 <script>
 import axios from 'axios';
 
@@ -57,18 +38,22 @@ export default {
     return {
       units: [],
       searchTerm: '',
-      showEditModal: false,
-      editedTeller: {
-        id: null,
-        password: ''
-      }
     };
   },
   mounted() {
     this.fetchUnits();
   },
-  computed: {
-    filteredUnits() {
+  methods: {
+    async fetchUnits() {
+      try {
+        const response = await axios.get('https://qrmcpass.loca.lt/units');
+        this.units = response.data.units;
+      } catch (error) {
+        console.error(error);
+      }
+    },
+  },computed: {
+    filteredUnit() {
       if (!this.searchTerm) {
         return this.units; // If no search term, return all units
       }
@@ -77,50 +62,16 @@ export default {
       const searchTermLower = this.searchTerm.toLowerCase();
 
       // Filter units based on search term
-      return this.units.filter(unit => {
+      return this.units.filter(units => {
         return (
-          unit.unit_info.toLowerCase().includes(searchTermLower) || // Filter by unit info
-          unit.unit_type.toLowerCase().includes(searchTermLower) || // Filter by unit type
-          unit.color.toLowerCase().includes(searchTermLower) // Filter by color
+          units.unit_info.toLowerCase().includes(searchTermLower) || // Filter by unit info
+          units.color.toLowerCase().includes(searchTermLower) || // Filter by unit type
+          units.unit_type.toLowerCase().includes(searchTermLower) // Filter by unit type
+          
         );
       });
     }
   },
-  methods: {
-    async fetchUnits() {
-      try {
-        const response = await axios.get('http://localhost:9000/units');
-        this.units = response.data.units;
-      } catch (error) {
-        console.error(error);
-      }
-    }, closeModal(){
-
-this.showEditModal = false;
-
-      },editAdmin(unit) {
-      
-      this.editedTeller.id = unit.id;
-      
-      this.editedTeller.password = unit.password1 ; 
-     
-      this.showEditModal = true;
-    },
-    updateTeller() {
-      const { id, password } = this.editedTeller;
-      const updatedData = {password };
-      console.log(updatedData);
-      console.log(id);
-      axios.put(`http://127.0.0.1:9000/updateUnit/${id}`, updatedData)
-        .then(response => {
-          this.fetchUnits();
-          this.showEditModal = false; 
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    },
-  }
 };
 </script>
 
@@ -130,8 +81,7 @@ this.showEditModal = false;
   border-collapse: collapse;
 }
 
-.units-table th,
-.units-table td {
+.units-table th, .units-table td {
   border: 1px solid #ddd;
   padding: 8px;
 }
@@ -140,8 +90,7 @@ this.showEditModal = false;
   background-color: #f2f2f2;
   text-align: left;
 }
-
-.container-sm {
+.container-sm{
   width: 100%;
   height: 500px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
@@ -150,8 +99,7 @@ this.showEditModal = false;
   border-radius: 20px;
   background-color: #fff;
 }
-
-.display-1 {
+.display-1{
   font-size: 45px;
   text-transform: uppercase;
 }

@@ -1,92 +1,87 @@
 <template>
-  <div class="container-md">
-    <p class="display-3">Unit Count</p>
-    <div class="cont-m">
-      <p class="card-text"><strong>Motorela:  {{ motorelaCount }}</strong></p>
-      <p class="card-text"><strong>Multicab:  {{ multicabCount }}</strong></p>
+  <main class=" md:mt-10 p-[20px] lg:px-[5%]" >
+    <div class="" >
+      <div class="grid grid-cols-2 gap-5 md:gap-10" >
+        <div class="bg-white p-5 rounded-[10px] shadow " >
+          <h1 class="text-[40px] font-bold text-center" >{{ motorelaCount }}</h1>
+          <p class="text-center md:text-left text-[20px] font-light" >Motorela</p>
+        </div>
+        <div class="bg-white p-5 rounded-[10px] shadow " >
+          <h1 class="text-[40px] font-bold text-center" >{{ multicabCount }}</h1>
+          <p class="text-center md:text-left text-[20px] font-light" >Multicab</p>
+        </div>
+      </div>
+      <div class="bg-white shadow mt-5 md:mt-10 p-5 rounded-[20px]" >
+          <p>Generate a daily report for payments and delinquency of both Multicab and Motorela.</p>
+          <div class="grid md:grid-cols-3 gap-5" >
+            <Fieldset legend="Daily" class="mt-3" >
+              <div >
+                <div class="" >
+                  <label for="">Start Date</label>
+                  <!-- <DatePicker v-model="startDate" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" /> -->
+                  <input class="h-[40px] p-2 border w-full rounded-[5px]" type="date" id="startDate" v-model="startDate">
+                </div>
+                <div class="mt-3" >
+                  <label for="">End Date</label>
+                  <!-- <DatePicker v-model="endDate" dateFormat="dd/mm/yy" placeholder="dd/mm/yyyy" /> -->
+                  <input class="h-[40px] p-2 border w-full rounded-[5px]" type="date" id="endDate" v-model="endDate">
+                </div>
+                <div class="mt-3" >
+                  <span>Motorela</span>
+                  <div class="grid lg:grid-cols-2 gap-3 mt-2" >
+                    <Button @click="generatedailyMotorelapayment(startDate, endDate)" label="Payment" icon="pi pi-wallet" severity="success"/>
+                    <Button @click="generateDelReportMotorelaRange(startDate, endDate)" label="Deliquency" icon="pi pi-money-bill" severity="secondary"/>
+                  </div>
+                </div>
+                <div class="mt-3" >
+                  <span>Multicab</span>
+                  <div class="grid lg:grid-cols-2 gap-3 mt-2" >
+                    <Button @click="generatedailyMulticabpayment(startDate, endDate)" label="Payment" icon="pi pi-wallet" severity="success"/>
+                    <Button @click="generateDelReportMulticabRange(startDate, endDate)" label="Deliquency" icon="pi pi-money-bill" severity="secondary"/>
+                  </div>
+                </div>
+              </div>
+            </Fieldset>
+            <Fieldset legend="Monthly" class="mt-3" >
+              <div >
+                <div class="" >
+                  <label for="">Choose month</label>
+                  <input class="h-[40px] p-2 border w-full rounded-[5px]" type="month" v-model="monthlyMonth">
+                </div>
+                <div class="mt-3" >
+                  <span>Motorela</span>
+                  <div class="grid lg:grid-cols-2 gap-3 mt-2" >
+                    <Button @click="generatemonthlyMotorelaPaymentReport(monthlyMonth)" label="Payment" icon="pi pi-wallet" severity="success"/>
+                    <Button @click="generatemonthlyMotorelaDelinquenciesReport(monthlyMonth)" label="Deliquency" icon="pi pi-money-bill" severity="secondary"/>
+                  </div>
+                </div>
+                <div class="mt-3" >
+                  <span>Multicab</span>
+                  <div class="grid lg:grid-cols-2 gap-3 mt-2" >
+                    <Button @click="generatemonthlyMulticabPaymentReport(monthlyMonth)" label="Payment" icon="pi pi-wallet" severity="success"/>
+                    <Button @click="generatemonthlyMulticabDelinquenciesReport(monthlyMonth)" label="Deliquency" icon="pi pi-money-bill" severity="secondary"/>
+                  </div>
+                </div>
+              </div>
+            </Fieldset>
+            <Fieldset legend="Annually" class="mt-3" >
+              <div class="" >
+                <label for="">Year</label>
+                <Select  v-model="selectedYear" :options="availableYears" class="w-full" ></Select>
+                <Button  @click="GenerateOverall(selectedYear)" label="Generate Report" icon="pi pi-file-pdf" severity="success" class="mt-3 w-full" />
+              </div>
+            </Fieldset>
+          </div>
+      </div>
     </div>
-      
-  </div>
-  <div class="container-fluid">
-    <div class="card">
-            <h5 class="card-title">Daily</h5>
-            <h6 class="card-subtitle mb-2 text-body-secondary">Motorela & Multicab</h6>
-            <p class="display-4">Generate a daily report for payments and delinquency of both Multicab and Motorela.</p>
-            
-            <div class="cont">
-              <div class="daily">
-                <label class="display-6" for="startDate">Start Date</label>
-                <input class="form-control" type="date" id="startDate" v-model="startDate">
-                <br>
-                <label class="display-6" for="endDate">End Date</label>
-                <input class="form-control" type="date" id="endDate" v-model="endDate">
-              </div>
-              <div class="btn-option">
-                <button class="btn btn-success" @click="generateDelReportMotorelaRange(startDate, endDate)">Motorela Deliquency</button>
-                <br>
-                <button class="btn btn-success" @click="generatedailyMotorelapayment(startDate, endDate)">Motorela Payment</button>
-                <br>
-                <button class="btn btn-success" @click="generateDelReportMulticabRange(startDate, endDate)">Multicab Deliquency</button>
-                <br>
-                <button class="btn btn-success" @click="generatedailyMulticabpayment(startDate, endDate)">Multicab Payment</button>
-              </div>
-              
-            </div>
-          </div>
-      </div>
-      <div class="container-fluid">
-    <div class="card">
-            <h5 class="card-title">Monthly</h5>
-            <h6 class="card-subtitle mb-2 text-body-secondary">Moterela & Multicab</h6>
-            <p class="display-4">Generate monthly report for payments and delinquency of both Multicab and Motorela.</p>
-            
-            <div class="cont-sm">
-              <div class="daily">
-                <br>
-                <br>
-                <label  class="display-6" for="month">Choose Month</label>
-                <br>
-                <input type="month" v-model="monthlyMonth">
-              </div>
-              <div class="btn-option">
-                <button class="btn btn-success" @click="generatemonthlyMotorelaDelinquenciesReport(monthlyMonth)">Motorela Deliquency</button>
-                <br>
-                <button class="btn btn-success" @click="generatemonthlyMotorelaPaymentReport(monthlyMonth)">Motorela Payment</button>
-                <br>
-                <button class="btn btn-success" @click="generatemonthlyMulticabDelinquenciesReport(monthlyMonth)">Multicab Deliquency</button>
-                <br>
-                <button class="btn btn-success" @click="generatemonthlyMulticabPaymentReport(monthlyMonth)">Multicab Payment</button>
-              </div>
-            </div>
-          </div>
-      </div>
-      <div class="container-fluid">
-    <div class="card">
-            <h5 class="card-title">Annually</h5>
-            <h6 class="card-subtitle mb-2 text-body-secondary">Moterela & Multicab</h6>
-            <p class="display-4">Generate Annually report for payments and delinquency of both Multicab and Motorela.</p>
-            
-            <div class="cont">
-              <div class="daily">
-                <label class="display-6" for="select">Year</label>
-                <select class="form-control" v-model="selectedYear">
-                  <option v-for="year in availableYears" :key="year" :value="year">{{ year }}</option>
-                </select>
-              </div>
-              <div class="btn-option">
-                <button class="btn btn-success" id="annual-gen-btn" @click="GenerateOverall(selectedYear)">Generate Report</button>
-              </div>
-            </div>
-          </div>
-      </div>
-
+  </main>
 </template>
 <script>
 import axios from 'axios';
-import * as XLSX from 'xlsx';
+import logos from './base64-logos.json';
 import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
+pdfMake.vfs = pdfMake.vfs;
 export default {
   data() {
     return {
@@ -96,8 +91,8 @@ export default {
       motorelaCount: 0,
       multicabCount: 0,
       availableYears: [],
-      selectedYear: new Date().getFullYear()
-      
+      selectedYear: new Date().getFullYear(),
+  
     };
   },
   mounted() {
@@ -105,8 +100,15 @@ export default {
     this.populateYears();
   },
   methods: {
+    getMonthName(monthNumber) {
+    const months = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+    return months[monthNumber - 1]; // Subtract 1 because month numbers are 1-based, but array indices are 0-based
+  },
     GenerateOverall(selectedYear) {
-      axios.get(`http://127.0.0.1:9000/admin/analytics/overall?year=${selectedYear}`)
+      axios.get(`https://qrmcpass.loca.lt/admin/analytics/overall?year=${selectedYear}`)
         .then(response => {
           const data = response.data;
           this.generatePdfFile(data,selectedYear);
@@ -117,34 +119,84 @@ export default {
     },
     generatePdfFile(data, selectedYear) {
     const totalOverall = data.total_payments + data.total_delinquencies;
-    const totalPaymentsMulticab = data.total_payments_by_type.multicab*11;
-    const totalpaymentsMotorela = data.total_payments_by_type.motorela*6;
+    const totalPaymentsMulticab = data.total_payments_by_type.multicab;
+    const totalpaymentsMotorela = data.total_payments_by_type.motorela;
     const totalTollPayments = totalPaymentsMulticab + totalpaymentsMotorela;
 
     const docDefinition = {
     content: [
         {
-            columns: [
-                {
-                    stack: [
-                        { text: 'Province of Bukidnon', margin: [0, 0, 0, 10] },
-                        { text: 'City of Malaybalay', margin: [0, 0, 0, 10] },
-                        { text: 'Market Site Brgy 9, Malaybalay City Bukidnon', margin: [0, 0, 0, 10] },
-                        { text: 'City Economic Enterprise Development and Management Office', margin: [0, 0, 0, 10] },
-                        { text: 'Total Toll Payments: ' + totalTollPayments, margin: [0, 0, 0, 10] },
-                        { text: 'Total Delinquencies: ' + data.total_delinquencies, margin: [0, 0, 0, 10] },
-                    ],
-                    alignment: 'center'  // Center alignment for the entire stack
-                }
-            ]
+          columns: [
+    {
+        width: 'auto', // Automatically size based on content
+        stack: [
+            {
+                image: logos.citylogo,
+                width: 40,
+                height: 40,
+                alignment: 'left'
+            }
+        ]
+    },
+    {
+        width: 'auto', // Automatically size based on content
+        stack: [
+            {
+                image: logos.ceedmologo,
+                width: 50,
+                height: 40,
+                alignment: 'left'
+            }
+        ]
+    },
+    {
+        width: '*', // Takes up remaining space
+        stack: [
+            {
+                text: 'Province of Bukidnon',
+                style: 'headerText'
+            },
+            {
+                text: 'City Government of Malaybalay',
+                style: 'headerText'
+            },
+            {
+                text: 'City Economic Enterprise Development and Management Office',
+                style: 'headerText'
+            },
+            {
+                text: 'Collectors Office',
+                style: 'headerText'
+            },
+            {
+                text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon',
+                style: 'headerText'
+            }
+        ],
+        alignment: 'center' // Center the header text
+    },
+    {
+        width: 'auto', // Automatically size based on content
+        stack: [
+            {
+                image: logos.qrlogo,
+                width: 50,
+                height: 40,
+                alignment: 'right'
+            }
+        ]
+    }
+]
         },
         {
             table: {
                 headerRows: 1,
                 widths: ['auto', 'auto'],
                 body: [
+                  [{ text: 'Total Toll Payments: ' + totalTollPayments, style:'headerText'}, ''],
+                  [{ text: 'Total Delinquencies: ' + data.total_delinquencies, style:'headerText'}, ''],
                     [{ text: 'Multicab', style: 'tableHeader' }, ''],
-                    ['Total Payments', data.total_payments_by_type.multicab * 11],
+                    ['Total Payments', data.total_payments_by_type.multicab ],
                     ['Total Delinquencies', data.total_delinquencies_by_type.multicab]
                 ]
             }
@@ -156,7 +208,7 @@ export default {
                 widths: ['auto', 'auto'],
                 body: [
                     [{ text: 'Motorela', style: 'tableHeader' }, ''],
-                    ['Total Payments', data.total_payments_by_type.motorela * 6],
+                    ['Total Payments', data.total_payments_by_type.motorela ],
                     ['Total Delinquencies', data.total_delinquencies_by_type.motorela]
                 ]
             }
@@ -170,7 +222,11 @@ export default {
             fontSize: 13,
             color: 'black',
             alignment: 'center'  // Center alignment for table headers
-        }
+        },
+        headerText: {
+        fontSize: 12,
+        bold: true
+      },
     }
 };
 
@@ -188,7 +244,7 @@ export default {
     this.selectedYear = currentYear;
   },
     fetchUnitCounts() {
-      axios.get('http://127.0.0.1:9000/admin/analytics', {
+      axios.get('https://qrmcpass.loca.lt/admin/analytics', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('access_token')}`,
         },
@@ -201,8 +257,8 @@ export default {
         console.error('Error fetching unit counts:', error);
       });
     },
-    generateDelReportMotorelaRange(startDate, endDate) {
-  axios.get(`http://127.0.0.1:9000/admin/delinquencies/motorela/daily?start_date=${startDate}&end_date=${endDate}`, {
+generateDelReportMotorelaRange(startDate, endDate) {
+  axios.get(`https://qrmcpass.loca.lt/admin/delinquencies/motorela/daily?start_date=${startDate}&end_date=${endDate}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('access_token')}`,
     },
@@ -221,7 +277,7 @@ generatedeldailymotorelaFile(delinquencies, startDate, endDate) {
 // Convert date strings to Date objects and sort by date
 delinquencies.sort((a, b) => new Date(a.date_of_payment) - new Date(b.date_of_payment));
 
-  const filename = `Motorela Delinquency Report for ${startDate}&${endDate}.pdf`;
+  const filename = `Motorela Delinquency Report for ${startDate} & ${endDate}.pdf`;
   
   // Create table body with header row and delinquency data
   const tableHeaderRow = ['Unit', 'Date', 'Status']; // Plain text values for the header row
@@ -238,17 +294,66 @@ delinquencies.sort((a, b) => new Date(a.date_of_payment) - new Date(b.date_of_pa
     content: [  
       {
         columns: [
-          {
-            stack: [
-              { text: 'Province of Bukidnon', style: 'headerText' },
-              { text: 'City of Malaybalay', style: 'headerText' },
-              { text: 'Market Site Brgy 9, Malaybalay City Bukidnon', style: 'headerText' },
-              { text: 'City Economic Enterprise Development and Management Office', style: 'headerText' },
-              { text: 'CEEDMO Motorela Booth', style: 'headerText' },
-            ],
-            alignment: 'center'  // Center alignment for all text
-          }
+    {
+        width: 'auto', // Automatically size based on content
+        stack: [
+            {
+                image: logos.citylogo,
+                width: 40,
+                height: 40,
+                alignment: 'left'
+            }
         ]
+    },
+    {
+        width: 'auto', // Automatically size based on content
+        stack: [
+            {
+                image: logos.ceedmologo,
+                width: 50,
+                height: 40,
+                alignment: 'left'
+            }
+        ]
+    },
+    {
+        width: '*', // Takes up remaining space
+        stack: [
+            {
+                text: 'Province of Bukidnon',
+                style: 'headerText'
+            },
+            {
+                text: 'City Government of Malaybalay',
+                style: 'headerText'
+            },
+            {
+                text: 'City Economic Enterprise Development and Management Office',
+                style: 'headerText'
+            },
+            {
+                text: 'CEEDMO Motorela Booth',
+                style: 'headerText'
+            },
+            {
+                text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon',
+                style: 'headerText'
+            }
+        ],
+        alignment: 'center' // Center the header text
+    },
+    {
+        width: 'auto', // Automatically size based on content
+        stack: [
+            {
+                image: logos.qrlogo,
+                width: 50,
+                height: 40,
+                alignment: 'right'
+            }
+        ]
+    }
+]
       },
       { text: '', margin: [0, 20] },  // Space below the header
       { text: `Today's Report - ${startDate} & ${endDate}`, style: 'subheader', alignment: 'center', margin: [0, 10] },
@@ -287,7 +392,7 @@ delinquencies.sort((a, b) => new Date(a.date_of_payment) - new Date(b.date_of_pa
 pdfMake.createPdf(docDefinition).download(`Motorela Delinquency Report for ${startDate} & ${endDate}.pdf`);
 },
 generateDelReportMulticabRange(startDate, endDate) {
-  axios.get(`http://127.0.0.1:9000/admin/delinquencies/multicab/daily?start_date=${startDate}&end_date=${endDate}`, {
+  axios.get(`https://qrmcpass.loca.lt/admin/delinquencies/multicab/daily?start_date=${startDate}&end_date=${endDate}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('access_token')}`,
     },
@@ -302,7 +407,7 @@ generateDelReportMulticabRange(startDate, endDate) {
 },
 generatedelmulticabdailyExcelFile(delinquencies,startDate, endDate) {
   delinquencies.sort((a, b) => new Date(a.date_of_payment) - new Date(b.date_of_payment));
-  const filename = `Multicab Delinquencies Report for ${startDate}&${endDate}.pdf`;
+  const filename = `Multicab Delinquencies Report for ${startDate} & ${endDate}.pdf`;
   
 
   const tableHeaderRow = ['Unit', 'Date', 'Status']; // Plain text values for the header row
@@ -319,17 +424,66 @@ generatedelmulticabdailyExcelFile(delinquencies,startDate, endDate) {
     content: [
       {
         columns: [
-          {
-            stack: [
-              { text: 'Province of Bukidnon', style: 'headerText' },
-              { text: 'City of Malaybalay', style: 'headerText' },
-              { text: 'Market Site Brgy 9, Malaybalay City Bukidnon', style: 'headerText' },
-              { text: 'City Economic Enterprise Development and Management Office', style: 'headerText' },
-              { text: 'CEEDMO Motorela Booth', style: 'headerText' },
-            ],
-            alignment: 'center'  // Center alignment for all text
-          }
+    {
+        width: 'auto', // Automatically size based on content
+        stack: [
+            {
+                image: logos.citylogo,
+                width: 40,
+                height: 40,
+                alignment: 'left'
+            }
         ]
+    },
+    {
+        width: 'auto', // Automatically size based on content
+        stack: [
+            {
+                image: logos.ceedmologo,
+                width: 50,
+                height: 40,
+                alignment: 'left'
+            }
+        ]
+    },
+    {
+        width: '*', // Takes up remaining space
+        stack: [
+            {
+                text: 'Province of Bukidnon',
+                style: 'headerText'
+            },
+            {
+                text: 'City Government of Malaybalay',
+                style: 'headerText'
+            },
+            {
+                text: 'City Economic Enterprise Development and Management Office',
+                style: 'headerText'
+            },
+            {
+                text: 'CEEDMO Multicab Booth',
+                style: 'headerText'
+            },
+            {
+                text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon',
+                style: 'headerText'
+            }
+        ],
+        alignment: 'center' // Center the header text
+    },
+    {
+        width: 'auto', // Automatically size based on content
+        stack: [
+            {
+                image: logos.qrlogo,
+                width: 50,
+                height: 40,
+                alignment: 'right'
+            }
+        ]
+    }
+]
       },
       { text: '', margin: [0, 20] },  // Space below the header
       { text: `Today's Report - ${startDate} & ${endDate}`, style: 'subheader', alignment: 'center', margin: [0, 10] },
@@ -369,7 +523,7 @@ pdfMake.createPdf(docDefinition).download(`Multicab Delinquency Report for ${sta
 
 },
 generatedailyMulticabpayment(startDate, endDate) {
-  axios.get(`http://127.0.0.1:9000/admin/transactions/payment/multicab/daily?start_date=${startDate}&end_date=${endDate}`, {
+  axios.get(`https://qrmcpass.loca.lt/admin/transactions/payment/multicab/daily?start_date=${startDate}&end_date=${endDate}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('access_token')}`,
     },
@@ -384,26 +538,75 @@ generatedailyMulticabpayment(startDate, endDate) {
 },
 generateMulticabPaymentExcelFile(transactions, startDate, endDate) {
   const totalAmount = transactions.reduce((sum, transaction) => sum + transaction.amount, 0);
-  const filename = `Multicab Payment Report for ${startDate}&${endDate}.pdf`;
+  const filename = `Multicab Payment Report for ${startDate} & ${endDate}.pdf`;
 
   const docDefinition = {
     content: [
       {
         columns: [
-          {
-            stack: [
-              { text: 'Province of Bukidnon', style: 'headerText' },
-              { text: 'City of Malaybalay', style: 'headerText' },
-              { text: 'Market Site Brgy 9, Malaybalay City Bukidnon', style: 'headerText' },
-              { text: 'City Economic Enterprise Development and Management Office', style: 'headerText' },
-              { text: 'CEEDMO Multicab Booth', style: 'headerText' },
-            ],
-            alignment: 'center'  // Center alignment for the entire stack
-          }
+    {
+        width: 'auto', // Automatically size based on content
+        stack: [
+            {
+                image: logos.citylogo,
+                width: 40,
+                height: 40,
+                alignment: 'left'
+            }
         ]
+    },
+    {
+        width: 'auto', // Automatically size based on content
+        stack: [
+            {
+                image: logos.ceedmologo,
+                width: 50,
+                height: 40,
+                alignment: 'left'
+            }
+        ]
+    },
+    {
+        width: '*', // Takes up remaining space
+        stack: [
+            {
+                text: 'Province of Bukidnon',
+                style: 'headerText'
+            },
+            {
+                text: 'City Government of Malaybalay',
+                style: 'headerText'
+            },
+            {
+                text: 'City Economic Enterprise Development and Management Office',
+                style: 'headerText'
+            },
+            {
+                text: 'CEEDMO Multicab Booth',
+                style: 'headerText'
+            },
+            {
+                text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon',
+                style: 'headerText'
+            }
+        ],
+        alignment: 'center' // Center the header text
+    },
+    {
+        width: 'auto', // Automatically size based on content
+        stack: [
+            {
+                image: logos.qrlogo,
+                width: 50,
+                height: 40,
+                alignment: 'right'
+            }
+        ]
+    }
+]
       },
       { text: '', margin: [0, 20] },  // Space below the header
-      { text: `Today's Report - ${startDate}&${endDate}`, style: 'subheader', alignment: 'center', margin: [0, 10] },
+      { text: `Today's Report - ${startDate} & ${endDate}`, style: 'subheader', alignment: 'center', margin: [0, 10] },
       {
         table: {
           headerRows: 1,
@@ -449,7 +652,7 @@ pdfMake.createPdf(docDefinition).download(filename);
 
 },
 generatedailyMotorelapayment(startDate, endDate) {
-  axios.get(`http://127.0.0.1:9000/admin/transactions/payment/motorela/daily?start_date=${startDate}&end_date=${endDate}`, {
+  axios.get(`https://qrmcpass.loca.lt/admin/transactions/payment/motorela/daily?start_date=${startDate}&end_date=${endDate}`, {
       headers: {
       Authorization: `Bearer ${localStorage.getItem('access_token')}`,
     },
@@ -464,26 +667,75 @@ generatedailyMotorelapayment(startDate, endDate) {
 },
 generateMotorelaPaymentPDF(transactions, startDate, endDate) {
   const totalAmount = transactions.reduce((sum, transaction) => sum + transaction.amount, 0);
-  const filename = `Motorela Payment Report for ${startDate}&${endDate}.pdf`;
+  const filename = `Motorela Payment Report for ${startDate} & ${endDate}.pdf`;
 
   const docDefinition = {
     content: [
       {
         columns: [
-          {
-            stack: [
-              { text: 'Province of Bukidnon', style: 'headerText' },
-              { text: 'City of Malaybalay', style: 'headerText' },
-              { text: 'Market Site Brgy 9, Malaybalay City Bukidnon', style: 'headerText' },
-              { text: 'City Economic Enterprise Development and Management Office', style: 'headerText' },
-              { text: 'CEEDMO Motorela Booth', style: 'headerText' },
-            ],
-            alignment: 'center'  // Center alignment for the entire stack
-          }
+    {
+        width: 'auto', // Automatically size based on content
+        stack: [
+            {
+                image: logos.citylogo,
+                width: 40,
+                height: 40,
+                alignment: 'left'
+            }
         ]
+    },
+    {
+        width: 'auto', // Automatically size based on content
+        stack: [
+            {
+                image: logos.ceedmologo,
+                width: 50,
+                height: 40,
+                alignment: 'left'
+            }
+        ]
+    },
+    {
+        width: '*', // Takes up remaining space
+        stack: [
+            {
+                text: 'Province of Bukidnon',
+                style: 'headerText'
+            },
+            {
+                text: 'City Government of Malaybalay',
+                style: 'headerText'
+            },
+            {
+                text: 'City Economic Enterprise Development and Management Office',
+                style: 'headerText'
+            },
+            {
+                text: 'CEEDMO Motorela Booth',
+                style: 'headerText'
+            },
+            {
+                text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon',
+                style: 'headerText'
+            }
+        ],
+        alignment: 'center' // Center the header text
+    },
+    {
+        width: 'auto', // Automatically size based on content
+        stack: [
+            {
+                image: logos.qrlogo,
+                width: 50,
+                height: 40,
+                alignment: 'right'
+            }
+        ]
+    }
+]
       },
       { text: '', margin: [0, 20] },  // Space below the header
-      { text: `Today's Report - ${startDate}&${endDate}`, style: 'subheader', alignment: 'center', margin: [0, 10] },
+      { text: `Today's Report ${startDate} & ${endDate}`, style: 'subheader', alignment: 'center', margin: [0, 10] },
       {
         table: {
           headerRows: 1,
@@ -530,7 +782,7 @@ pdfMake.createPdf(docDefinition).download(filename);
 },generatemonthlyMotorelaDelinquenciesReport() {
     const [year, month] = this.monthlyMonth.split('-').map(Number);
 
-    axios.get(`http://127.0.0.1:9000/admin/delinquencies/motorela/monthly?month=${month}&year=${year}`, {
+    axios.get(`https://qrmcpass.loca.lt/admin/delinquencies/motorela/monthly?month=${month}&year=${year}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('access_token')}`,
       },
@@ -547,6 +799,7 @@ pdfMake.createPdf(docDefinition).download(filename);
 
 
   generateMonthlyReports(dailyReport, overallReport, month, year) {
+    
     const docDefinition = {
         content: [],
         styles: {
@@ -564,7 +817,11 @@ pdfMake.createPdf(docDefinition).download(filename);
                 bold: true,
                 fontSize: 13,
                 color: 'black'
-            }
+            },
+            headerText: {
+        fontSize: 12,
+        bold: true
+      },
         }
     };
 
@@ -579,18 +836,18 @@ pdfMake.createPdf(docDefinition).download(filename);
                 columns: [
                     {
                         stack: [
-                            { text: 'Province of Bukidnon', style: 'header' },
-                            { text: 'City of Malaybalay', style: 'header' },
-                            { text: 'Market Site Brgy 9, Malaybalay City Bukidnon', style: 'header' },
-                            { text: 'City Economic Enterprise Development and Management Office', style: 'header' },
-                            { text: 'CEEDMO Motorela Booth', style: 'header' }
+                            { text: 'Province of Bukidnon', style: 'headerText' },
+                            { text: 'City of Malaybalay', style: 'headerText' },
+                            { text: 'Market Site Brgy 9, Malaybalay City Bukidnon', style: 'headerText' },
+                            { text: 'City Economic Enterprise Development and Management Office', style: 'headerText' },
+                            { text: 'CEEDMO Motorela Booth', style: 'headerText' }
                         ],
                         alignment: 'center'
                     }
                 ]
             },
             { text: '', margin: [0, 10] },
-            { text: `Daily Report   ${year}- ${month} - ${parseInt(day) + 1}`, style: 'subheader', alignment: 'center' },
+            { text: `Daily Report for ${this.getMonthName(month)}-${parseInt(day) + 1}-${year}`, style: 'subheader', alignment: 'center' },
             { text: '', margin: [0, 10] },
             { text: 'Unit', style: 'tableHeader', alignment: 'center' },
             { text: '', margin: [0, 10] },
@@ -606,18 +863,67 @@ pdfMake.createPdf(docDefinition).download(filename);
     // Add overall report to the document content
     const overallContent = [
         {
-            columns: [
-                {
-                    stack: [
-                        { text: 'Province of Bukidnon', style: 'header' },
-                        { text: 'City of Malaybalay', style: 'header' },
-                        { text: 'Market Site Brgy 9, Malaybalay City Bukidnon', style: 'header' },
-                        { text: 'City Economic Enterprise Development and Management Office', style: 'header' },
-                        { text: 'CEEDMO Motorela Booth', style: 'header' }
-                    ],
-                    alignment: 'center'
-                }
-            ]
+          columns: [
+    {
+        width: 'auto', // Automatically size based on content
+        stack: [
+            {
+                image: logos.citylogo,
+                width: 40,
+                height: 40,
+                alignment: 'left'
+            }
+        ]
+    },
+    {
+        width: 'auto', // Automatically size based on content
+        stack: [
+            {
+                image: logos.ceedmologo,
+                width: 50,
+                height: 40,
+                alignment: 'left'
+            }
+        ]
+    },
+    {
+        width: '*', // Takes up remaining space
+        stack: [
+            {
+                text: 'Province of Bukidnon',
+                style: 'headerText'
+            },
+            {
+                text: 'City Government of Malaybalay',
+                style: 'headerText'
+            },
+            {
+                text: 'City Economic Enterprise Development and Management Office',
+                style: 'headerText'
+            },
+            {
+                text: 'CEEDMO Motorela Booth',
+                style: 'headerText'
+            },
+            {
+                text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon',
+                style: 'headerText'
+            }
+        ],
+        alignment: 'center' // Center the header text
+    },
+    {
+        width: 'auto', // Automatically size based on content
+        stack: [
+            {
+                image: logos.qrlogo,
+                width: 50,
+                height: 40,
+                alignment: 'right'
+            }
+        ]
+    }
+]
         },
         { text: '', margin: [0, 10] },
         { text: 'Overall Report', style: 'subheader', alignment: 'center' },
@@ -631,14 +937,14 @@ pdfMake.createPdf(docDefinition).download(filename);
     docDefinition.content.push(overallContent);
 
     // Generate and download PDF
-    pdfMake.createPdf(docDefinition).download(`Motorela Delinquency Report for ${month}-${year}.pdf`);
+    pdfMake.createPdf(docDefinition).download(`Motorela Delinquency Report for ${this.getMonthName(month)}-${year}.pdf`);
 }
 ,
 
 generatemonthlyMulticabDelinquenciesReport() {
     const [year, month] = this.monthlyMonth.split('-').map(Number);
 
-    axios.get(`http://127.0.0.1:9000/admin/delinquencies/multicab/monthly?month=${month}&year=${year}`, {
+    axios.get(`https://qrmcpass.loca.lt/admin/delinquencies/multicab/monthly?month=${month}&year=${year}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('access_token')}`,
       },
@@ -672,7 +978,11 @@ generateMonthlymulticabReports(dailyReport, overallReport, month, year) {
                 bold: true,
                 fontSize: 13,
                 color: 'black'
-            }
+            },
+      headerText: {
+        fontSize: 12,
+        bold: true
+      },
         }
     };
 
@@ -684,21 +994,70 @@ generateMonthlymulticabReports(dailyReport, overallReport, month, year) {
     sortedDates.forEach(day => {
         const dailyContent = [
             {
-                columns: [
-                    {
-                        stack: [
-                            { text: 'Province of Bukidnon', style: 'header' },
-                            { text: 'City of Malaybalay', style: 'header' },
-                            { text: 'Market Site Brgy 9, Malaybalay City Bukidnon', style: 'header' },
-                            { text: 'City Economic Enterprise Development and Management Office', style: 'header' },
-                            { text: 'CEEDMO Multicab Booth', style: 'header' }
-                        ],
-                        alignment: 'center'
-                    }
-                ]
+              columns: [
+    {
+        width: 'auto', // Automatically size based on content
+        stack: [
+            {
+                image: logos.citylogo,
+                width: 40,
+                height: 40,
+                alignment: 'left'
+            }
+        ]
+    },
+    {
+        width: 'auto', // Automatically size based on content
+        stack: [
+            {
+                image: logos.ceedmologo,
+                width: 50,
+                height: 40,
+                alignment: 'left'
+            }
+        ]
+    },
+    {
+        width: '*', // Takes up remaining space
+        stack: [
+            {
+                text: 'Province of Bukidnon',
+                style: 'headerText'
+            },
+            {
+                text: 'City Government of Malaybalay',
+                style: 'headerText'
+            },
+            {
+                text: 'City Economic Enterprise Development and Management Office',
+                style: 'headerText'
+            },
+            {
+                text: 'CEEDMO Multicab Booth',
+                style: 'headerText'
+            },
+            {
+                text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon',
+                style: 'headerText'
+            }
+        ],
+        alignment: 'center' // Center the header text
+    },
+    {
+        width: 'auto', // Automatically size based on content
+        stack: [
+            {
+                image: logos.qrlogo,
+                width: 50,
+                height: 40,
+                alignment: 'right'
+            }
+        ]
+    }
+]
             },
             { text: '', margin: [0, 10] },
-            { text: `Daily Report   ${year}- ${month} - ${parseInt(day) + 1}`, style: 'subheader', alignment: 'center' },
+            { text: `Daily Report ${this.getMonthName(month)}-${parseInt(day) + 1}-${year}`, style: 'subheader', alignment: 'center' },
             { text: '', margin: [0, 10] },
             { text: 'Unit', style: 'tableHeader', alignment: 'center' },
             { text: '', margin: [0, 10] },
@@ -714,18 +1073,67 @@ generateMonthlymulticabReports(dailyReport, overallReport, month, year) {
     // Add overall report to the document content
     const overallContent = [
         {
-            columns: [
-                {
-                    stack: [
-                        { text: 'Province of Bukidnon', style: 'header' },
-                        { text: 'City of Malaybalay', style: 'header' },
-                        { text: 'Market Site Brgy 9, Malaybalay City Bukidnon', style: 'header' },
-                        { text: 'City Economic Enterprise Development and Management Office', style: 'header' },
-                        { text: 'CEEDMO Multicab Booth', style: 'header' }
-                    ],
-                    alignment: 'center'
-                }
-            ]
+          columns: [
+    {
+        width: 'auto', // Automatically size based on content
+        stack: [
+            {
+                image: logos.citylogo,
+                width: 40,
+                height: 40,
+                alignment: 'left'
+            }
+        ]
+    },
+    {
+        width: 'auto', // Automatically size based on content
+        stack: [
+            {
+                image: logos.ceedmologo,
+                width: 50,
+                height: 40,
+                alignment: 'left'
+            }
+        ]
+    },
+    {
+        width: '*', // Takes up remaining space
+        stack: [
+            {
+                text: 'Province of Bukidnon',
+                style: 'headerText'
+            },
+            {
+                text: 'City Government of Malaybalay',
+                style: 'headerText'
+            },
+            {
+                text: 'City Economic Enterprise Development and Management Office',
+                style: 'headerText'
+            },
+            {
+                text: 'CEEDMO Multicab Booth',
+                style: 'headerText'
+            },
+            {
+                text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon',
+                style: 'headerText'
+            }
+        ],
+        alignment: 'center' // Center the header text
+    },
+    {
+        width: 'auto', // Automatically size based on content
+        stack: [
+            {
+                image: logos.qrlogo,
+                width: 50,
+                height: 40,
+                alignment: 'right'
+            }
+        ]
+    }
+]
         },
         { text: '', margin: [0, 10] },
         { text: 'Overall Report', style: 'subheader', alignment: 'center' },
@@ -739,14 +1147,14 @@ generateMonthlymulticabReports(dailyReport, overallReport, month, year) {
     docDefinition.content.push(overallContent);
 
     // Generate and download PDF
-    pdfMake.createPdf(docDefinition).download(`Multicab Delinquency Report for ${month}-${year}.pdf`);
+    pdfMake.createPdf(docDefinition).download(`Multicab Delinquency Report for ${this.getMonthName(month)}-${year}.pdf`);
 }
 ,
 
     generatemonthlyMulticabPaymentReport() {
       const [year, month] = this.monthlyMonth.split('-').map(Number);
 
-      axios.get(`http://127.0.0.1:9000/admin/transactions/payment/multicab/monthly?month=${month}&year=${year}`, {
+      axios.get(`https://qrmcpass.loca.lt/admin/transactions/payment/multicab/monthly?month=${month}&year=${year}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('access_token')}`,
         },
@@ -760,13 +1168,15 @@ generateMonthlymulticabReports(dailyReport, overallReport, month, year) {
       .catch((error) => {
         console.error('Error fetching monthly multicab payment transactions:', error);
       });
-    },generateMonthlymulticabpaymentReports(dailyReport, overallReport, month, year) {
+    },
+    generateMonthlymulticabpaymentReports(dailyReport, overallReport, month, year) {
       const docDefinition = {
         content: [],
         styles: {
             header: { fontSize: 16, bold: true, margin: [0, 10], alignment: 'center' },
             subheader: { fontSize: 14, bold: true, margin: [0, 5], alignment: 'center' },
-            tableHeader: { bold: true, fontSize: 13, color: 'black', alignment: 'center' }
+            tableHeader: { bold: true, fontSize: 13, color: 'black', alignment: 'center' },
+            headerText: {fontSize: 12,bold: true},
         }
     };
 
@@ -775,21 +1185,70 @@ generateMonthlymulticabReports(dailyReport, overallReport, month, year) {
     sortedDates.forEach(day => {
         const dailyContent = [
             {
-                columns: [
-                    {
-                        stack: [
-                            { text: 'Province of Bukidnon', style: 'header' },
-                            { text: 'City of Malaybalay', style: 'header' },
-                            { text: 'Market Site Brgy 9, Malaybalay City Bukidnon', style: 'header' },
-                            { text: 'City Economic Enterprise Development and Management Office', style: 'header' },
-                            { text: 'CEEDMO Multicab Booth', style: 'header' },
-                        ],
-                        alignment: 'center'  // Center alignment for the entire stack
-                    }
-                ]
+              columns: [
+    {
+        width: 'auto', // Automatically size based on content
+        stack: [
+            {
+                image: logos.citylogo,
+                width: 40,
+                height: 40,
+                alignment: 'left'
+            }
+        ]
+    },
+    {
+        width: 'auto', // Automatically size based on content
+        stack: [
+            {
+                image: logos.ceedmologo,
+                width: 50,
+                height: 40,
+                alignment: 'left'
+            }
+        ]
+    },
+    {
+        width: '*', // Takes up remaining space
+        stack: [
+            {
+                text: 'Province of Bukidnon',
+                style: 'headerText'
+            },
+            {
+                text: 'City Government of Malaybalay',
+                style: 'headerText'
+            },
+            {
+                text: 'City Economic Enterprise Development and Management Office',
+                style: 'headerText'
+            },
+            {
+                text: 'CEEDMO Motorela Booth',
+                style: 'headerText'
+            },
+            {
+                text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon',
+                style: 'headerText'
+            }
+        ],
+        alignment: 'center' // Center the header text
+    },
+    {
+        width: 'auto', // Automatically size based on content
+        stack: [
+            {
+                image: logos.qrlogo,
+                width: 50,
+                height: 40,
+                alignment: 'right'
+            }
+        ]
+    }
+]
             },
             { text: '', margin: [0, 10] },
-            { text: `Daily Report ${year}-${month}-${parseInt(day) + 1}`, style: 'subheader' },
+            { text: `Daily Report for ${this.getMonthName(month)}-${parseInt(day) + 1}-${year}`, style: 'subheader' },
             { text: '', margin: [0, 10] },
             {
                 table: {
@@ -827,21 +1286,70 @@ generateMonthlymulticabReports(dailyReport, overallReport, month, year) {
     // Generate overall content
     const overallContent = [
         {
-            columns: [
-                {
-                    stack: [
-                        { text: 'Province of Bukidnon', style: 'header' },
-                        { text: 'City of Malaybalay', style: 'header' },
-                        { text: 'Market Site Brgy 9, Malaybalay City Bukidnon', style: 'header' },
-                        { text: 'City Economic Enterprise Development and Management Office', style: 'header' },
-                        { text: 'CEEDMO Multicab Booth', style: 'header' },
-                    ],
-                    alignment: 'center'  // Center alignment for the entire stack
-                }
-            ]
+          columns: [
+    {
+        width: 'auto', // Automatically size based on content
+        stack: [
+            {
+                image: logos.citylogo,
+                width: 40,
+                height: 40,
+                alignment: 'left'
+            }
+        ]
+    },
+    {
+        width: 'auto', // Automatically size based on content
+        stack: [
+            {
+                image: logos.ceedmologo,
+                width: 50,
+                height: 40,
+                alignment: 'left'
+            }
+        ]
+    },
+    {
+        width: '*', // Takes up remaining space
+        stack: [
+            {
+                text: 'Province of Bukidnon',
+                style: 'headerText'
+            },
+            {
+                text: 'City Government of Malaybalay',
+                style: 'headerText'
+            },
+            {
+                text: 'City Economic Enterprise Development and Management Office',
+                style: 'headerText'
+            },
+            {
+                text: 'CEEDMO Multicab Booth',
+                style: 'headerText'
+            },
+            {
+                text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon',
+                style: 'headerText'
+            }
+        ],
+        alignment: 'center' // Center the header text
+    },
+    {
+        width: 'auto', // Automatically size based on content
+        stack: [
+            {
+                image: logos.qrlogo,
+                width: 50,
+                height: 40,
+                alignment: 'right'
+            }
+        ]
+    }
+]
         },
         { text: '', margin: [0, 10] },
-        { text: `Overall Report ${year}-${month}`, style: 'subheader' },
+        { text: `Overall Report for the month of ${this.getMonthName(month)}-${year}`, style: 'subheader' },
         {
             table: {
                 headerRows: 1,
@@ -865,11 +1373,12 @@ generateMonthlymulticabReports(dailyReport, overallReport, month, year) {
 
     // Generate and download PDF
   
-    pdfMake.createPdf(docDefinition).download(`Multicab Payment Report for ${month}-${year}.pdf`);
-},   generatemonthlyMotorelaPaymentReport() {
+    pdfMake.createPdf(docDefinition).download(`Multicab Payment Report for ${this.getMonthName(month)}-${year}.pdf`);
+},  
+ generatemonthlyMotorelaPaymentReport() {
       const [year, month] = this.monthlyMonth.split('-').map(Number);
 
-      axios.get(`http://127.0.0.1:9000/admin/transactions/payment/motorela/monthly?month=${month}&year=${year}`, {
+      axios.get(`https://qrmcpass.loca.lt/admin/transactions/payment/motorela/monthly?month=${month}&year=${year}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('access_token')}`,
         },
@@ -883,36 +1392,87 @@ generateMonthlymulticabReports(dailyReport, overallReport, month, year) {
       .catch((error) => {
         console.error('Error fetching monthly motorela payment transactions:', error);
       });
-    },generateMonthlymotorelapaymentReports(dailyReport, overallReport, month, year) {
+    },
+    generateMonthlymotorelapaymentReports(dailyReport, overallReport, month, year) {
       const docDefinition = {
         content: [],
         styles: {
             header: { fontSize: 16, bold: true, margin: [0, 10], alignment: 'center' },
             subheader: { fontSize: 14, bold: true, margin: [0, 5], alignment: 'center' },
-            tableHeader: { bold: true, fontSize: 13, color: 'black', alignment: 'center' }
+            tableHeader: { bold: true, fontSize: 13, color: 'black', alignment: 'center' },
+            headerText: {fontSize: 10,bold: true},
         }
-    };
+    }; 
 
     const sortedDates = Object.keys(dailyReport).sort((a, b) => new Date(a) - new Date(b));
 
     sortedDates.forEach(day => {
         const dailyContent = [
             {
-                columns: [
-                    {
-                        stack: [
-                            { text: 'Province of Bukidnon', style: 'header' },
-                            { text: 'City of Malaybalay', style: 'header' },
-                            { text: 'Market Site Brgy 9, Malaybalay City Bukidnon', style: 'header' },
-                            { text: 'City Economic Enterprise Development and Management Office', style: 'header' },
-                            { text: 'CEEDMO Motorela Booth', style: 'header' },
-                        ],
-                        alignment: 'center'  // Center alignment for the entire stack
-                    }
-                ]
+              columns: [
+    {
+        width: 'auto', // Automatically size based on content
+        stack: [
+            {
+                image: logos.citylogo,
+                width: 40,
+                height: 40,
+                alignment: 'left'
+            }
+        ]
+    },
+    {
+        width: 'auto', // Automatically size based on content
+        stack: [
+            {
+                image: logos.ceedmologo,
+                width: 50,
+                height: 40,
+                alignment: 'left'
+            }
+        ]
+    },
+    {
+        width: '*', // Takes up remaining space
+        stack: [
+            {
+                text: 'Province of Bukidnon',
+                style: 'headerText'
+            },
+            {
+                text: 'City Government of Malaybalay',
+                style: 'headerText'
+            },
+            {
+                text: 'City Economic Enterprise Development and Management Office',
+                style: 'headerText'
+            },
+            {
+                text: 'CEEDMO Motorela Booth',
+                style: 'headerText'
+            },
+            {
+                text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon',
+                style: 'headerText'
+            }
+        ],
+        alignment: 'center' // Center the header text
+    },
+    {
+        width: 'auto', // Automatically size based on content
+        stack: [
+            {
+                image: logos.qrlogo,
+                width: 50,
+                height: 40,
+                alignment: 'right'
+            }
+        ]
+    }
+]
             },
             { text: '', margin: [0, 10] },
-            { text: `Daily Report ${year}-${month}-${parseInt(day) + 1}`, style: 'subheader' },
+            { text: `Daily Report for ${this.getMonthName(month)}-${parseInt(day) + 1}-${year}`, style: 'subheader' },
             { text: '', margin: [0, 10] },
             {
                 table: {
@@ -950,21 +1510,70 @@ generateMonthlymulticabReports(dailyReport, overallReport, month, year) {
     // Generate overall content
     const overallContent = [
         {
-            columns: [
-                {
-                    stack: [
-                        { text: 'Province of Bukidnon', style: 'header' },
-                        { text: 'City of Malaybalay', style: 'header' },
-                        { text: 'Market Site Brgy 9, Malaybalay City Bukidnon', style: 'header' },
-                        { text: 'City Economic Enterprise Development and Management Office', style: 'header' },
-                        { text: 'CEEDMO Motorela Booth', style: 'header' },
-                    ],
-                    alignment: 'center'  // Center alignment for the entire stack
-                }
-            ]
+          columns: [
+    {
+        width: 'auto', // Automatically size based on content
+        stack: [
+            {
+                image: logos.citylogo,
+                width: 40,
+                height: 40,
+                alignment: 'left'
+            }
+        ]
+    },
+    {
+        width: 'auto', // Automatically size based on content
+        stack: [
+            {
+                image: logos.ceedmologo,
+                width: 50,
+                height: 40,
+                alignment: 'left'
+            }
+        ]
+    },
+    {
+        width: '*', // Takes up remaining space
+        stack: [
+            {
+                text: 'Province of Bukidnon',
+                style: 'headerText'
+            },
+            {
+                text: 'City Government of Malaybalay',
+                style: 'headerText'
+            },
+            {
+                text: 'City Economic Enterprise Development and Management Office',
+                style: 'headerText'
+            },
+            {
+                text: 'CEEDMO Motorela Booth',
+                style: 'headerText'
+            },
+            {
+                text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon',
+                style: 'headerText'
+            }
+        ],
+        alignment: 'center' // Center the header text
+    },
+    {
+        width: 'auto', // Automatically size based on content
+        stack: [
+            {
+                image: logos.qrlogo,
+                width: 50,
+                height: 40,
+                alignment: 'right'
+            }
+        ]
+    }
+]
         },
         { text: '', margin: [0, 10] },
-        { text: `Overall Report ${year}-${month}`, style: 'subheader' },
+        { text: `Overall Report for the month of ${this.getMonthName(month)}-${year}`, style: 'subheader' },
         {
             table: {
                 headerRows: 1,
@@ -981,93 +1590,18 @@ generateMonthlymulticabReports(dailyReport, overallReport, month, year) {
                     ['Total for the Month', totalAmountForMonth]
                 ]
             }
-        }
+        },
     ];
 
     docDefinition.content.push(overallContent);
 
     // Generate and download PDF
-    pdfMake.createPdf(docDefinition).download(`Motorela Payment Report for ${month}-${year}.pdf`);
+    pdfMake.createPdf(docDefinition).download(`Motorela Payment Report for ${this.getMonthName(month)}-${year}.pdf`);
 },
 
 
-  },
+  }
 };
 </script>
-
-<style scoped>
-.container-fluid{
- margin-top: 10px;
-}
-.card{
-  width: 900px;
-  height: 350px;
-  margin-left: 220px;
-}
-.form-control{
-  width: 300px;
-}
- .container-sm{
-  display: flex;
-  gap: 50px;
-} 
-label{
-  text-align: left;
-}
-.display-6{
-  font-size: 20px;
-}
-.btn{
-  margin-top: 10px;
-  width: 300px;
-}
-select{
-  margin-top: 10px;
-}
-#annual-gen-btn{
-  margin-top: 35px;
-}
-.container-md{
-  width: 600px;
-  height: 150px;
-  margin-top: 10px;
-  text-align: center;
-}
-.daily, .btn-option{
-  margin-left: 100px;
-}
-.display-3{
-  font-weight: bold;
-  text-transform: uppercase;
-}
-.cont{
-  display: flex;
-  /* margin-left: 250px; */
-}
-.cont-sm{
-  display: flex;
-  margin-left: 150px;
-}
-.card-title{
-  font-size: 35px;
-  margin-top: 15px;
-}
-.cont-m{
-  display: flex;
-  gap: 50px;
-  margin-left: 100px;
-}
-.card-text{
-  font-size: 30px;
-}
-.display-4{
-  font-size: 20px;
-}
-.card-subtitle, .display-4, .card-title{
-  text-align: center;
-}
-
-
-</style>
 
 
