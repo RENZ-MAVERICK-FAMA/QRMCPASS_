@@ -46,7 +46,7 @@ export default {
   methods: {
     async fetchUnits() {
       try {
-        const response = await axios.get('http://localhost:9000/units');
+        const response = await axios.get('https://qrmcpass.loca.lt/units');
         this.units = response.data.units;
       } catch (error) {
         console.error(error);
