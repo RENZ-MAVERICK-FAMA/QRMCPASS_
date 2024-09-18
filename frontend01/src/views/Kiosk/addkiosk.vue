@@ -46,7 +46,7 @@
 
   console.log('Form Data:', formData);
 
-  axios.post('http://127.0.0.1:9000/addkiosk', formData)
+  axios.post('https://qrmcpass.loca.lt/addkiosk', formData)
     .then(response => {
       this.username = '';
       this.password1 = '';
