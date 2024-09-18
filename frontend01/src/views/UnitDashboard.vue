@@ -150,7 +150,7 @@
     import { useRouter } from 'vue-router';
     import { format } from 'date-fns';
     import jsPDF from 'jspdf';
-  import Unit from '../SuperAdmin/pages/Unit.vue';
+  import Unit from '../Unit.vue';
     export default {
       setup() {
         
