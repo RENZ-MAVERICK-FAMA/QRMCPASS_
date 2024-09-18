@@ -61,7 +61,7 @@ export default {
     'X-Frontend-URL': currentUrl,
     'X-Client-IP': clientIp  // Assuming 'window.ipAddress' is the client's IP address
   };
-    axios.post('http://127.0.0.1:9000/loginall', this.formData, { headers })
+    axios.post('http://capstone-backend-jov4.vercel.app/loginall', this.formData, { headers })
       .then(response => {
         // Store the access token in local storage
         localStorage.setItem('access_token', response.data.access_token);
