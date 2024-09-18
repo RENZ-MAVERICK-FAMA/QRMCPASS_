@@ -111,7 +111,7 @@ export default {
     });
 
     axios
-      .get("http://127.0.0.1:9000/Teller", {
+      .get("https://qrmcpass.loca.lt/Teller", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
@@ -137,7 +137,7 @@ export default {
 
     fetchUnits() {
       axios
-        .get("http://127.0.0.1:9000/units", {
+        .get("https://qrmcpass.loca.lt/units", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
           },
@@ -175,7 +175,7 @@ export default {
       console.log("data to be sent:", data);
 
       axios
-        .post("http://127.0.0.1:9000/paymentdel", data, {
+        .post("https://qrmcpass.loca.lt/paymentdel", data, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
             "Content-Type": "application/json",
