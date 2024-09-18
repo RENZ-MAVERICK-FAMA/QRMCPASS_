@@ -64,7 +64,7 @@ import axios from 'axios';
       formData.append('password1', this.password1);
       formData.append('password2', this.password2);
 
-      axios.post('http://127.0.0.1:9000/addSuperAdmin', formData)
+      axios.post('https://qrmcpass.loca.lt/addSuperAdmin', formData)
         .then(response => {
       this.username = '';
       this.firstName = '';
