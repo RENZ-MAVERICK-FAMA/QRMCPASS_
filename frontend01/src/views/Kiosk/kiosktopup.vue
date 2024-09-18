@@ -8,17 +8,7 @@
       class="mt-5 md:mt-10 p-5 bg-white rounded-[10px] shadow"
       :value="reversedTransactions"
     >
-      <template #header>
-        <div class="flex justify-end items-center">
-          <Button
-            @click="modal = true"
-            label="ADD BALANCE"
-            severity="success"
-            class="w-full sm:w-[200px]"
-            icon="pi pi-plus"
-          />
-        </div>
-      </template>
+ 
       <Column header="ID" field="id" />
       <Column header="Unit" field="unitid" />
       <Column header="Amount" field="amount" />
@@ -103,7 +93,8 @@ export default {
   },
   computed: {
     reversedTransactions() {
-      return this.transactions.slice(0, 10).reverse();
+      // return this.transactions.slice(0, 10).reverse();
+      return this.transactions.slice(0, 10);
     },
   },
   methods: {

@@ -28,9 +28,7 @@
                   </InputGroupAddon>
               </InputGroup>
               <Button type="submit" label="Login" icon="pi pi-sign-in" class="w-full mt-3" severity="success" />
-              <RouterLink to="/reset" >
-                <p class="mt-2 text-center font-light hover:text-slate-300" >Forgot Password?</p>
-              </RouterLink>
+              
             </div>
           </form>
         </div>

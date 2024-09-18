@@ -1,6 +1,14 @@
 <template>
   <main class="select-none flex justify-center p-4">
+    
     <div class="bg-white w-[450px] mt-10 p-5 rounded-[10px] shadow">
+      <div class="bg-white p-5 shadow mt-5 rounded-[10px]" >
+      <h1 class="text-[25px]" >
+        WELCOME 
+        <span id="operator-name" class="font-bold">
+        {{ teller.first_name }} {{ teller.last_name }}!</span>
+      </h1>
+      </div>
       <div>
         <h1 class="text-[25px] font-bold">Manually TopUp</h1>
         <p class="font-light">Motorela & Multicab</p>
@@ -98,6 +106,7 @@ export default {
       .then((response) => {
         // Assuming response.data contains the user details
         teller.value = response.data;
+     
       })
       .catch((error) => {
         console.error("Error fetching user:", error);
@@ -125,6 +134,7 @@ export default {
     return {
       authenticated,
       logout,
+      teller
     };
   },
 };

@@ -28,7 +28,7 @@
         <form @submit.prevent="topup" class="mt-5 md:mt-0">
           <h1 class="text-[20px]">Cash In Form</h1>
           <div class="grid mt-3s">
-            <label>Ibutang ang imong Unit</label>
+            <label>Ibutang ang imonga Unit</label>
             <select v-model="selectedUnit" class="h-[45px] w-full md:max-w-[400px] border rounded hover:border-slate-400 outline-none border-slate-200" required>
               <option v-for="unit in units" :key="unit.id" :value="unit.id">{{ unit.unit_info }}</option>
             </select>
@@ -60,17 +60,7 @@
         class="mt-5 md:mt-10 p-5 bg-white rounded-[10px] shadow"
         :value="reversedTransactions"
       >
-        <template #header>
-          <div class="flex justify-end items-center">
-            <Button
-              @click="modal = true"
-              label="ADD BALANCE"
-              severity="success"
-              class="w-full sm:w-[200px]"
-              icon="pi pi-plus"
-            />
-          </div>
-        </template>
+       
         <Column header="ID" field="id" />
         <Column header="Unit" field="unitid" />
         <Column header="Amount" field="amount" />
@@ -173,7 +163,7 @@ export default {
   },
   computed: {
     reversedTransactions() {
-      return this.transactions.slice(0, 10).reverse();
+      return this.transactions.slice(0, 10);
     },
   },
   created() {

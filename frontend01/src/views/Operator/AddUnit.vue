@@ -57,7 +57,7 @@
           type="text"
           v-model="unitinfo"
           id="unitinfo"
-          pattern="[a-zA-Z0-9]*"
+          pattern="^[a-zA-Z0-9]([ -]?[a-zA-Z0-9])*$"
           required
           class="w-full"
         />

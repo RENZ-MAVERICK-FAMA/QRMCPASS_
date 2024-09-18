@@ -65,15 +65,10 @@
       </div>
       <div class="mt-3 grid">
         <label for="">Toll Booth</label>
-        <Select
-          v-model="selectedBranch"
-          :options="branches"
-          optionValue="value"
-          optionLabel="label"
-          placeholder="Select Toll Booth"
-          required
-          readonly
-        ></Select>
+        <div class="readonly-field">
+    <div class="label">Toll Booth:</div>
+    <div class="value">{{ office }}</div>
+  </div>
       </div>
       <div class="mt-3 grid">
         <label for="">Top Up</label>
@@ -105,7 +100,7 @@ export default {
       showModal: false,
       units: [],
       selectedBranch: "market",
-      branches: [{ label: "Office", value: "office" }],
+       office: 'Office',
       selectedUnit: "",
       amount: "",
       success: "",
@@ -141,7 +136,8 @@ export default {
   },
   computed: {
     reversedTransactions() {
-      return this.transactions.slice(0, 10).reverse();
+      // return this.transactions.slice(0, 10).reverse();
+       return this.transactions.slice(0, 10);
     },
   },
   mounted() {

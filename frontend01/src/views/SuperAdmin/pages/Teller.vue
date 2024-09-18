@@ -6,23 +6,32 @@
             <i class="pi pi-arrow-left" ></i>
             <span>Go Back</span>
           </div>
-      </RouterLink>
-      <DataTable showGridlines :value="tellers"  paginator :rows="5" :rowsPerPageOptions="[5, 10, 20, 50]" class="mt-3" >
+      </RouterLink> 
+      
+      <DataTable showGridlines :value="filteredTeller" paginator :rows="5" :rowsPerPageOptions="[5, 10, 20, 50]" class="mt-3">
         <template #header >
           <div class="flex items-center justify-between" >
             <span>ALL TELLERS</span>
             <Button @click="showModal = true" label="ADD TELLER" icon="pi pi-plus" severity="success" />
           </div>
+          <div>
+        <input type="text" v-model="searchTerm" placeholder="Search...">
+      </div>
         </template>
         <template #empty>
           <div class="flex justify-center" >
             <small class="font-extralight capitalize" >no data found. </small>
           </div>
         </template>
-        <Column header="username" field="id" />
-        <Column header="Firstname" field="amount" />
-        <Column header="Lastname" field="date" />
-        <Column header="Address" field="branch" />
+        <Column header="username" field="username" />
+        <Column header="Firstname" field="first_name" />
+        <Column header="Lastname" field="last_name" />
+        <Column header="Address" field="address1" />
+        <Column header="Action">
+    <template #body="{ data }">
+      <button @click="editAdmin(data)" class="btn btn-primary">Edit</button>
+    </template>
+  </Column>
       </DataTable>
     </div>
   </main>
@@ -55,6 +64,41 @@
         <Button type="submit" class="mt-3 w-full" severity="success" icon="pi pi-plus" label="Submit" />
     </form>
   </Dialog>
+  <Dialog v-model:visible="showEditModal" header="Update Teller" modal class=" w-full md:w-[600px]" >
+      <div class="modal-content">
+    <span class="close" @click="closeModal">&times;</span>
+    <h2>Edit Admin</h2>
+    <form @submit.prevent="updateTeller">
+      <!-- Username -->
+      <div class="mt-3">
+        <label>Username</label>
+        <InputText v-model="editedTeller.username" type="text" id="editUsername" required class="w-full" />
+      </div>
+      <!-- First Name -->
+      <div class="mt-3">
+        <label>First Name</label>
+        <InputText v-model="editedTeller.firstName" type="text" id="editFirstname" required class="w-full" />
+      </div>
+      <!-- Last Name -->
+      <div class="mt-3">
+        <label>Last Name</label>
+        <InputText v-model="editedTeller.lastName" type="text" id="editLastname" required class="w-full" />
+      </div>
+      <!-- Address -->
+      <div class="mt-3">
+        <label>Address</label>
+        <InputText v-model="editedTeller.address" type="text" id="editAddress" required class="w-full" />
+      </div>
+      <!-- Password -->
+      <div class="mt-3">
+        <label>Password</label>
+        <InputText v-model="editedTeller.password" type="password" id="editPassword" required class="w-full" />
+      </div>
+      <br />
+      <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+  </div>
+</Dialog>
 </template>
 
 <script>
@@ -65,17 +109,47 @@ export default {
     return {
       tellers: [],
       showModal: false,
+      showEditModal: false,
       username: '',
       firstName: '',
       lastName: '',
       address: '',
+      searchTerm: '',
       password1: '',
       password2: '',
       loginError: null,
+      editedTeller: {
+        id: null,
+        username: '',
+        firstName: '',
+        lastName: '',
+        address: '',
+        password: ''
+      }
     };
   },
   mounted() {
     this.fetchTellers();
+  },
+  computed: {
+    filteredTeller() {
+      if (!this.searchTerm) {
+        return this.tellers; // If no search term, return all units
+      }
+
+      // Convert search term to lowercase for case-insensitive search
+      const searchTermLower = this.searchTerm.toLowerCase();
+
+      // Filter units based on search term
+      return this.tellers.filter(tellers => {
+        return (
+          tellers.username.toLowerCase().includes(searchTermLower) || // Filter by unit info
+          tellers.first_name.toLowerCase().includes(searchTermLower) || // Filter by unit type
+          tellers.last_name.toLowerCase().includes(searchTermLower) || // Filter by unit type
+          tellers.address1.toLowerCase().includes(searchTermLower) 
+        );
+      });
+    }
   },
   methods: {
     addTeller() {
@@ -116,6 +190,52 @@ export default {
         console.error(error);
       }
     },
-  },
-};
+    editAdmin(admin) {
+      this.editedTeller = {
+        id: admin.id,
+        username: admin.username,
+        firstName: admin.first_name,
+        lastName: admin.last_name,
+        address: admin.address1,
+        password: admin.password1
+      };
+      this.showEditModal = true;
+    },
+    closeModal() {
+      this.showEditModal = false;
+    },
+    updateTeller() {
+  const { id, username, firstName, lastName, address, password } = this.editedTeller;
+  const updatedData = { username, firstName, lastName, address, password };
+
+  axios.put(`http://127.0.0.1:9000/updateTeller/${id}`, updatedData)
+    .then(response => {
+      // Update the array locally if needed
+      const index = this.tellers.findIndex(teller => teller.id === id);
+      if (index !== -1) {
+        this.tellers[index] = { id, username, first_name: firstName, last_name: lastName, address1: address };
+      }
+
+      // Close the modal
+      this.showEditModal = false;
+      
+      // Optionally, reset the editedTeller object
+      this.editedTeller = {
+        id: null,
+        username: '',
+        firstName: '',
+        lastName: '',
+        address: '',
+        password: ''
+      };
+      
+      console.log('Teller updated successfully!');
+    })
+    .catch(error => {
+      console.error(error);
+    });
+}
+
+    },
+  };
 </script>

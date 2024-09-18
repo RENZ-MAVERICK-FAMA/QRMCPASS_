@@ -7,21 +7,25 @@
             <span>Go Back</span>
           </div>
       </RouterLink>
-      <DataTable showGridlines :value="units"  paginator :rows="5" :rowsPerPageOptions="[5, 10, 20, 50]" class="mt-3" >
+      <DataTable showGridlines :value="filteredUnit" paginator :rows="5" :rowsPerPageOptions="[5, 10, 20, 50]" class="mt-3">
         <template #header >
           <div class="flex items-center justify-between" >
             <span>ALL UNITS</span>
           </div>
+          <div>
+        <input type="text" v-model="searchTerm" placeholder="Search...">
+      </div>
         </template>
         <template #empty>
           <div class="flex justify-center" >
             <small class="font-extralight capitalize" >no data found. </small>
           </div>
         </template>
-        <Column header="ID" field="id" />
+        
         <Column header="Unit Info" field="unit_info" />
         <Column header="Unit Type" field="unit_type" />
         <Column header="Color" field="color" />
+        
       </DataTable>
     </div>
   </main>
@@ -33,6 +37,7 @@ export default {
   data() {
     return {
       units: [],
+      searchTerm: '',
     };
   },
   mounted() {
@@ -47,6 +52,25 @@ export default {
         console.error(error);
       }
     },
+  },computed: {
+    filteredUnit() {
+      if (!this.searchTerm) {
+        return this.units; // If no search term, return all units
+      }
+
+      // Convert search term to lowercase for case-insensitive search
+      const searchTermLower = this.searchTerm.toLowerCase();
+
+      // Filter units based on search term
+      return this.units.filter(units => {
+        return (
+          units.unit_info.toLowerCase().includes(searchTermLower) || // Filter by unit info
+          units.color.toLowerCase().includes(searchTermLower) || // Filter by unit type
+          units.unit_type.toLowerCase().includes(searchTermLower) // Filter by unit type
+          
+        );
+      });
+    }
   },
 };
 </script>

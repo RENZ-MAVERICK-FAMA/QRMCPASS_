@@ -7,23 +7,32 @@
               <span>Go Back</span>
             </div>
         </RouterLink>
-        <DataTable showGridlines :value="admins"  paginator :rows="5" :rowsPerPageOptions="[5, 10, 20, 50]" class="mt-3" >
+        <DataTable showGridlines :value="filteredAdmin" paginator :rows="5" :rowsPerPageOptions="[5, 10, 20, 50]" class="mt-3">
           <template #header >
             <div class="flex items-center justify-between" >
               <span>ALL ADMINS</span>
+              
               <Button @click="showModal = true" label="ADD ADMIN" icon="pi pi-plus" severity="success" />
             </div>
+            <div>
+        <input type="text" v-model="searchTerm" placeholder="Search...">
+      </div>
           </template>
           <template #empty>
             <div class="flex justify-center" >
               <small class="font-extralight capitalize" >no data found. </small>
             </div>
           </template>
-          <Column header="Username" field="id" />
-          <Column header="Firstname" field="amount" />
-          <Column header="Lastname" field="date" />
-          <Column header="Address" field="branch" />
-        </DataTable>
+          <Column header="username" field="username" />
+        <Column header="Firstname" field="first_name" />
+        <Column header="Lastname" field="last_name" />
+        <Column header="Address" field="address1" />
+        <Column header="Action">
+    <template #body="{ data }">
+      <button @click="editAdmin(data)" class="btn btn-primary">Edit</button>
+    </template>
+  </Column>
+        </DataTable>  
       </div>
     </main>
     <Dialog v-model:visible="showModal" header="ADD ADMIN" modal class=" w-full md:w-[600px]" >
@@ -57,6 +66,42 @@
         </div>
       </form>
     </Dialog>
+    <Dialog v-model:visible="showEditModal" header="Update Admin" modal class=" w-full md:w-[600px]" >
+      <div class="modal-content">
+    <span class="close" @click="closeModal">&times;</span>
+ 
+    <form @submit.prevent="updateTeller">
+      <!-- Username -->
+      <div class="mt-3">
+        <label>Username</label>
+        <InputText v-model="editedTeller.username" type="text" id="editUsername" required class="w-full" />
+      </div>
+      <!-- First Name -->
+      <div class="mt-3">
+        <label>First Name</label>
+        <InputText v-model="editedTeller.firstName" type="text" id="editFirstname" required class="w-full" />
+      </div>
+      <!-- Last Name -->
+      <div class="mt-3">
+        <label>Last Name</label>
+        <InputText v-model="editedTeller.lastName" type="text" id="editLastname" required class="w-full" />
+      </div>
+      <!-- Address -->
+      <div class="mt-3">
+        <label>Address</label>
+        <InputText v-model="editedTeller.address" type="text" id="editAddress" required class="w-full" />
+      </div>
+      <!-- Password -->
+      <div class="mt-3">
+        <label>Password</label>
+        <InputText v-model="editedTeller.password" type="password" id="editPassword" required class="w-full" />
+      </div>
+      <br />
+      <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+  </div>
+</Dialog>
+
   </template>
   
   <script>
@@ -65,20 +110,49 @@
   export default {
     data() {
       return {
-        admins: [],
-        showModal: false,
-        username: '',
+      admins: [],
+      showModal: false,
+      showEditModal: false,
+      username: '',
       firstName: '',
       lastName: '',
       address: '',
+      searchTerm: '',
       password1: '',
       password2: '',
       loginError: null,
+      editedTeller: {
+        id: null,
+        username: '',
+        firstName: '',
+        lastName: '',
+        address: '',
+        password: ''
+      }
       };
     },
     mounted() {
       this.fetchadmins();
-    },
+    },computed: {
+    filteredAdmin() {
+      if (!this.searchTerm) {
+        return this.admins; // If no search term, return all units
+      }
+
+      // Convert search term to lowercase for case-insensitive search
+      const searchTermLower = this.searchTerm.toLowerCase();
+
+      // Filter units based on search term
+      return this.admins.filter(admins => {
+        return (
+          admins.username.toLowerCase().includes(searchTermLower) || // Filter by unit info
+          admins.first_name.toLowerCase().includes(searchTermLower) || // Filter by unit type
+          admins.last_name.toLowerCase().includes(searchTermLower) || // Filter by unit type
+          admins.address1.toLowerCase().includes(searchTermLower) 
+        );
+      });
+    }
+  },
     methods: {
       addTeller() {
       let formData = new FormData();
@@ -115,7 +189,54 @@
         } catch (error) {
           console.error(error);
         }
-      },
+      }, editAdmin(admin) {
+      this.editedTeller = {
+        id: admin.id,
+        username: admin.username,
+        firstName: admin.first_name,
+        lastName: admin.last_name,
+        address: admin.address1,
+        password: admin.password1
+      };
+      this.showEditModal = true;
+    },
+    closeModal() {
+      this.showEditModal = false;
+    },
+    updateTeller() {
+  const { id, username, firstName, lastName, address, password } = this.editedTeller;
+  const updatedData = { username, firstName, lastName, address, password };
+
+  axios.put(`http://127.0.0.1:9000/updateAdmin/${id}`, updatedData)
+    .then(response => {
+      // Find the index of the admin in the array
+      const index = this.admins.findIndex(admin => admin.id === id);
+      
+      // If the admin exists, update the array locally
+      if (index !== -1) {
+        this.admins[index] = { id, username, first_name: firstName, last_name: lastName, address1: address };
+      }
+      
+      // Close the modal after updating
+      this.showEditModal = false;
+      
+      // Optionally, reset the editedTeller object
+      this.editedTeller = {
+        id: null,
+        username: '',
+        firstName: '',
+        lastName: '',
+        address: '',
+        password: ''
+      };
+      
+      console.log('Admin updated successfully!');
+    })
+    .catch(error => {
+      console.error(error);
+    });
+}
+
     },
   };
   </script>
