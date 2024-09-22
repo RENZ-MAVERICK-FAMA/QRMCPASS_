@@ -79,9 +79,9 @@
 <script>
 import axios from 'axios';
 import logos from './base64-logos.json';
-import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';  
 
-pdfMake.vfs = pdfMake.vfs;
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 export default {
   data() {
     return {
@@ -154,23 +154,28 @@ export default {
         stack: [
             {
                 text: 'Province of Bukidnon',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'City Government of Malaybalay',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'City Economic Enterprise Development and Management Office',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'Collectors Office',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             }
         ],
         alignment: 'center' // Center the header text
@@ -193,27 +198,33 @@ export default {
                 headerRows: 1,
                 widths: ['auto', 'auto'],
                 body: [
-                  [{ text: 'Total Toll Payments: ' + totalTollPayments, style:'headerText'}, ''],
-                  [{ text: 'Total Delinquencies: ' + data.total_delinquencies, style:'headerText'}, ''],
-                    [{ text: 'Multicab', style: 'tableHeader' }, ''],
+                  [{ text: 'Total Toll Payments: ' + totalTollPayments, style:'headerText'},
+              font: 'Roboto', ''],
+                  [{ text: 'Total Delinquencies: ' + data.total_delinquencies, style:'headerText'},
+              font: 'Roboto', ''],
+                    [{ text: 'Multicab', style: 'tableHeader' },
+              font: 'Roboto', ''],
                     ['Total Payments', data.total_payments_by_type.multicab ],
                     ['Total Delinquencies', data.total_delinquencies_by_type.multicab]
                 ]
             }
         },
         { text: '', margin: [0, 10] },
+              font: 'Roboto',
         {
             table: {
                 headerRows: 1,
                 widths: ['auto', 'auto'],
                 body: [
-                    [{ text: 'Motorela', style: 'tableHeader' }, ''],
+                    [{ text: 'Motorela', style: 'tableHeader' },
+              font: 'Roboto', ''],
                     ['Total Payments', data.total_payments_by_type.motorela ],
                     ['Total Delinquencies', data.total_delinquencies_by_type.motorela]
                 ]
             }
         },
         { text: '', margin: [0, 10] },
+              font: 'Roboto',
         { text: 'Overall: ' + totalOverall, margin: [0, 0, 0, 10], bold: true, alignment: 'center' } // Centered Overall text
     ],
     styles: {
@@ -321,23 +332,28 @@ delinquencies.sort((a, b) => new Date(a.date_of_payment) - new Date(b.date_of_pa
         stack: [
             {
                 text: 'Province of Bukidnon',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'City Government of Malaybalay',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'City Economic Enterprise Development and Management Office',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'CEEDMO Motorela Booth',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             }
         ],
         alignment: 'center' // Center the header text
@@ -355,8 +371,10 @@ delinquencies.sort((a, b) => new Date(a.date_of_payment) - new Date(b.date_of_pa
     }
 ]
       },
-      { text: '', margin: [0, 20] },  // Space below the header
+      { text: '', margin: [0, 20] },
+              font: 'Roboto',  // Space below the header
       { text: `Today's Report - ${startDate} & ${endDate}`, style: 'subheader', alignment: 'center', margin: [0, 10] },
+              font: 'Roboto',
       {
         table: {
           headerRows: 1,
@@ -365,11 +383,17 @@ delinquencies.sort((a, b) => new Date(a.date_of_payment) - new Date(b.date_of_pa
         }
       },
       { text: '', margin: [0, 10] },
+              font: 'Roboto',
       { text: 'Prepared by:', margin: [0, 30] },
+              font: 'Roboto',
       { text: '', margin: [0, 10] },
+              font: 'Roboto',
       { text: 'Verified by:', margin: [0, 30] },
+              font: 'Roboto',
       { text: '', margin: [0, 10] },
+              font: 'Roboto',
       { text: 'Approved by:', margin: [0, 30] },
+              font: 'Roboto',
     ],
     styles: {
       tableHeader: {
@@ -451,23 +475,28 @@ generatedelmulticabdailyExcelFile(delinquencies,startDate, endDate) {
         stack: [
             {
                 text: 'Province of Bukidnon',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'City Government of Malaybalay',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'City Economic Enterprise Development and Management Office',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'CEEDMO Multicab Booth',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             }
         ],
         alignment: 'center' // Center the header text
@@ -485,8 +514,10 @@ generatedelmulticabdailyExcelFile(delinquencies,startDate, endDate) {
     }
 ]
       },
-      { text: '', margin: [0, 20] },  // Space below the header
+      { text: '', margin: [0, 20] },
+              font: 'Roboto',  // Space below the header
       { text: `Today's Report - ${startDate} & ${endDate}`, style: 'subheader', alignment: 'center', margin: [0, 10] },
+              font: 'Roboto',
       {
         table: {
           headerRows: 1,
@@ -495,11 +526,17 @@ generatedelmulticabdailyExcelFile(delinquencies,startDate, endDate) {
         }
       },
       { text: '', margin: [0, 10] },
+              font: 'Roboto',
       { text: 'Prepared by:', margin: [0, 30] },
+              font: 'Roboto',
       { text: '', margin: [0, 10] },
+              font: 'Roboto',
       { text: 'Verified by:', margin: [0, 30] },
+              font: 'Roboto',
       { text: '', margin: [0, 10] },
+              font: 'Roboto',
       { text: 'Approved by:', margin: [0, 30] },
+              font: 'Roboto',
     ],
     styles: {
       tableHeader: {
@@ -571,23 +608,28 @@ generateMulticabPaymentExcelFile(transactions, startDate, endDate) {
         stack: [
             {
                 text: 'Province of Bukidnon',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'City Government of Malaybalay',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'City Economic Enterprise Development and Management Office',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'CEEDMO Multicab Booth',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             }
         ],
         alignment: 'center' // Center the header text
@@ -623,13 +665,20 @@ generateMulticabPaymentExcelFile(transactions, startDate, endDate) {
           ]
         }
       },
-      { text: '', margin: [0, 30] },  // Add margin for spacing
+      { text: '', margin: [0, 30] },
+              font: 'Roboto',  // Add margin for spacing
       { text: 'Prepared by:', margin: [0, 30] },
-      { text: '', margin: [0, 20] },  // Spacing between sections
+              font: 'Roboto',
+      { text: '', margin: [0, 20] },
+              font: 'Roboto',  // Spacing between sections
       { text: 'Verified by:', margin: [0, 30] },
-      { text: '', margin: [0, 20] },  // Spacing between sections
+              font: 'Roboto',
+      { text: '', margin: [0, 20] },
+              font: 'Roboto',  // Spacing between sections
       { text: 'Approved by:', margin: [0, 30] },
-      { text: '', margin: [0, 20] },  // Spacing between sections
+              font: 'Roboto',
+      { text: '', margin: [0, 20] },
+              font: 'Roboto',  // Spacing between sections
     ],
     styles: {
       tableHeader: {
@@ -700,23 +749,28 @@ generateMotorelaPaymentPDF(transactions, startDate, endDate) {
         stack: [
             {
                 text: 'Province of Bukidnon',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'City Government of Malaybalay',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'City Economic Enterprise Development and Management Office',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'CEEDMO Motorela Booth',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             }
         ],
         alignment: 'center' // Center the header text
@@ -752,13 +806,20 @@ generateMotorelaPaymentPDF(transactions, startDate, endDate) {
           ]
         }
       },
-      { text: '', margin: [0, 30] },  // Add margin for spacing
+      { text: '', margin: [0, 30] },
+              font: 'Roboto',  // Add margin for spacing
       { text: 'Prepared by:', margin: [0, 30] },
-      { text: '', margin: [0, 20] },  // Spacing between sections
+              font: 'Roboto',
+      { text: '', margin: [0, 20] },
+              font: 'Roboto',  // Spacing between sections
       { text: 'Verified by:', margin: [0, 30] },
-      { text: '', margin: [0, 20] },  // Spacing between sections
+              font: 'Roboto',
+      { text: '', margin: [0, 20] },
+              font: 'Roboto',  // Spacing between sections
       { text: 'Approved by:', margin: [0, 30] },
-      { text: '', margin: [0, 20] },  // Spacing between sections
+              font: 'Roboto',
+      { text: '', margin: [0, 20] },
+              font: 'Roboto',  // Spacing between sections
     ],
     styles: {
       tableHeader: {
@@ -837,11 +898,16 @@ pdfMake.createPdf(docDefinition).download(filename);
                     {
                         stack: [
                             { text: 'Province of Bukidnon', style: 'headerText' },
+              font: 'Roboto',
                             { text: 'City of Malaybalay', style: 'headerText' },
+              font: 'Roboto',
                             { text: 'Market Site Brgy 9, Malaybalay City Bukidnon', style: 'headerText' },
+              font: 'Roboto',
                             { text: 'City Economic Enterprise Development and Management Office', style: 'headerText' },
+              font: 'Roboto',
                             { text: 'CEEDMO Motorela Booth', style: 'headerText' }
                         ],
+              font: 'Roboto',
                         alignment: 'center'
                     }
                 ]
@@ -891,23 +957,28 @@ pdfMake.createPdf(docDefinition).download(filename);
         stack: [
             {
                 text: 'Province of Bukidnon',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'City Government of Malaybalay',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'City Economic Enterprise Development and Management Office',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'CEEDMO Motorela Booth',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             }
         ],
         alignment: 'center' // Center the header text
@@ -926,8 +997,11 @@ pdfMake.createPdf(docDefinition).download(filename);
 ]
         },
         { text: '', margin: [0, 10] },
+              font: 'Roboto',
         { text: 'Overall Report', style: 'subheader', alignment: 'center' },
-        { text: 'Unit', style: 'tableHeader', alignment: 'center' }
+              font: 'Roboto',
+        { text: 'Unit', style: 'tableHeader', alignment: 'center' },
+              font: 'Roboto'
     ];
 
     Object.keys(overallReport).forEach(unit => {
@@ -1022,23 +1096,28 @@ generateMonthlymulticabReports(dailyReport, overallReport, month, year) {
         stack: [
             {
                 text: 'Province of Bukidnon',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'City Government of Malaybalay',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'City Economic Enterprise Development and Management Office',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'CEEDMO Multicab Booth',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             }
         ],
         alignment: 'center' // Center the header text
@@ -1101,23 +1180,28 @@ generateMonthlymulticabReports(dailyReport, overallReport, month, year) {
         stack: [
             {
                 text: 'Province of Bukidnon',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'City Government of Malaybalay',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'City Economic Enterprise Development and Management Office',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'CEEDMO Multicab Booth',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             }
         ],
         alignment: 'center' // Center the header text
@@ -1213,23 +1297,28 @@ generateMonthlymulticabReports(dailyReport, overallReport, month, year) {
         stack: [
             {
                 text: 'Province of Bukidnon',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'City Government of Malaybalay',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'City Economic Enterprise Development and Management Office',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'CEEDMO Motorela Booth',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             }
         ],
         alignment: 'center' // Center the header text
@@ -1314,23 +1403,28 @@ generateMonthlymulticabReports(dailyReport, overallReport, month, year) {
         stack: [
             {
                 text: 'Province of Bukidnon',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'City Government of Malaybalay',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'City Economic Enterprise Development and Management Office',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'CEEDMO Multicab Booth',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             }
         ],
         alignment: 'center' // Center the header text
@@ -1437,23 +1531,28 @@ generateMonthlymulticabReports(dailyReport, overallReport, month, year) {
         stack: [
             {
                 text: 'Province of Bukidnon',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'City Government of Malaybalay',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'City Economic Enterprise Development and Management Office',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'CEEDMO Motorela Booth',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             }
         ],
         alignment: 'center' // Center the header text
@@ -1538,23 +1637,28 @@ generateMonthlymulticabReports(dailyReport, overallReport, month, year) {
         stack: [
             {
                 text: 'Province of Bukidnon',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'City Government of Malaybalay',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'City Economic Enterprise Development and Management Office',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'CEEDMO Motorela Booth',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             },
             {
                 text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon',
-                style: 'headerText'
+                style: 'headerText',
+              font: 'Roboto'
             }
         ],
         alignment: 'center' // Center the header text
