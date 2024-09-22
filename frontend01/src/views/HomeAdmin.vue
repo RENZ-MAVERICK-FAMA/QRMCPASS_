@@ -86,14 +86,14 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import 'pdfmake/build/vfs_fonts'
 // pdfMake.vfs = pdfMake.vfs;
 console.log('pdfMake:', pdfMake);
-pdfMake.fonts = {
-    Roboto: {
-        normal: 'Roboto-Regular.ttf',
-        bold: 'Roboto-Medium.ttf',
-        italics: 'Roboto-Italic.ttf',
-        bolditalics: 'Roboto-BoldItalic.ttf'
-    }
-};
+// pdfMake.fonts = {
+//     Roboto: {
+//         normal: 'Roboto-Regular.ttf',
+//         bold: 'Roboto-Medium.ttf',
+//         italics: 'Roboto-Italic.ttf',
+//         bolditalics: 'Roboto-BoldItalic.ttf'
+//     }
+// };
 export default {
   data() {
     return {
