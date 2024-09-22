@@ -80,7 +80,7 @@
 import axios from 'axios';
 import logos from './base64-logos.json';
 import pdfMake from 'pdfmake/build/pdfmake';
-import { vfs as pdfFonts } from 'pdfmake/build/vfs_fonts'; 
+import 'pdfmake/build/vfs_fonts'
 
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
