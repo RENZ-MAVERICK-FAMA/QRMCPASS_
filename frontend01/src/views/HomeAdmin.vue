@@ -82,7 +82,7 @@ import logos from './base64-logos.json';
 import pdfMake from 'pdfmake/build/pdfmake';
 import 'pdfmake/build/vfs_fonts'
 // pdfMake.vfs = pdfMake.vfs;
-
+console.log('pdfMake:', pdfMake);
 pdfMake.fonts = {
     Roboto: {
         normal: 'Roboto-Regular.ttf',
