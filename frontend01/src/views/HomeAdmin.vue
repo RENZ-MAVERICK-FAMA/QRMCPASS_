@@ -83,9 +83,6 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import 'pdfmake/build/vfs_fonts'
 
 
-pdfMake.vfs = pdfMake.vfs;
-
-
 pdfMake.fonts = {
     Roboto: {
         normal: 'Roboto-Regular.ttf',
