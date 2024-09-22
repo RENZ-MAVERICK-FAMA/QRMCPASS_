@@ -82,11 +82,7 @@
 <script>
 import axios from 'axios';
 import logos from './base64-logos.json';
-import 'pdfmake/build/vfs_fonts';
-import pdfMake from 'pdfmake/build/pdfmake';
 
-// pdfMake.vfs = pdfMake.vfs;
-console.log('pdfMake:', pdfMake);
 // pdfMake.fonts = {
 //     Roboto: {
 //         normal: 'Roboto-Regular.ttf',
