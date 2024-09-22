@@ -80,17 +80,17 @@
 import axios from 'axios';
 import logos from './base64-logos.json';
 import pdfMake from 'pdfmake/build/pdfmake';
-import 'pdfmake/build/vfs_fonts'
+// import 'pdfmake/build/vfs_fonts'
+pdfMake.vfs = pdfMake.vfs;
 
-
-pdfMake.vfs = {
-    Roboto: {
-        normal: 'Roboto-Regular.ttf',
-        bold: 'Roboto-Medium.ttf',
-        italics: 'Roboto-Italic.ttf',
-        bolditalics: 'Roboto-BoldItalic.ttf'
-    }
-};
+// pdfMake.vfs = {
+//     Roboto: {
+//         normal: 'Roboto-Regular.ttf',
+//         bold: 'Roboto-Medium.ttf',
+//         italics: 'Roboto-Italic.ttf',
+//         bolditalics: 'Roboto-BoldItalic.ttf'
+//     }
+// };
 export default {
   data() {
     return {
