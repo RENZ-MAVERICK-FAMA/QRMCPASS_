@@ -184,7 +184,7 @@
     },
       async fetchadmins() {
         try {
-          const response = await axios.get('http://localhost:9000/admins');
+          const response = await axios.get('https://qrmcpass.loca.lt/admins');
           this.admins = response.data.admins;
         } catch (error) {
           console.error(error);
