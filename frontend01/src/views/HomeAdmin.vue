@@ -83,7 +83,7 @@ import pdfMake from 'pdfmake/build/pdfmake';
 import 'pdfmake/build/vfs_fonts'
 
 
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
+pdfMake.vfs = pdfMake.vfs;
 
 
 pdfMake.fonts = {
