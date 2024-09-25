@@ -207,68 +207,68 @@ const router = createRouter({
   ]
 })
 
-// router.beforeEach((to, from, next) => {
-//   const isAuthenticated = localStorage.getItem('access_token');
-//   const accountType = localStorage.getItem('accountType');
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = localStorage.getItem('access_token');
+  const accountType = localStorage.getItem('accountType');
 
-//   if (to.matched.some(record => record.meta.requiresAuth)) {
-//     if (!isAuthenticated) {
-//       next({ name: 'index' });
-//     } else if (!['unit', 'operator', 'admin', 'teller','kiosk','SuperAdmin'].includes(accountType)) {
-//       next({ name: 'index' });
-//     } else {
-//       switch (accountType) {
-//         case 'unit':
-//           if (to.meta.accountType && to.meta.accountType !== 'unit') {
-//             next({ name: 'homeunit' });
-//           } else {
-//             next();
-//           }
-//           break;
-//         case 'operator':
-//           if (to.meta.accountType && to.meta.accountType !== 'operator') {
-//             next({ name: 'home' });
-//           } else {
-//             next();
-//           }
-//           break;
-//         case 'admin':
-//           if (to.meta.accountType && to.meta.accountType !== 'admin') {
-//             next({ name: 'homeadmin' });
-//           } else {
-//             next();
-//           }
-//           break;
-//         case 'teller':
-//           if (to.meta.accountType && to.meta.accountType !== 'teller') {
-//             next({ name: 'homeTeller' });
-//           } else {
-//             next();
-//           }
-//           break;
-//           case 'SuperAdmin':
-//             if (to.meta.accountType && to.meta.accountType !== 'SuperAdmin') {
-//               next({ name: 'HomeSuperAdmin' });
-//             } else {
-//               next();
-//             }
-//             break;
-//           case 'kiosk':
-//             if (to.meta.accountType && to.meta.accountType !== 'kiosk') {
-//               next({ name: 'kioskminimum' });
-//             } else {
-//               next();
-//             }
-//             break;
-//         default:
-//           next({ name: 'index' });
-//           break;
-//       }
-//     }
-//   } else {
-//     next();
-//   }
-// });
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!isAuthenticated) {
+      next({ name: 'index' });
+    } else if (!['unit', 'operator', 'admin', 'teller','kiosk','SuperAdmin'].includes(accountType)) {
+      next({ name: 'index' });
+    } else {
+      switch (accountType) {
+        case 'unit':
+          if (to.meta.accountType && to.meta.accountType !== 'unit') {
+            next({ name: 'homeunit' });
+          } else {
+            next();
+          }
+          break;
+        case 'operator':
+          if (to.meta.accountType && to.meta.accountType !== 'operator') {
+            next({ name: 'home' });
+          } else {
+            next();
+          }
+          break;
+        case 'admin':
+          if (to.meta.accountType && to.meta.accountType !== 'admin') {
+            next({ name: 'homeadmin' });
+          } else {
+            next();
+          }
+          break;
+        case 'teller':
+          if (to.meta.accountType && to.meta.accountType !== 'teller') {
+            next({ name: 'homeTeller' });
+          } else {
+            next();
+          }
+          break;
+          case 'SuperAdmin':
+            if (to.meta.accountType && to.meta.accountType !== 'SuperAdmin') {
+              next({ name: 'HomeSuperAdmin' });
+            } else {
+              next();
+            }
+            break;
+          case 'kiosk':
+            if (to.meta.accountType && to.meta.accountType !== 'kiosk') {
+              next({ name: 'kioskminimum' });
+            } else {
+              next();
+            }
+            break;
+        default:
+          next({ name: 'index' });
+          break;
+      }
+    }
+  } else {
+    next();
+  }
+});
 
 
 
