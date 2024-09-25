@@ -36,7 +36,6 @@
       </form>
   </main>
 </template>
-
   <script>
 
 import axios from 'axios';
