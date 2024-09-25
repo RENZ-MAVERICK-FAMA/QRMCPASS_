@@ -1,6 +1,7 @@
 <template>
-  <main class="p-5 flex justify-center">
-    <div class="bg-white mt-5 md:mt-10 p-5 shadow rounded-[10px] w-full md:w-[600px]">
+  <main class="p-5 flex justify-center bg-slate-100">
+    <div class="grid grid-rows-2 grid-cols-1 md:grid-rows-1 md:grid-cols-2 gap-5">
+      <div class="bg-white p-5 rounded-[10px] w-full">
       <form @submit.prevent="deduct" class="mt-3">
         <h1 class="text-[20px] font-bold">Pay Delinquency</h1>
 
@@ -34,6 +35,7 @@
         <div class="mt-3 grid">
           <label for="unit">Unit</label>
           <Select
+            class="w-full"
             v-model="selectedUnit"
             :options="units"
             optionLabel="unit_info"
@@ -46,6 +48,7 @@
         <div class="mt-3 grid">
           <label for="branch">Toll Booth</label>
           <Select
+            class="w-full"
             v-model="selectedBranch"
             :options="branches"
             optionValue="value"
@@ -62,7 +65,7 @@
           <input
             v-model="date"
             type="date"
-            class="h-[45px] border border-slate-200 px-2 rounded outline-none"
+            class="h-[45px] border border-slate-200 px-2 rounded outline-none w-full"
             id="date"
             name="date"
             required
@@ -90,8 +93,7 @@
       </form>
     </div>
 
-    <!-- Delinquencies Sidebar -->
-    <div class="ml-5 mt-5 p-5 shadow bg-white rounded-[10px] w-[300px]">
+    <div class="p-5 shadow bg-white rounded-[10px] w-full">
     <h2 class="text-[18px] font-bold">Delinquencies</h2>
     <ul>
       <li
@@ -114,6 +116,9 @@
       {{ showMore ? 'Show Less' : 'See More' }}
     </button>
   </div>
+    </div>
+
+    
   </main>
 </template>
 
