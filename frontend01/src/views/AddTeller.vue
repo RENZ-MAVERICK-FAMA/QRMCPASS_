@@ -1,39 +1,62 @@
 <template>
-  <main  class=" select-none flex justify-center p-4" >
-      <form @submit.prevent="addTeller" class="bg-white w-[500px] mt-10 p-5 rounded-[10px] shadow">
-        <h1 class="text-[25px] font-bold" >Teller Sign Up</h1>
-        <hr>
-        <div class="mt-3" >
-          <label>Username</label>
-          <InputText v-model="username" type="text" placeholder="Enter Username" required class="w-full" />
-        </div>
-        <div class="mt-3" >
-          <label>Firstname</label>
-          <InputText type="text" v-model="firstName" id="firstName" placeholder="Enter Firstname" required minlength="1" class="w-full" />
-        </div>
-        <div class="mt-3" >
-          <label>Lastname</label>
-          <InputText type="text" v-model="lastName" id="lastName" placeholder="Enter Lastname" required minlength="1" class="w-full" />
-        </div>
-        <div class="mt-3" >
-          <label>Address</label>
-          <InputText type="text" v-model="address" id="address" placeholder="Enter Address" required minlength="1" class="w-full" />
-        </div>
-        <div class="mt-3" >
-          <label>Password</label>
-          <InputText type="password" v-model="password1" id="password1" placeholder="Password" class="w-full" />
-        </div>
-        <div class="mt-3" >
-          <label>Confirm Password</label>
-          <InputText type="password" v-model="password2" id="password2" placeholder="Confirm Password" class="w-full" />
-        </div>
-        <div class="grid grid-cols-2 gap-10 mt-3" >
-          <Button type="submit" icon="pi pi-save" label="Save" severity="success" class="w-full" />
-          <RouterLink to="/homeTeller" >
-            <Button type="text" icon="pi pi-times" label="Cancel" severity="secondary" class="w-full" />
-          </RouterLink>
-        </div>
-      </form>
+  <main class="select-none flex justify-center p-4">
+    
+    <div class="bg-white w-[450px] mt-10 p-5 rounded-[10px] shadow">
+      <h1 class="text-[25px]" >
+        WELCOME 
+        <span id="operator-name" class="font-bold text-green-600">
+        {{ teller.first_name }} {{ teller.last_name }}!</span>
+      </h1>
+      <div class="mt-4">
+        <h1 class="text-[25px] font-bold">Manually TopUp</h1>
+        <p class="font-light">Motorela & Multicab</p>
+        <p class="font-extralight">Allows to Top Up manually.</p>
+        <RouterLink class="nav-link" to="/topup">
+          <Button
+            label="Manually TopUp"
+            class="mt-3 w-full"
+            icon="pi pi-money-bill"
+            severity="success"
+          />
+        </RouterLink>
+      </div>
+      <Divider />
+      <div>
+        <h1 class="text-[25px] font-bold">Pay Delinquencies</h1>
+        <p class="font-light">Motorela & Multicab</p>
+        <p class="font-extralight">Allows to pay deliquinces.</p>
+        <RouterLink class="nav-link" to="/deduct">
+          <Button
+            label="Pay Delinquency"
+            class="mt-3 w-full"
+            icon="pi pi-money-bill"
+            severity="success"
+          />
+        </RouterLink>
+      </div>
+      <Divider />
+      <div>
+        <h1 class="text-[25px] font-bold">Pay with QR</h1>
+        <p class="font-light">QR Payment Scan for Motorela</p>
+        <p class="font-extralight">Allows to pay via QR.</p>
+        <RouterLink class="nav-link" to="/motorelascan">
+          <Button
+            label="Motorela Scan"
+            class="mt-3 w-full"
+            icon="pi pi-qrcode"
+            severity="success"
+          />
+        </RouterLink>
+        <RouterLink class="nav-link" to="/multicabscan">
+          <Button
+            label="Multicab Scan"
+            class="mt-3 w-full"
+            icon="pi pi-qrcode"
+            severity="success"
+          />
+        </RouterLink>
+      </div>
+    </div>
   </main>
 </template>
   <script>
