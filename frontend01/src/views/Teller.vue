@@ -15,7 +15,8 @@
             <Button @click="showModal = true" label="ADD TELLER" icon="pi pi-plus" severity="success" />
           </div>
           <div>
-        <input type="text" v-model="searchTerm" placeholder="Search...">
+        <!-- <input type="text" v-model="searchTerm" placeholder="Search..."> -->
+        <InputText v-model:modelValue="searchTerm" placeholder="Search..." class="w-full mt-4"/>
       </div>
         </template>
         <template #empty>
@@ -29,7 +30,8 @@
         <Column header="Address" field="address1" />
         <Column header="Action">
     <template #body="{ data }">
-      <button @click="editAdmin(data)" class="btn btn-primary">Edit</button>
+      <!-- <button @click="editAdmin(data)" class="btn btn-primary">Edit</button> -->
+      <Button @click="editAdmin(data)" severity="success" label="Edit" icon="pi pi-pencil"/>
     </template>
   </Column>
       </DataTable>
@@ -100,7 +102,6 @@
   </div>
 </Dialog>
 </template>
-
 <script>
 import axios from 'axios';
 
