@@ -13,7 +13,8 @@
             <span>ALL UNITS</span>
           </div>
           <div>
-        <input type="text" v-model="searchTerm" placeholder="Search...">
+        <!-- <input type="text" v-model="searchTerm" placeholder="Search..."> -->
+        <InputText v-model:modelValue="searchTerm" placeholder="Search..." class="w-full"/>
       </div>
         </template>
         <template #empty>
