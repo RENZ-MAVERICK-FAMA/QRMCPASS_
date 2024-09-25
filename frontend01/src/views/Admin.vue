@@ -1,4 +1,4 @@
-  <template>
+ <template>
     <main class="p-5 md:px-[10%]" >
       <div class="bg-white mt-5 md:mt-10 p-5 shadow rounded-[10px]" >
         <RouterLink to="/HomeSuperAdmin" >
@@ -11,11 +11,11 @@
           <template #header >
             <div class="flex items-center justify-between" >
               <span>ALL ADMINS</span>
-              
               <Button @click="showModal = true" label="ADD ADMIN" icon="pi pi-plus" severity="success" />
             </div>
             <div>
-        <input type="text" v-model="searchTerm" placeholder="Search...">
+        <!-- <input type="text" v-model="searchTerm" placeholder="Search..."> -->
+        <InputText v-model:modelValue="searchTerm" placeholder="Search..." class="w-full mt-4"/>
       </div>
           </template>
           <template #empty>
@@ -29,10 +29,11 @@
         <Column header="Address" field="address1" />
         <Column header="Action">
     <template #body="{ data }">
-      <button @click="editAdmin(data)" class="btn btn-primary">Edit</button>
+      <!-- <button @click="editAdmin(data)" class="btn btn-primary">Edit</button> -->
+      <Button @click="editAdmin(data)" severity="success" icon="pi pi-pencil" label="Edit"/>
     </template>
   </Column>
-        </DataTable>  
+        </DataTable>
       </div>
     </main>
     <Dialog v-model:visible="showModal" header="ADD ADMIN" modal class=" w-full md:w-[600px]" >
@@ -69,7 +70,7 @@
     <Dialog v-model:visible="showEditModal" header="Update Admin" modal class=" w-full md:w-[600px]" >
       <div class="modal-content">
     <span class="close" @click="closeModal">&times;</span>
- 
+
     <form @submit.prevent="updateTeller">
       <!-- Username -->
       <div class="mt-3">
@@ -103,7 +104,6 @@
 </Dialog>
 
   </template>
-  
   <script>
   import axios from 'axios';
   
