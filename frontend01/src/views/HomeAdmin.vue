@@ -1,7 +1,4 @@
 <template>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-
   <main class=" md:mt-10 p-[20px] lg:px-[5%]" >
     <div class="" >
       <div class="grid grid-cols-2 gap-5 md:gap-10" >
