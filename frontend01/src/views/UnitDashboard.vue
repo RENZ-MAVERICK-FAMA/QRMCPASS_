@@ -94,7 +94,7 @@
   <div class="w-full">
     <div>
       <!-- <input type="text" v-model="searchTerm" placeholder="Search..." class="p-2 border border-gray-300 rounded"> -->
-      <!-- <InputText v-model:modelValue="searchTerm" placeholder="Search..." class="w-full"/> -->
+      <InputText v-model:modelValue="searchTerm" placeholder="Search..." class="w-full"/>
       
     </div>
     <div class=" overflow-scroll md:overflow-hidden w-[350px] md:w-full">

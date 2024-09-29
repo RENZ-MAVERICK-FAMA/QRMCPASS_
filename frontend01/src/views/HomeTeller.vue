@@ -1,15 +1,16 @@
 <template>
-  <main class="select-none flex justify-center p-4">
-    
-    <div class="bg-white w-[450px] mt-10 p-5 rounded-[10px] shadow">
-      <div class="bg-white p-5 shadow mt-5 rounded-[10px]" >
-      <h1 class="text-[25px]" >
-        WELCOME 
-        <span id="operator-name" class="font-bold">
+  <main class="select-none justify-center p-4 bg-slate-100" >
+    <div class=" bg-green-600 w-full mt-2 p-5 rounded-[10px] shadow md:w-full">
+      <h1 class="text-[25px] text-white" >
+        WELCOME! Teller, 
+        <span id="operator-name" class="font-bold text-white uppercase">
         {{ teller.first_name }} {{ teller.last_name }}!</span>
       </h1>
-      </div>
-      <div>
+    </div>
+    
+    <div class=" w-full p-5 grid grid-rows-3 grid-cols-1 md:grid-rows-1 md:grid-cols-3 md:w-full gap-2">
+      
+      <div class=" bg-white p-14 justify-center items-center rounded-[10px] shadow w-full md:w-full">
         <h1 class="text-[25px] font-bold">Manually TopUp</h1>
         <p class="font-light">Motorela & Multicab</p>
         <p class="font-extralight">Allows to Top Up manually.</p>
@@ -22,8 +23,8 @@
           />
         </RouterLink>
       </div>
-      <Divider />
-      <div>
+      <!-- <Divider /> -->
+      <div class="bg-white p-14 justify-center items-center rounded-[10px] shadow w-full md:w-full">
         <h1 class="text-[25px] font-bold">Pay Delinquencies</h1>
         <p class="font-light">Motorela & Multicab</p>
         <p class="font-extralight">Allows to pay deliquinces.</p>
@@ -36,8 +37,8 @@
           />
         </RouterLink>
       </div>
-      <Divider />
-      <div>
+      <!-- <Divider /> -->
+      <div class="bg-white p-14 justify-center items-center rounded-[10px] shadow w-full md:w-full">
         <h1 class="text-[25px] font-bold">Pay with QR</h1>
         <p class="font-light">QR Payment Scan for Motorela</p>
         <p class="font-extralight">Allows to pay via QR.</p>

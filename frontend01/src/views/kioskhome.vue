@@ -1,27 +1,30 @@
 <template>
-  <main  class=" select-none flex justify-center p-4" >
-      <form @submit.prevent="addkiosk" class="bg-white w-[500px] mt-10 p-5 rounded-[10px] shadow">
-        <h1 class="text-[25px] font-bold" >ADD KIOSK</h1>
-        <hr>
-        <div class="mt-3" >
-          <label>Kiosk Name</label>
-          <InputText v-model="username" type="text" placeholder="Enter Username" required class="w-full" />
+  <main class="grid place-content-center bg-slate-100" >
+    <div class="grid grid-rows-2 grid-cols-1 md:grid-rows-1 md:grid-cols-2 gap-10 md:pt-20 pt-10">
+      <RouterLink to="/kioskminimum" >
+      <div class="bg-green-100 size-[300px] rounded-[50%] shadow p-3 hover:bg-slate-50" >
+        <div class="bg-green-200 rounded-[50%] shadow w-full  hover:animate-pulse h-full grid place-content-center" >
+          <div class="text-center" >
+            <i class="pi pi-money-bill text-[50px]" ></i>
+            <h6 class="text-[35px] font-extrabold text-black/80" >MOTORELA</h6>
+          </div>
         </div>
-        <div class="mt-3" >
-          <label>Password</label>
-          <InputText type="password" v-model="password1" id="password1" placeholder="Password" class="w-full" />
+      </div>
+    </RouterLink>
+
+    <RouterLink to="/kioskminimum" >
+      <div class="bg-green-100 size-[300px] rounded-[50%] shadow p-3 hover:bg-slate-50" >
+        <div class="bg-green-200 rounded-[50%] shadow w-full  hover:animate-pulse h-full grid place-content-center" >
+          <div class="text-center" >
+            <i class="pi pi-truck text-[50px]" ></i>
+            <h6 class="text-[35px] font-extrabold text-black/80" >MULTICAB</h6>
+          </div>
         </div>
-        <div class="mt-3" >
-          <label>Confirm Password</label>
-          <InputText type="password" v-model="password2" id="password2" placeholder="Confirm Password" class="w-full" />
-        </div>
-        <div class="grid grid-cols-2 gap-10 mt-3" >
-          <Button type="submit" icon="pi pi-save" label="Save" severity="success" class="w-full" />
-          <RouterLink to="/HomeSuperAdmin" >
-            <Button type="text" icon="pi pi-times" label="Cancel" severity="secondary" class="w-full" />
-          </RouterLink>
-        </div>
-      </form>
+      </div>
+    </RouterLink>
+
+    </div>
+   
   </main>
 </template>
   <script>

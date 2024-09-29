@@ -107,7 +107,12 @@
       <InputText v-model="editedTeller.password" type="password" id="editPassword" required class="w-full" />
     </div>
     <br />
-    <button type="submit" class="btn btn-primary">Update</button>
+    <!-- <button type="submit" class="btn btn-primary">Update</button> -->
+    <Button
+      type="submit"
+      label="Update"
+      severity="success"
+      />
   </form>
 </div>
 </Dialog>

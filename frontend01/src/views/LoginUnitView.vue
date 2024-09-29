@@ -27,6 +27,34 @@
       </div>
     </div>
   </template>
+    <div>
+     
+      <h1>unit login</h1>
+      <div class="container">
+        <div class="form-container">
+        
+          <form @submit.prevent="loginunit">
+            <div class="form-group">
+              <label for="unit">Unit</label>
+              <input v-model="formData.unit" type="text" class="form-control" id="unit" placeholder="Enter Unit">
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input v-model="formData.password" type="password" class="form-control" id="password" placeholder="Enter password">
+            </div> 
+           
+            <br>
+            <button type="submit" class="btn btn-primary">Login</button>
+           
+          </form>
+  
+          <div v-if="loginError" class="alert alert-danger" role="alert">
+            {{ loginError }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
   
   <script>
   import axios from 'axios';

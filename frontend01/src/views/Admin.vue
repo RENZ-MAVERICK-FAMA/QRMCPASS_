@@ -69,7 +69,6 @@
     </Dialog>
     <Dialog v-model:visible="showEditModal" header="Update Admin" modal class=" w-full md:w-[600px]" >
       <div class="modal-content">
-    <span class="close" @click="closeModal">&times;</span>
 
     <form @submit.prevent="updateTeller">
       <!-- Username -->
@@ -98,7 +97,12 @@
         <InputText v-model="editedTeller.password" type="password" id="editPassword" required class="w-full" />
       </div>
       <br />
-      <button type="submit" class="btn btn-primary">Update</button>
+      <!-- <button type="submit" class="btn btn-primary">Update</button> -->
+      <Button
+      type="submit"
+      label="Update"
+      severity="success"
+      />
     </form>
   </div>
 </Dialog>

@@ -29,6 +29,79 @@
         <Button type="submit" class="mt-3 w-full" severity="success" icon="pi pi-plus" label="Submit" />
       </form>
   </main>
+    <!-- <ToastProvider>
+      <div class="container">
+        <div>
+      <form @submit.prevent="addTeller">
+
+        <h3 align="center"> admin Sign Up</h3>
+        <div class="form-group">
+          <label for="username">username</label>
+          <input
+            type="username"
+            class="form-control"
+            id="username"
+            v-model="username"
+            placeholder="Enter username"
+            required />
+        </div>
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="firstName"
+            v-model="firstName"
+            placeholder="Enter first name"
+            required />
+        </div>
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="lastName"
+            v-model="lastName"
+            placeholder="Enter last name"
+            required />
+        </div>
+        <div class="form-group">
+          <label for="address">Address</label>
+          <input
+            type="text"
+            class="form-control"
+            id="address"
+            v-model="address"
+            placeholder="Enter address"
+            required />
+        </div>
+        <div class="form-group">
+          <label for="password1">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            id="password1"
+            v-model="password1"
+            placeholder="Enter password"
+            required />
+        </div>
+        <div class="form-group">
+          <label for="password2">Password (Confirm)</label>
+          <input
+            type="password"
+            class="form-control"
+            id="password2"
+            v-model="password2"
+            placeholder="Confirm password"
+            required />
+        </div>
+        <br />
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+      </div>
+    
+  </ToastProvider> -->
   </template>
 
   <script>

@@ -1,88 +1,196 @@
 <template>
-  <main class="p-5 md:px-[10%]">
-    <div class="bg-white mt-5 md:mt-10 p-5 shadow rounded-[10px]">
+  <main class="mt-10 p-5 md:px-[5%] lg:px-[15%]">
+    <div class="bg-white rounded-[10px] p-5">
       <RouterLink to="/homeTeller">
-        <div class="flex gap-5 h-[40px] items-center hover:text-slate-300">
-          <i class="pi pi-arrow-left"></i>
-          <span>Go Back</span>
-        </div>
+        <Button icon="pi pi-arrow-left" label="Go Back" text class="mb-2" />
       </RouterLink>
-      <DataTable
-        showGridlines
-        paginator
-        :rows="5"
-        :rowsPerPageOptions="[5, 10, 20, 50]"
-        class="mt-3"
-        :value="reversedTransactions"
+      <p class="text-red-500">{{ scannerError }}</p>
+      <div
+        v-if="error"
+        class="text-red-500 mt-3 relative bg-red-100 p-5 text-center rounded-[10px] text-[14px] font-light"
+        role="alert"
       >
-        <template #header>
-          <div class="flex items-center justify-between">
-            <span>Recent Top Up</span>
+        <i
+          @click="clearError"
+          class="pi pi-times-circle text-red-500 text-[18px] absolute top-1 right-1 cursor-pointer"
+        ></i>
+        {{ error }}
+      </div>
+      <div
+        v-if="success"
+        class="text-green-500 mt-3 relative bg-green-100 p-5 text-center rounded-[10px] text-[14px] font-light"
+        role="alert"
+      >
+        <i
+          @click="clearSuccess"
+          class="pi pi-times-circle text-green-500 text-[18px] absolute top-1 right-1 cursor-pointer"
+        ></i>
+        {{ success }}
+      </div>
+      <div class="grid md:grid-cols-[350px,1fr] gap-5">
+        <div
+          class="md:p-3 w-full grid grid-rows-[1fr,auto] md:bg-slate-100 md:shadow rounded-[10px]"
+        >
+          <qrcode-stream
+            class="bg-slate-100 rounded-[10px]"
+            :key="qrCodeKey"
+            :constraints="{
+              deviceId: selectedDevice ? selectedDevice.deviceId : null,
+            }"
+            @error="onScannerError"
+            @detect="onDetect"
+            v-if="selectedDevice !== null"
+          />
+          <p v-else class="no-camera-error">
+            No cameras available on this device
+          </p>
+          <div>
+            <div class="mt-3 w-full">
+              <select v-model="selectedDevice"  class="h-[45px] w-full border rounded hover:border-slate-400 outline-none border-slate-200">
+                <option disabled value="">Select Camera</option>
+                <option v-for="device in devices" :key="device.deviceId" :value="device">{{ device.label }}</option>
+              </select>
+            </div>
             <Button
-              @click="showModal = true"
-              label="Top Up"
-              icon="pi pi-plus"
+              type="submit"
+              @click="generateAndDownloadPDF"
+              label="Generate PDF Report"
+              icon="pi pi-file-pdf"
               severity="success"
-              class="md:w-[200px]"
+              class="mt-3 w-full"
+            />
+            <Button
+              type="submit"
+              @click="clearDetectedCodes"
+              label="Reset Scanned Data"
+              icon="pi pi-refresh"
+              severity="danger"
+              outlined
+              class="mt-3 w-full"
             />
           </div>
-        </template>
-        <template #empty>
-          <div class="flex justify-center">
-            <small class="font-extralight capitalize">no data found. </small>
+        </div>
+        <form @submit.prevent="onFormSubmit" class="mt-5 md:mt-0">
+          <h1 class="text-[20px]">Multicab Payment</h1>
+          <div class="grid mt-3">
+            <label>Unit</label>
+            <select v-model="selectedUnit" class="h-[45px] w-full md:max-w-[400px] border rounded hover:border-slate-400 outline-none border-slate-200" id="unit" name="unit" required>
+              <option v-for="unit in filteredUnits" :key="unit.id" :value="unit">{{ unit.unit_info }}</option>
+            </select>
           </div>
-        </template>
-        <Column header="Unit" field="unitid" />
-        <Column header="Amount" field="amount" />
-        <Column header="Date">
-          <template #body="{ data }">
-            {{ new Date(data.date).toISOString().split("T")[0] }}
-          </template>
-        </Column>
-        <Column header="Time">
-          <template #body="{ data }">
-            {{
-              new Date(data.date).toLocaleTimeString("en-US", {
-                timeZone: "GMT",
-              })
-            }}
-          </template>
-        </Column>
-      </DataTable>
+          <div class="grid mt-3">
+            <label>Branch</label>
+            <InputText
+              v-model="selectedBranch"
+              class="w-full md:max-w-[400px]"
+              placeholder="Market"
+              value="Market"
+              required
+              readonly
+            />
+          </div>
+          <div class="mt-3 grid">
+            <label for="">Payment Date</label>
+            <input
+              v-model="date"
+              type="date"
+              class="h-[45px] border border-slate-200 px-2 rounded outline-none md:max-w-[400px]"
+              id="date"
+              name="date"
+              required
+              readonly
+            />
+          </div>
+          <div class="grid gap-5 mt-3 md:max-w-[400px]">
+            <Button
+              type="submit"
+              @click="deduct"
+              label="Payment"
+              icon="pi pi-money-bill"
+              severity="success"
+              class=""
+            />
+            <Button
+              type="submit"
+              @click="manual"
+              label="Manually Payment"
+              icon="pi pi-money-bill"
+              severity="success"
+              class=""
+            />
+          </div>
+        </form>
+      </div>
+      <div class="p-5 bg-slate-100 mt-3 shadow rounded">
+        <table class="table">
+          <thead>
+            <tr>
+              <th><strong class="text-[40px]">Multicab</strong></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <template v-if="showMulticab">
+                  <table class="w-full">
+                    <tbody>
+                      <div class="flex gap-2">
+                        <tr v-for="unit in sortedUnits" :key="unit.id">
+                          <td
+                            :class="{
+                              'bg-green-400 text-white p-2':
+                                unit.has_toll_payment_today, // Payment is done
+                              'bg-red-400 text-white p-2':
+                                unit.has_delinquency_unpaid, // Unpaid delinquency
+                            }"
+                          >
+                            {{ unit.unit_info }}
+                          </td>
+                        </tr>
+                      </div>
+                    </tbody>
+                  </table>
+                </template>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-  </main>
-  <Dialog header="TOP UP" modal v-model:visible="showModal">
-    <form @submit.prevent="topup" class="w-full md:w-[400px]">
-      <div class="mt-3 grid">
-        <label for="">Unit</label>
-        <Select
-          v-model="selectedUnit"
-          :options="units"
-          optionValue="id"
-          optionLabel="unit_info"
-          placeholder="Select Unit"
-        ></Select>
-      </div>
-      <div class="mt-3 grid">
-     
-        <div class="readonly-field">
-    <div class="label">Toll Booth:<div class="value">{{ office }}</div></div>
-    
-  </div>
-      </div>
-      <div class="mt-3 grid">
-        <label for="">Top Up</label>
-        <InputNumber v-model="amount" required />
+    <Dialog
+    v-model:visible="showModal"
+    modal
+    header="Edit Profile"
+    class="md:w-[500px]"
+  >
+    <div class="">
+      <img
+        :src="modalImage"
+        alt="Unit Picture"
+        class="md:h-[300px] bg-slate-100"
+      />
+      <br />
+      <p>Body Number: {{ ModalUnit }}</p>
+      <p>Balance: {{ Balance }}</p>
+      <p>Unit Type: {{ unit_type }}</p>
+      <div class="grid grid-cols-2 my-3">
+        <div>
+          {{ modalContent }}
+        </div>
+        <div>
+          {{ payment }}
+        </div>
       </div>
       <Button
-        type="submit"
+        @click="closeModal"
+        label="Approve"
         icon="pi pi-check"
         severity="success"
-        label="Confirm"
-        class="mt-3 w-full"
+        class="w-full"
       />
-    </form>
+    </div>
   </Dialog>
+  </main>
 </template>
 <script>
 import { ref, onMounted } from 'vue';

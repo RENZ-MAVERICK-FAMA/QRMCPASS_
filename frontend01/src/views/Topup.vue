@@ -1,5 +1,5 @@
 <template>
-  <main class="p-5 md:px-[10%]">
+  <main class="p-5 md:px-[10%] bg-slate-100">
     <div class="bg-white mt-5 md:mt-10 p-5 shadow rounded-[10px]">
       <RouterLink to="/homeTeller">
         <div class="flex gap-5 h-[40px] items-center hover:text-slate-300">
@@ -57,18 +57,28 @@
         <label for="">Unit</label>
         <Select
           v-model="selectedUnit"
+          editable
           :options="units"
           optionValue="id"
           optionLabel="unit_info"
           placeholder="Select Unit"
+          
         ></Select>
       </div>
       <div class="mt-3 grid">
-        <label for="">Toll Booth</label>
-        <div class="readonly-field">
-    <div class="label">Toll Booth:</div>
-    <div class="value">{{ office }}</div>
-  </div>
+        <label>Branch</label>
+            <InputText
+              v-model="selectedBranch"
+              class="w-full md:max-w-[400px]"
+              placeholder="Office"
+              value="office"
+              required
+              readonly
+            />
+        <!-- <div class="readonly-field">
+    <div class="label">Toll Booth:<div class="value">{{ office }}</div></div>
+    
+  </div> -->
       </div>
       <div class="mt-3 grid">
         <label for="">Top Up</label>
@@ -80,9 +90,26 @@
         severity="success"
         label="Confirm"
         class="mt-3 w-full"
+        @click="showModal = false"
       />
     </form>
   </Dialog>
+
+  <!-- <Dialog modal v-model:visible="showSuccessModal">
+    <div class="  bg-white justify-center items-center w-[400px]">
+
+      <h2 class="text-green-600 uppercase font-extrabold text-4xl" icon="pi pi-check">Successfull Top Up!</h2>
+      <Button
+      label="close"
+      icon="pi pi-times"
+      text
+      @click="showSuccessModal= false"
+      />
+
+      <img src="/src/assets/check-mark-svgrepo-com.svg" alt="" class="w-[150px]" >
+    </div>
+
+  </Dialog> -->
 </template>
 <script>
 import { ref, toHandlers, watch } from "vue";

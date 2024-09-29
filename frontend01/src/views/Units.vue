@@ -78,84 +78,87 @@
       header="Deliquencies For Unit"
       class="w-[800px]"
     >
-      <div class="">
-        <div class="flex justify-center mt-2">
-          <div class="flex items-center gap-5 mb-2">
-            <Button
+      <div class="w-full">
+      <div class="flex justify-center">
+          <strong>{{ currentMonthName }} {{ currentYear }}</strong>
+        </div>
+        <div class="flex justify-between items-center mt-3">
+          <Button
+            @click="goToPreviousMonth"
+            label="Prev"
+            icon="pi pi-angle-left"
+            severity="info"
+            text
+          />
+
+          <p>Month</p>
+
+          <Button
+            @click="goToNextMonth"
+            label="Next"
+            icon="pi pi-angle-right"
+            iconPos="right"
+            severity="info"
+            text
+          />
+        </div>
+        <div class="flex justify-between items-center mt-3">
+          <Button
             @click="goToPreviousYear"
-            label="Previous Year"
+            label="Prev"
             icon="pi pi-angle-double-left"
             severity="info"
             text
           />
-            <Button
-              @click="goToPreviousMonth"
-              label="Previous"
-              icon="pi pi-angle-double-left"
-              severity="info"
-              text
-            />
-            <strong>{{ currentMonthName }} {{ currentYear }}</strong>
-            <Button
-              @click="goToNextMonth"
-              label="Next"
-              icon="pi pi-angle-double-right"
-              iconPos="right"
-              severity="info"
-              text
-            />
-            <Button
+
+          <p>Year</p>
+
+          <Button
             @click="goToNextYear"
-            label="Next Year"
+            label="Next"
             icon="pi pi-angle-double-right"
             iconPos="right"
             severity="info"
             text
           />
-          </div>
         </div>
-        <table class="w-full">
-          <thead class="h-[50px] text-left bg-slate-100">
-            <tr>
-              <th
-                class="pl-[5px] text-black uppercase border border-slate-300/80 font-semibold"
-                v-for="day in weekDays"
-                :key="day"
-              >
-                {{ day }}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="h-[45px]" v-for="week in calendarWeeks" :key="week">
-              <td
-                class="border border-slate-300 pl-[5px] font-light"
-                v-for="day in week"
-                :key="day"
-                :class="getCellClass(day)"
-              >
-                <strong v-if="day">{{ day }}</strong>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      
+      <table class="w-full mt-3">
+        <thead class="h-[50px] text-left bg-slate-100">
+          <tr>
+            <th class="pl-[5px] text-black uppercase border border-slate-300/80 font-semibold" v-for="day in weekDays" :key="day">{{ day }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="h-[45px]" v-for="week in calendarWeeks" :key="week">
+            <td class="border border-slate-300 pl-[5px] font-light" v-for="day in week" :key="day" :class="getCellClass(day)">
+              <strong v-if="day">{{ day }}</strong>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     </Dialog>
        <Dialog
   v-model:visible="showModalTransactions"
   modal
   header="Transaction"
-  class="w-[800px]"
+  class="w-[400px]"
 >
-  <div>
-    <div class="modal-content">
-      <input
+  <div class="w-full">
+    <!-- <input
         type="text"
         v-model="searchTerm"
         placeholder="Search..."
         class="p-2 border border-gray-300 rounded"
-      />
-      <table class="w-full">
+      /> -->
+
+      <InputText v-model:model-value="searchTerm"
+      placeholder="Search..."
+      class="w-full"/>
+    <div class=" overflow-scroll md:overflow-hidden w-[350px] md:w-full">
+      
+      <table class="w-full mt-3">
         <thead class="h-[50px] text-left bg-slate-100">
           <tr>
             <th
@@ -236,8 +239,8 @@
           </tr>
         </tbody>
       </table>
-      <div class="flex justify-center mt-2">
-        <div class="flex items-center gap-5">
+      <div class="flex justify-center mt-2 w-full">
+        <div class="flex items-center gap-5 w-full">
           <Button
             @click="prevPageTransactions"
             :disabled="currentTransactionsPage === 0"
