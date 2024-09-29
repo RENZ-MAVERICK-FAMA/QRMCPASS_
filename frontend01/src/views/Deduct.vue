@@ -1,7 +1,7 @@
 <template>
   <main class="p-5 flex justify-center bg-slate-100">
     <div class="grid grid-rows-2 grid-cols-1 md:grid-rows-1 md:grid-cols-2 gap-5">
-      <div class="bg-white p-5 rounded-[10px] w-full">
+      <div class="bg-white p-5 rounded-[10px] w-full md:w-[450px]">
       <form @submit.prevent="deduct" class="mt-3">
         <h1 class="text-[20px] font-bold">Pay Delinquency</h1>
 
@@ -47,7 +47,7 @@
         <!-- Select Toll Booth -->
         <div class="mt-3 grid">
           <label for="branch">Toll Booth</label>
-          <Select
+          <!-- <Select
             class="w-full"
             v-model="selectedBranch"
             :options="branches"
@@ -56,7 +56,15 @@
             placeholder="Select Toll Booth"
             required
             readonly
-          ></Select>
+          ></Select> -->
+          <InputText
+              v-model="selectedBranch"
+              class="w-full md:max-w-[400px]"
+              placeholder="Office"
+              value="office"
+              required
+              readonly
+            />
         </div>
 
         <!-- Payment Date -->
@@ -93,9 +101,9 @@
       </form>
     </div>
 
-    <div class="p-5 shadow bg-white rounded-[10px] w-full">
+    <!-- <div class="p-5 shadow bg-white rounded-[10px] w-full">
     <h2 class="text-[18px] font-bold">Delinquencies</h2>
-    <ul>
+    <ul >
       <li
         v-for="(delinquency, index) in visibleDelinquencies"
         :key="delinquency.id"
@@ -115,6 +123,31 @@
     >
       {{ showMore ? 'Show Less' : 'See More' }}
     </button>
+  </div> -->
+
+  <div class="p-5 shadow bg-white rounded-[10px] w-full">
+    <div class=" grid grid-rows-1 grid-cols-2 gap-1">
+      <h2 class="text-[18px] font-bold">Delinquencies</h2>
+    <!-- <button
+      v-if="delinquencies.length > 5"
+      @click="toggleShowMore"
+      class=" px-4 py-2 bg-blue-500 text-white rounded"
+    >
+      {{ showMore ? 'Show Less' : 'See More' }}
+    </button> -->
+    </div>
+   
+    <div class="scrollable-list mt-2">
+      <ul>
+      <li v-for="(delinquency, index) in visibleDelinquencies" :key="delinquency.id" class="mt-2 p-2 border rounded">
+        <p><strong>Date:</strong> {{ delinquency.date_of_payment }}</p>
+        <p><strong>Status:</strong> {{ delinquency.status }}</p>
+      </li>
+    </ul>
+    <p v-if="delinquencies.length === 0" class="text-gray-500">
+      No delinquencies for the selected unit.
+    </p>
+  </div>
   </div>
     </div>
 
