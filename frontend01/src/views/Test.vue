@@ -33,16 +33,7 @@
                 <i class="pi pi-eye"></i>
               </InputGroupAddon>
             </InputGroup>
-            <!-- Updated Login Button with Loading State -->
-            <Button
-              type="submit"
-              label="Login"
-              icon="pi pi-sign-in"
-              class="w-full mt-3"
-              :loading="isLoading" <!-- Bind loading state -->
-              :disabled="isLoading" <!-- Disable button while loading -->
-              severity="success"
-            ></Button>
+            
           </div>
         </form>
       </div>
