@@ -81,7 +81,7 @@ export default {
         'X-Client-IP': clientIp
       };
 
-      axios.post('http://127.0.0.1:9000/loginall', this.formData, { headers })
+      axios.post('https://qrmcpass.loca.lt/loginall', this.formData, { headers })
         .then(response => {
           localStorage.setItem('access_token', response.data.access_token);
           localStorage.setItem('accountType', response.data.accountType);
