@@ -28,18 +28,8 @@
                   </InputGroupAddon>
               </InputGroup>
             <!-- Updated Login Button with manual loading -->
-            <button 
-              type="submit" 
+             <Button type="submit" label="Login" icon="pi pi-sign-in" class="w-full mt-3" severity="success" />
               
-              class="w-full mt-3 bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-green-600 flex justify-center items-center"
-              :disabled="isLoading"
-            >
-              <span v-if="!isLoading" ><i class="pi pi-sign-in mr-2"></i>Login</span>
-              <span v-else class="flex items-center">
-                <i class="pi pi-sign-in mr-2"></i>
-                <i class="pi pi-spin pi-spinner mr-2"></i> Logging in...
-              </span>
-            </button>
               
             </div>
           </form>
@@ -58,8 +48,8 @@ export default {
         username: '',
         password: ''
       },
-      loginError: '',
-      isLoading: false
+      loginError: ''
+    
     };
   },
   components:{
@@ -67,7 +57,7 @@ export default {
   },
   methods: {
     loginall() {
-      this.isLoading = true;
+ 
       const currentUrl = window.location.href;
     const clientIp = window.ipAddress;
     const headers = {
