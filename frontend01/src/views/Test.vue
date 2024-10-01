@@ -27,9 +27,7 @@
                       <i class="pi pi-eye"></i>
                   </InputGroupAddon>
               </InputGroup>
-            <!-- Updated Login Button with manual loading -->
-             <Button type="submit" label="Login" icon="pi pi-sign-in" class="w-full mt-3" severity="success" />
-              
+              <Button type="submit" label="Login" icon="pi pi-sign-in" class="w-full mt-3" severity="success" />
               
             </div>
           </form>
@@ -49,7 +47,6 @@ export default {
         password: ''
       },
       loginError: ''
-    
     };
   },
   components:{
@@ -57,7 +54,6 @@ export default {
   },
   methods: {
     loginall() {
- 
       const currentUrl = window.location.href;
     const clientIp = window.ipAddress;
     const headers = {
