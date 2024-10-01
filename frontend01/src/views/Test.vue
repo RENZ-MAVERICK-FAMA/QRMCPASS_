@@ -80,7 +80,7 @@ export default {
         'X-Frontend-URL': currentUrl,
         'X-Client-IP': clientIp // Assuming 'window.ipAddress' is the client's IP address
       };
-      axios.post('https://qrmcpass.local.lt/loginall', this.formData, { headers })
+      axios.post('https://qrmcpass.loca.lt/loginall', this.formData, { headers })
         .then(response => {
           localStorage.setItem('access_token', response.data.access_token);
           localStorage.setItem('accountType', response.data.accountType);
