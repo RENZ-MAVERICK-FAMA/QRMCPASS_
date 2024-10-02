@@ -165,7 +165,7 @@ export default {
       formData.append("password2", this.password2);
 
       axios
-        .post("https://mvothocqom.ap.loclx.io/addunit", formData, {
+        .post("https://y2mifxhqo2.loclx.io/addunit", formData, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
           },

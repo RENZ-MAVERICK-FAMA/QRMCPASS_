@@ -48,7 +48,7 @@
 
   console.log('Form Data:', formData);
 
-  axios.post('https://mvothocqom.ap.loclx.io/addkiosk', formData)
+  axios.post('https://y2mifxhqo2.loclx.io/addkiosk', formData)
     .then(response => {
       this.username = '';
       this.password1 = '';

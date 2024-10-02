@@ -116,7 +116,7 @@ export default {
     return months[monthNumber - 1]; // Subtract 1 because month numbers are 1-based, but array indices are 0-based
   },
     GenerateOverall(selectedYear) {
-      axios.get(`https://mvothocqom.ap.loclx.io/admin/analytics/overall?year=${selectedYear}`)
+      axios.get(`https://y2mifxhqo2.loclx.io/admin/analytics/overall?year=${selectedYear}`)
         .then(response => {
           const data = response.data;
           this.generatePdfFile(data,selectedYear);
@@ -252,7 +252,7 @@ export default {
     this.selectedYear = currentYear;
   },
     fetchUnitCounts() {
-      axios.get('https://mvothocqom.ap.loclx.io/admin/analytics', {
+      axios.get('https://y2mifxhqo2.loclx.io/admin/analytics', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('access_token')}`,
         },
@@ -266,7 +266,7 @@ export default {
       });
     },
 generateDelReportMotorelaRange(startDate, endDate) {
-  axios.get(`https://mvothocqom.ap.loclx.io/admin/delinquencies/motorela/daily?start_date=${startDate}&end_date=${endDate}`, {
+  axios.get(`https://y2mifxhqo2.loclx.io/admin/delinquencies/motorela/daily?start_date=${startDate}&end_date=${endDate}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('access_token')}`,
     },
@@ -400,7 +400,7 @@ delinquencies.sort((a, b) => new Date(a.date_of_payment) - new Date(b.date_of_pa
 pdfMake.createPdf(docDefinition).download(`Motorela Delinquency Report for ${startDate} & ${endDate}.pdf`);
 },
 generateDelReportMulticabRange(startDate, endDate) {
-  axios.get(`https://mvothocqom.ap.loclx.io/admin/delinquencies/multicab/daily?start_date=${startDate}&end_date=${endDate}`, {
+  axios.get(`https://y2mifxhqo2.loclx.io/admin/delinquencies/multicab/daily?start_date=${startDate}&end_date=${endDate}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('access_token')}`,
     },
@@ -531,7 +531,7 @@ pdfMake.createPdf(docDefinition).download(`Multicab Delinquency Report for ${sta
 
 },
 generatedailyMulticabpayment(startDate, endDate) {
-  axios.get(`https://mvothocqom.ap.loclx.io/admin/transactions/payment/multicab/daily?start_date=${startDate}&end_date=${endDate}`, {
+  axios.get(`https://y2mifxhqo2.loclx.io/admin/transactions/payment/multicab/daily?start_date=${startDate}&end_date=${endDate}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('access_token')}`,
     },
@@ -660,7 +660,7 @@ pdfMake.createPdf(docDefinition).download(filename);
 
 },
 generatedailyMotorelapayment(startDate, endDate) {
-  axios.get(`https://mvothocqom.ap.loclx.io/admin/transactions/payment/motorela/daily?start_date=${startDate}&end_date=${endDate}`, {
+  axios.get(`https://y2mifxhqo2.loclx.io/admin/transactions/payment/motorela/daily?start_date=${startDate}&end_date=${endDate}`, {
       headers: {
       Authorization: `Bearer ${localStorage.getItem('access_token')}`,
     },
@@ -790,7 +790,7 @@ pdfMake.createPdf(docDefinition).download(filename);
 },generatemonthlyMotorelaDelinquenciesReport() {
     const [year, month] = this.monthlyMonth.split('-').map(Number);
 
-    axios.get(`https://mvothocqom.ap.loclx.io/admin/delinquencies/motorela/monthly?month=${month}&year=${year}`, {
+    axios.get(`https://y2mifxhqo2.loclx.io/admin/delinquencies/motorela/monthly?month=${month}&year=${year}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('access_token')}`,
       },
@@ -952,7 +952,7 @@ pdfMake.createPdf(docDefinition).download(filename);
 generatemonthlyMulticabDelinquenciesReport() {
     const [year, month] = this.monthlyMonth.split('-').map(Number);
 
-    axios.get(`https://mvothocqom.ap.loclx.io/admin/delinquencies/multicab/monthly?month=${month}&year=${year}`, {
+    axios.get(`https://y2mifxhqo2.loclx.io/admin/delinquencies/multicab/monthly?month=${month}&year=${year}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('access_token')}`,
       },
@@ -1162,7 +1162,7 @@ generateMonthlymulticabReports(dailyReport, overallReport, month, year) {
     generatemonthlyMulticabPaymentReport() {
       const [year, month] = this.monthlyMonth.split('-').map(Number);
 
-      axios.get(`https://mvothocqom.ap.loclx.io/admin/transactions/payment/multicab/monthly?month=${month}&year=${year}`, {
+      axios.get(`https://y2mifxhqo2.loclx.io/admin/transactions/payment/multicab/monthly?month=${month}&year=${year}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('access_token')}`,
         },
@@ -1386,7 +1386,7 @@ generateMonthlymulticabReports(dailyReport, overallReport, month, year) {
  generatemonthlyMotorelaPaymentReport() {
       const [year, month] = this.monthlyMonth.split('-').map(Number);
 
-      axios.get(`https://mvothocqom.ap.loclx.io/admin/transactions/payment/motorela/monthly?month=${month}&year=${year}`, {
+      axios.get(`https://y2mifxhqo2.loclx.io/admin/transactions/payment/motorela/monthly?month=${month}&year=${year}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('access_token')}`,
         },

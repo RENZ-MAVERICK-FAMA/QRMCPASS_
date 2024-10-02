@@ -193,7 +193,7 @@
         // Function to fetch units data
         const fetchUnitsData = async () => {
           try {
-            const response = await axios.get('https://mvothocqom.ap.loclx.io/paid', {
+            const response = await axios.get('https://y2mifxhqo2.loclx.io/paid', {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem('access_token')}`
               }
@@ -207,7 +207,7 @@
         // Function to fetch balances
         const fetchBalances = async (unitId) => {
           try {
-            const response = await axios.get(`https://mvothocqom.ap.loclx.io/unit/${unitId}/balances`, {
+            const response = await axios.get(`https://y2mifxhqo2.loclx.io/unit/${unitId}/balances`, {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem('access_token')}`
               }
@@ -221,7 +221,7 @@
         // Function to fetch delinquencies
         const fetchDelinquencies = async (unitId) => {
           try {
-            const response = await axios.get(`https://mvothocqom.ap.loclx.io/unit/${unitId}/delinquencies`, {
+            const response = await axios.get(`https://y2mifxhqo2.loclx.io/unit/${unitId}/delinquencies`, {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem('access_token')}`
               }
@@ -235,7 +235,7 @@
         // Function to fetch transactions
         const fetchTransactions = async (unitId) => {
           try {
-            const response = await axios.get(`https://mvothocqom.ap.loclx.io/unit/${unitId}/transactions`, {
+            const response = await axios.get(`https://y2mifxhqo2.loclx.io/unit/${unitId}/transactions`, {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem('access_token')}`
               }
@@ -250,7 +250,7 @@
         // Function to fetch unit details
         const fetchUnitDetails = async () => {
           try {
-            const response = await axios.get('https://mvothocqom.ap.loclx.io/unitdetails', {
+            const response = await axios.get('https://y2mifxhqo2.loclx.io/unitdetails', {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem('access_token')}`
               }

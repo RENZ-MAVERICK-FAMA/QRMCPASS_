@@ -61,7 +61,7 @@
      
      
       const logout = () => {
-        axios.post('https://mvothocqom.ap.loclx.io/logout')
+        axios.post('https://y2mifxhqo2.loclx.io/logout')
           .then(response => {
             // Handle successful logout
             console.log(response.data.message)

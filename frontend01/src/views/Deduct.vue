@@ -186,7 +186,7 @@ export default {
     });
 
     axios
-      .get("httpss://mvothocqom.ap.loclx.io/Teller", {
+      .get("httpss://y2mifxhqo2.loclx.io/Teller", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
@@ -225,7 +225,7 @@ export default {
 
     fetchUnits() {
       axios
-        .get("https://mvothocqom.ap.loclx.io/units", {
+        .get("https://y2mifxhqo2.loclx.io/units", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
           },
@@ -241,7 +241,7 @@ export default {
     fetchUnitDelinquencies() {
       if (this.selectedUnit) {
         axios
-          .get(`https://mvothocqom.ap.loclx.io/units/${this.selectedUnit.id}/delinquencies`, {
+          .get(`https://y2mifxhqo2.loclx.io/units/${this.selectedUnit.id}/delinquencies`, {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("access_token")}`,
             },
@@ -275,7 +275,7 @@ export default {
       };
 
       axios
-        .post("https://mvothocqom.ap.loclx.io/paymentdel", data, {
+        .post("https://y2mifxhqo2.loclx.io/paymentdel", data, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
             "Content-Type": "application/json",

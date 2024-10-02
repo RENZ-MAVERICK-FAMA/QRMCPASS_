@@ -119,7 +119,7 @@
   
       const user = ref({ id: null, email: '', first_name: '', last_name: '', address: '', license: '', password: '', permit: '' })
   
-      axios.get('https://mvothocqom.ap.loclx.io/user', {
+      axios.get('https://y2mifxhqo2.loclx.io/user', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('access_token')}`
         }
@@ -133,7 +133,7 @@
         })
   
       const updateUser = () => {
-        axios.put('https://mvothocqom.ap.loclx.io/updateuser', user.value, {
+        axios.put('https://y2mifxhqo2.loclx.io/updateuser', user.value, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('access_token')}`
           }
@@ -154,7 +154,7 @@
       }
   
       const logout = () => {
-        axios.post('https://mvothocqom.ap.loclx.io/logout')
+        axios.post('https://y2mifxhqo2.loclx.io/logout')
           .then(response => {
             // Handle successful logout
             console.log(response.data.message)

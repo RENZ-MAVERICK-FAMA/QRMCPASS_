@@ -99,7 +99,7 @@ export default {
     });
 
     axios
-      .get("https://mvothocqom.ap.loclx.io/Teller", {
+      .get("https://y2mifxhqo2.loclx.io/Teller", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
@@ -115,7 +115,7 @@ export default {
 
     const logout = () => {
       axios
-        .post("https://mvothocqom.ap.loclx.io/logout")
+        .post("https://y2mifxhqo2.loclx.io/logout")
         .then((response) => {
           // Handle successful logout
           console.log(response.data.message);
