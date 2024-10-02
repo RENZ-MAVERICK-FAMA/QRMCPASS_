@@ -197,6 +197,7 @@
             const paymentResponse = await axios.get(`http://127.0.0.1:9000/payment-details?unit_info=${detectedWrCode}`);
 
 
+            
                 const paymentDetails = paymentResponse.data;
                 console.log('payment:',paymentDetails);
                 this.openModal(paymentDetails);

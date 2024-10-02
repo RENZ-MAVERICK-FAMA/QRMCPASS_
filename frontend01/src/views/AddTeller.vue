@@ -63,7 +63,7 @@ import axios from 'axios';
       formData.append('password1', this.password1);
       formData.append('password2', this.password2);
 
-      axios.post('https://k1dobevofh.ap.loclx.io/addTeller', formData)
+      axios.post('https://mvothocqom.ap.loclx.io/addTeller', formData)
         .then(response => {
       this.username = '';
       this.firstName = '';

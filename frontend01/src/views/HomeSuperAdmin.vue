@@ -57,7 +57,7 @@ export default {
   },
   methods: {
     getActiveAccountsCount() {
-    axios.get('https://k1dobevofh.ap.loclx.io/active_sessions')
+    axios.get('https://mvothocqom.ap.loclx.io/active_sessions')
         .then(response => {
             this.activeAccountsCount = response.data.active_sessions;
         })

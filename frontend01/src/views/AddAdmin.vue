@@ -131,7 +131,7 @@ import axios from 'axios';
       formData.append('password1', this.password1);
       formData.append('password2', this.password2);
 
-      axios.post('https://k1dobevofh.ap.loclx.io/addAdmin', formData)
+      axios.post('https://mvothocqom.ap.loclx.io/addAdmin', formData)
         .then(response => {
       this.username = '';
       this.firstName = '';
@@ -143,6 +143,7 @@ import axios from 'axios';
         
         })
         .catch(error => {
+          
           this.loginError = error.response.data.message;
           console.error(this.loginError);
          

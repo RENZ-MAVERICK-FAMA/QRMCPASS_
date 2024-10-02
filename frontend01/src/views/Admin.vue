@@ -167,7 +167,7 @@
       formData.append('password1', this.password1);
       formData.append('password2', this.password2);
 
-      axios.post('https://k1dobevofh.ap.loclx.io/addAdmin', formData)
+      axios.post('https://mvothocqom.ap.loclx.io/addAdmin', formData)
         .then(response => {
       this.username = '';
       this.firstName = '';
@@ -188,7 +188,7 @@
     },
       async fetchadmins() {
         try {
-          const response = await axios.get('https://k1dobevofh.ap.loclx.io/admins');
+          const response = await axios.get('https://mvothocqom.ap.loclx.io/admins');
           this.admins = response.data.admins;
         } catch (error) {
           console.error(error);
@@ -211,7 +211,7 @@
   const { id, username, firstName, lastName, address, password } = this.editedTeller;
   const updatedData = { username, firstName, lastName, address, password };
 
-  axios.put(`https://k1dobevofh.ap.loclx.io/updateAdmin/${id}`, updatedData)
+  axios.put(`https://mvothocqom.ap.loclx.io/updateAdmin/${id}`, updatedData)
     .then(response => {
       // Find the index of the admin in the array
       const index = this.admins.findIndex(admin => admin.id === id);

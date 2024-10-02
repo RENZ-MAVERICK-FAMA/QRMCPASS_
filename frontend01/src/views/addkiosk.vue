@@ -21,6 +21,7 @@
             <Button type="text" icon="pi pi-times" label="Cancel" severity="secondary" class="w-full" />
           </RouterLink>
         </div>
+        
       </form>
   </main>
 </template>
@@ -47,7 +48,7 @@
 
   console.log('Form Data:', formData);
 
-  axios.post('https://k1dobevofh.ap.loclx.io/addkiosk', formData)
+  axios.post('https://mvothocqom.ap.loclx.io/addkiosk', formData)
     .then(response => {
       this.username = '';
       this.password1 = '';
