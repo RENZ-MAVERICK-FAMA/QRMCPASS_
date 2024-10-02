@@ -119,7 +119,7 @@
   
       const user = ref({ id: null, email: '', first_name: '', last_name: '', address: '', license: '', password: '', permit: '' })
   
-      axios.get('https://qrmcpass.loca.lt/user', {
+      axios.get('https://k1dobevofh.ap.loclx.io/user', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('access_token')}`
         }
@@ -133,7 +133,7 @@
         })
   
       const updateUser = () => {
-        axios.put('https://qrmcpass.loca.lt/updateuser', user.value, {
+        axios.put('https://k1dobevofh.ap.loclx.io/updateuser', user.value, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('access_token')}`
           }
@@ -154,7 +154,7 @@
       }
   
       const logout = () => {
-        axios.post('https://qrmcpass.loca.lt/logout')
+        axios.post('https://k1dobevofh.ap.loclx.io/logout')
           .then(response => {
             // Handle successful logout
             console.log(response.data.message)

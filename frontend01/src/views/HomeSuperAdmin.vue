@@ -57,7 +57,7 @@ export default {
   },
   methods: {
     getActiveAccountsCount() {
-    axios.get('https://qrmcpass.loca.lt/active_sessions')
+    axios.get('https://k1dobevofh.ap.loclx.io/active_sessions')
         .then(response => {
             this.activeAccountsCount = response.data.active_sessions;
         })

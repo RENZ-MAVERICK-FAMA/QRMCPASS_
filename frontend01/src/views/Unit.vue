@@ -89,7 +89,7 @@ export default {
   methods: {
     async fetchUnits() {
       try {
-        const response = await axios.get('https://qrmcpass.loca.lt/units');
+        const response = await axios.get('https://k1dobevofh.ap.loclx.io/units');
         this.units = response.data.units;
       } catch (error) {
         console.error(error);
@@ -111,7 +111,7 @@ export default {
   const { id, color, unit_info, unit_type, password } = this.editedTeller;
   const updatedData = { color, unit_info, unit_type, password };
 
-  axios.put(`https://qrmcpass.loca.lt/updateUnit/${id}`, updatedData)
+  axios.put(`https://k1dobevofh.ap.loclx.io/updateUnit/${id}`, updatedData)
     .then(response => {
       // Find the index of the unit in the array
       const index = this.units.findIndex(unit => unit.id === id);

@@ -61,7 +61,7 @@
      
      
       const logout = () => {
-        axios.post('https://qrmcpass.loca.lt/logout')
+        axios.post('https://k1dobevofh.ap.loclx.io/logout')
           .then(response => {
             // Handle successful logout
             console.log(response.data.message)

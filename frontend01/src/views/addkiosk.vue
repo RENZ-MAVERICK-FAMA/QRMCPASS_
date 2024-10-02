@@ -47,7 +47,7 @@
 
   console.log('Form Data:', formData);
 
-  axios.post('https://qrmcpass.loca.lt/addkiosk', formData)
+  axios.post('https://k1dobevofh.ap.loclx.io/addkiosk', formData)
     .then(response => {
       this.username = '';
       this.password1 = '';

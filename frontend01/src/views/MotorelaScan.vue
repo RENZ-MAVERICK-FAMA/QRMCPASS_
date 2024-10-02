@@ -262,7 +262,7 @@
     setup(){
       const teller = ref({ id: null, username: '', first_name: '', last_name: '' })
 
-  axios.get('https://qrmcpass.loca.lt/Teller', {
+  axios.get('https://k1dobevofh.ap.loclx.io/Teller', {
   headers: {
     Authorization: `Bearer ${localStorage.getItem('access_token')}`
   }
@@ -493,7 +493,7 @@ unit.transactions.slice(startIndex1).forEach((transaction, index) => {
       saveDetectedCodesToLocalStorage() {
   localStorage.setItem('detectedCodesMotorela', JSON.stringify(this.detectedCodes));
   }, fetchDelinquencies() {
-        axios.get('https://qrmcpass.loca.lt/admin/delinquencies/motorela/daily', {
+        axios.get('https://k1dobevofh.ap.loclx.io/admin/delinquencies/motorela/daily', {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('access_token')}`,
           },
@@ -506,7 +506,7 @@ unit.transactions.slice(startIndex1).forEach((transaction, index) => {
         });
       },
       fetchUnits() {
-        axios.get('https://qrmcpass.loca.lt/unitpaid', {
+        axios.get('https://k1dobevofh.ap.loclx.io/unitpaid', {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('access_token')}`,
           },
@@ -548,7 +548,7 @@ unit.transactions.slice(startIndex1).forEach((transaction, index) => {
 
   console.log('data to be sent:', data);
 
-  axios.post('https://qrmcpass.loca.lt/deduct', data, {
+  axios.post('https://k1dobevofh.ap.loclx.io/deduct', data, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('access_token')}`,
       'Content-Type': 'application/json',
@@ -597,7 +597,7 @@ unit.transactions.slice(startIndex1).forEach((transaction, index) => {
       
       console.log('data to be sent:', data);
       
-      axios.post('https://qrmcpass.loca.lt/manualpay', data, {
+      axios.post('https://k1dobevofh.ap.loclx.io/manualpay', data, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('access_token')}`,
           'Content-Type': 'application/json',
@@ -647,7 +647,7 @@ unit.transactions.slice(startIndex1).forEach((transaction, index) => {
     const detectedWrCode = detectedStrings[0];
 
     try {
-        const response = await axios.get(`https://qrmcpass.loca.lt/api/check-unit/motorela?unit_info=${detectedWrCode}`);
+        const response = await axios.get(`https://k1dobevofh.ap.loclx.io/api/check-unit/motorela?unit_info=${detectedWrCode}`);
 
         if (!response.data.exists) {
             this.error = `Unit with QR code "${detectedWrCode}" is not a Motorela unit.`;
@@ -662,7 +662,7 @@ unit.transactions.slice(startIndex1).forEach((transaction, index) => {
                 return;
             }
 
-            const paymentResponse = await axios.get(`https://qrmcpass.loca.lt/payment-details?unit_info=${detectedWrCode}`);
+            const paymentResponse = await axios.get(`https://k1dobevofh.ap.loclx.io/payment-details?unit_info=${detectedWrCode}`);
 
 
                 const paymentDetails = paymentResponse.data;

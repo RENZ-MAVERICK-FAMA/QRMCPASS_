@@ -165,7 +165,7 @@ export default {
       formData.append("password2", this.password2);
 
       axios
-        .post("https://qrmcpass.loca.lt/addunit", formData, {
+        .post("https://k1dobevofh.ap.loclx.io/addunit", formData, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
           },

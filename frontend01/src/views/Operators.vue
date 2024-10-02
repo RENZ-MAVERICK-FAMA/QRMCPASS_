@@ -176,7 +176,7 @@ export default {
   methods: {
     async fetchUsers() {
 try {
-  const response = await axios.get('https://qrmcpass.loca.lt/users');
+  const response = await axios.get('https://k1dobevofh.ap.loclx.io/users');
   this.users = response.data.users.map(user => ({
     id: user.id,
     username: user.username,

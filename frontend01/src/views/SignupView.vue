@@ -65,7 +65,7 @@ export default {
         this.loginError = 'Passwords do not match.';
         return;
       }
-      axios.get(`https://qrmcpass.loca.lt/check_email/${this.email}`)
+      axios.get(`https://k1dobevofh.ap.loclx.io/check_email/${this.email}`)
         .then(response => {
           if (response.data.exists) {
             this.loginError = 'Email already exists.';
@@ -80,7 +80,7 @@ export default {
             formData.append('password1', this.password1);
             formData.append('password2', this.password2);
 
-            axios.post('https://qrmcpass.loca.lt/signup', formData)
+            axios.post('https://k1dobevofh.ap.loclx.io/signup', formData)
               .then(response => {
                 this.email = '';
                 this.firstName = '';

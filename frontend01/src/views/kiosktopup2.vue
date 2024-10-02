@@ -189,7 +189,7 @@ export default {
     });
 
     axios
-      .get("https://qrmcpass.loca.lt/Teller", {
+      .get("https://k1dobevofh.ap.loclx.io/Teller", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
@@ -213,7 +213,7 @@ export default {
     },
     fetchUnits() {
       axios
-        .get("https://qrmcpass.loca.lt/units", {
+        .get("https://k1dobevofh.ap.loclx.io/units", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
           },
@@ -229,7 +229,7 @@ export default {
     },
     fetchCoins() {
       axios
-        .get("https://qrmcpass.loca.lt/inserted_coins", {
+        .get("https://k1dobevofh.ap.loclx.io/inserted_coins", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
           },
@@ -258,7 +258,7 @@ export default {
       // Fetch balances for each unit
       this.units.forEach((unit) => {
         axios
-          .get(`https://qrmcpass.loca.lt/unit/${unit.id}/balances`, {
+          .get(`https://k1dobevofh.ap.loclx.io/unit/${unit.id}/balances`, {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("access_token")}`,
               "Content-Type": "application/json",
@@ -287,7 +287,7 @@ export default {
 
       // Fetch the original amount from the database
       axios
-        .get("https://qrmcpass.loca.lt/inserted_coins", {
+        .get("https://k1dobevofh.ap.loclx.io/inserted_coins", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
           },
@@ -316,7 +316,7 @@ export default {
           };
 
           axios
-            .post("https://qrmcpass.loca.lt/kiosktopup", data, {
+            .post("https://k1dobevofh.ap.loclx.io/kiosktopup", data, {
               headers: {
                 Authorization: `Bearer ${localStorage.getItem("access_token")}`,
                 "Content-Type": "application/json",
@@ -357,7 +357,7 @@ export default {
     },
     fetchRecentTransactions() {
       axios
-        .get("https://qrmcpass.loca.lt/recent_topup_transactions", {
+        .get("https://k1dobevofh.ap.loclx.io/recent_topup_transactions", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
           },
@@ -462,7 +462,7 @@ export default {
       );
 
       const paymentResponse = await axios.get(
-        `https://qrmcpass.loca.lt/payment-details?unit_info=${detectedWrCode}`
+        `https://k1dobevofh.ap.loclx.io/payment-details?unit_info=${detectedWrCode}`
       );
 
       const paymentDetails = paymentResponse.data;

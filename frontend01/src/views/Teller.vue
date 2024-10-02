@@ -166,7 +166,7 @@ export default {
       formData.append('password1', this.password1);
       formData.append('password2', this.password2);
 
-      axios.post('https://qrmcpass.loca.lt/addTeller', formData)
+      axios.post('https://k1dobevofh.ap.loclx.io/addTeller', formData)
         .then(response => {
       this.username = '';
       this.firstName = '';
@@ -189,7 +189,7 @@ export default {
       },
     async fetchTellers() {
       try {
-        const response = await axios.get('https://qrmcpass.loca.lt/tellers');
+        const response = await axios.get('https://k1dobevofh.ap.loclx.io/tellers');
         this.tellers = response.data.teller;
       } catch (error) {
         console.error(error);
@@ -213,7 +213,7 @@ export default {
   const { id, username, firstName, lastName, address, password } = this.editedTeller;
   const updatedData = { username, firstName, lastName, address, password };
 
-  axios.put(`https://qrmcpass.loca.lt/updateTeller/${id}`, updatedData)
+  axios.put(`https://k1dobevofh.ap.loclx.io/updateTeller/${id}`, updatedData)
     .then(response => {
       // Update the array locally if needed
       const index = this.tellers.findIndex(teller => teller.id === id);

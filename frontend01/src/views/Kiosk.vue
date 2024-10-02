@@ -48,7 +48,7 @@ export default {
   methods: {
     async fetchKiosks() {
       try {
-        const response = await axios.get("https://qrmcpass.loca.lt/kiosk");
+        const response = await axios.get("https://k1dobevofh.ap.loclx.io/kiosk");
         this.kiosks = response.data;
       } catch (error) {
         console.error(error);
