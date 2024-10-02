@@ -1,5 +1,153 @@
-
 <template>
+  <div class="container">
+  
+
+    <!-- QR Code Scanner Section -->
+    <div class="row justify-content-center mt-5">
+      <div class="col-md-6">
+        <h1>QR Code Scanner</h1>
+        <p>
+           Pick the Camera:
+          <select v-model="selectedDevice" class="camera-select">
+            <option disabled value="">Select Camera</option>
+            <option
+              v-for="device in devices"
+              :key="device.deviceId"
+              :value="device"
+            >
+              {{ device.label }}
+            </option>
+          </select>
+        </p>
+        <p class="error">{{ scannerError }}</p>
+
+        <div>
+  <h2 align="center">Payment</h2>
+  <div v-if="error" class="alert alert-danger" role="alert">
+{{ error }}
+<button @click="clearError" class="close" data-dismiss="alert">
+  <span aria-hidden="true">&times;</span>
+</button>
+</div>  
+<div v-if="success" class="alert alert-success" role="alert">
+{{ success }}
+<button @click="clearSuccess" class="close" aria-label="Close">
+  <span aria-hidden="true">&times;</span>
+</button>
+</div>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <form @submit.prevent="deduct">
+          <div class="form-group">
+            <label for="unit">Select Unit:</label>
+            <select v-model="selectedUnit" class="form-control" id="unit" name="unit" required>
+  <option v-for="unit in filteredUnits" :key="unit.id" :value="unit">{{ unit.unit_info }}</option>
+</select>
+          </div>
+          <label for="branch">Branch:</label>
+          <br>
+          <input v-model="selectedBranch" name="branch" id="branch" value="market" placeholder="Market" required readonly >
+
+          <!-- <select v-model="selectedBranch" name="branch" id="branch" required>
+            <option value="market">Market</option>
+          </select><br>  -->
+          <div class="form-group">
+            <label for="date">Payment Date:</label>
+            <input v-model="date" type="date" class="form-control" id="date" name="date" required>
+          </div>
+          <button type="submit" class="btn btn-primary">deduct</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  
+</div>
+
+        <p class="decode-result">
+          Last results:
+        </p>
+
+        <table class="qr-code-table">
+          <thead>
+            <tr>
+              <th>Index</th>
+              <th>QR Code Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(code, index) in detectedCodes" :key="index">
+              <td style="width: 20px; height: 10px; border: 1px solid black;">{{ index + 1 }}</td>
+              <td style="width: 100px; height: 10px; border: 1px solid black;">{{ code }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="container">
+    <h2>Delinquencies</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Unit ID</th>
+          <th>Date of Payment</th>
+          <!-- Add more table headers as needed -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(delinquency, index) in delinquencies" :key="index">
+          <td>{{ delinquency.unit_id }}</td>
+          <td>{{ delinquency.date_of_payment }}</td>
+          <!-- Add more table cells to display additional delinquency data -->
+        </tr>
+      </tbody>
+    </table>
+  </div>
+        <div class="camera-wrapper" style="position: absolute; top: 55px; right: 0; width:300px;height: 200px;">
+  <qrcode-stream
+      :key="qrCodeKey"
+      :constraints="{ deviceId: selectedDevice ? selectedDevice.deviceId : null }"
+      @error="onScannerError"
+      @detect="onDetect"
+      v-if="selectedDevice !== null"
+  />
+  <p v-else class="no-camera-error">No cameras available on this device</p>
+</div>
+<br>
+
+        <!-- <button @click="generateExcel" class="generate-btn">Generate Report</button> -->
+        <button  @click="generateReportWithQRAndDelinquency" class="generate-btn">Generate QR Codes and Delinquencies Report</button>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+  <!-- Table for Units -->
+  <table class="table">
+    <thead>
+      <tr>
+        <th><strong>Motorela</strong></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <button @click="showMotorela = !showMotorela">Show Motorela</button>
+          <template v-if="showMotorela">
+            <table class="inner-table">
+              <tbody>
+                <div class="unit-list">
+            <span v-for="unit in getUnitsByType('motorela')" :key="unit.id">{{ unit.unit_info }}</span>
+          </div>
+              </tbody>
+            </table>
+          </template>
+        </td>
+      
+      </tr>
+    </tbody>
+  </table>
+  <button @click="resetScannedData" class="btn btn-danger">Reset Scanned Data</button>
+</div>
+</template>
   <div class="container">
   
 

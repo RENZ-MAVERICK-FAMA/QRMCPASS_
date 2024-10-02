@@ -15,7 +15,8 @@
             <Button @click="showModal = true" label="ADD TELLER" icon="pi pi-plus" severity="success" />
           </div>
           <div>
-        <input type="text" v-model="searchTerm" placeholder="Search...">
+        <!-- <input type="text" v-model="searchTerm" placeholder="Search..."> -->
+        <InputText v-model:modelValue="searchTerm" placeholder="Search..." class="w-full mt-4"/>
       </div>
         </template>
         <template #empty>
@@ -29,7 +30,8 @@
         <Column header="Address" field="address1" />
         <Column header="Action">
     <template #body="{ data }">
-      <button @click="editAdmin(data)" class="btn btn-primary">Edit</button>
+      <!-- <button @click="editAdmin(data)" class="btn btn-primary">Edit</button> -->
+      <Button @click="editAdmin(data)" severity="success" label="Edit" icon="pi pi-pencil"/>
     </template>
   </Column>
       </DataTable>
@@ -66,8 +68,7 @@
   </Dialog>
   <Dialog v-model:visible="showEditModal" header="Update Teller" modal class=" w-full md:w-[600px]" >
       <div class="modal-content">
-    <span class="close" @click="closeModal">&times;</span>
-    <h2>Edit Admin</h2>
+
     <form @submit.prevent="updateTeller">
       <!-- Username -->
       <div class="mt-3">
@@ -95,12 +96,16 @@
         <InputText v-model="editedTeller.password" type="password" id="editPassword" required class="w-full" />
       </div>
       <br />
-      <button type="submit" class="btn btn-primary">Update</button>
+      <!-- <button type="submit" class="btn btn-primary">Update</button> -->
+      <Button
+      type="submit"
+      label="Update"
+      severity="success"
+      />
     </form>
   </div>
 </Dialog>
 </template>
-
 <script>
 import axios from 'axios';
 

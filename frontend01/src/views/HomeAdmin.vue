@@ -1,4 +1,6 @@
 <template>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
   <main class=" md:mt-10 p-[20px] lg:px-[5%]" >
     <div class="" >
       <div class="grid grid-cols-2 gap-5 md:gap-10" >
@@ -79,9 +81,15 @@
 <script>
 import axios from 'axios';
 import logos from './base64-logos.json';
-import pdfMake from 'pdfmake/build/pdfmake';
 
-pdfMake.vfs = pdfMake.vfs;
+// pdfMake.fonts = {
+//     Roboto: {
+//         normal: 'Roboto-Regular.ttf',
+//         bold: 'Roboto-Medium.ttf',
+//         italics: 'Roboto-Italic.ttf',
+//         bolditalics: 'Roboto-BoldItalic.ttf'
+//     }
+// };
 export default {
   data() {
     return {

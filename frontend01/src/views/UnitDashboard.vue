@@ -1,156 +1,163 @@
-  <template>
-  <main class="flex justify-center">
-      <div class=" mt-10" >
-        <div class="flex justify-center" >
-          <div class="size-[240px] bg-white p-2 shadow rounded-[10px]" >
-            <img :src="unit.qrcode"  alt="QR Code" class="w-full h-full  rounded-[10px]">
-          </div>
-        </div>
-        <div class="grid md:grid-cols-[200px,1fr] gap-3 mt-5 shadow bg-white p-5 " >
-          <div class=" " >
-            <div class="h-[200px] w-[200px]" >
-              <img :src="unit.picture"  alt="Pictures" class="w-full h-full"ss>
-            </div>
-          </div>
-          <div>
-            <div class="flex items-end mt-3 " >
-              <span class="text-[20px]" >Unit: </span>
-              <span class="font-bold text-[20px] text-green-400" >{{unit.unit_info}}</span>
-            </div>
-            <div class="flex " >
-              <span class="text-[20px]" >Balance: ₱ </span>
-              <span class="font-bold text-[20px] text-green-400" >{{ balance }}</span>
-            </div>
-            <div class="mt-3 grid gap-5" >
-              <Button severity="success" @click="showModalDelinquencies = true" label="Show Delinquencies" />
-              <Button severity="success" @click="showModalTransactions = true" label="Transactions" />
-            </div>
-          </div>
+<template>
+ <main class="flex justify-center">
+    <div class=" mt-10" >
+      <div class="flex justify-center" >
+        <div class="w-full flex justify-center items-center bg-white p1 shadow rounded-[10px]" >
+          <img :src="unit.qrcode"  alt="QR Code" class="w-300px h-300px  rounded-[10px]">
         </div>
       </div>
-      <Dialog header="Delinquencies" v-model:visible="showModalDelinquencies" class="w-[800px]" modal>
-      <div class="w-full">
-        <div class="flex justify-center">
-          <div class="flex items-center gap-5 mb-2">
-            <Button
-              @click="goToPreviousYear"
-              label="Previous Year"
-              icon="pi pi-angle-double-left"
-              severity="info"
-              text
-            />
-            <Button
-              @click="goToPreviousMonth"
-              label="Previous Month"
-              icon="pi pi-angle-left"
-              severity="info"
-              text
-            />
-            <strong>{{ currentMonthName }} {{ currentYear }}</strong>
-            <Button
-              @click="goToNextMonth"
-              label="Next Month"
-              icon="pi pi-angle-right"
-              iconPos="right"
-              severity="info"
-              text
-            />
-            <Button
-              @click="goToNextYear"
-              label="Next Year"
-              icon="pi pi-angle-double-right"
-              iconPos="right"
-              severity="info"
-              text
-            />
+      <div class="grid md:grid-cols-[200px,1fr] gap-3 mt-5 shadow bg-white p-5 " >
+        <div class=" " >
+          <div class="h-[200px] w-[200px]" >
+            <img :src="unit.picture"  alt="Pictures" class="w-full h-full"ss>
           </div>
         </div>
-        <table class="w-full">
-          <thead class="h-[50px] text-left bg-slate-100">
-            <tr>
-              <th class="pl-[5px] text-black uppercase border border-slate-300/80 font-semibold" v-for="day in weekDays" :key="day">{{ day }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="h-[45px]" v-for="week in calendarWeeks" :key="week">
-              <td class="border border-slate-300 pl-[5px] font-light" v-for="day in week" :key="day" :class="getCellClass(day)">
-                <strong v-if="day">{{ day }}</strong>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </Dialog>
-      <Dialog header="Transactions" v-model:visible="showModalTransactions" class="w-[800px]" modal>
-      <div class="w-full">
         <div>
-          <input
-            type="text"
-            v-model="searchTerm"
-            placeholder="Search..."
-            class="p-2 border border-gray-300 rounded"
+          <div class="flex items-end mt-3 " >
+            <span class="text-[20px]" >Unit: </span>
+            <span class="font-bold text-[20px] text-green-400" >{{unit.unit_info}}</span>
+          </div>
+          <div class="flex " >
+            <span class="text-[20px]" >Balance: ₱ </span>
+            <span class="font-bold text-[20px] text-green-400" >{{ balance }}</span>
+          </div>
+          <div class="mt-3 grid gap-5" >
+            <Button severity="success" @click="showModalDelinquencies = true" label="Show Delinquencies" />
+            <Button severity="success" @click="showModalTransactions = true" label="Transactions" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <Dialog header="Delinquencies" v-model:visible="showModalDelinquencies" class="w-[800px] " modal>
+    <div class="w-full">
+      <div class="flex justify-center">
+          <strong>{{ currentMonthName }} {{ currentYear }}</strong>
+        </div>
+        <div class="flex justify-between items-center mt-3">
+          <Button
+            @click="goToPreviousMonth"
+            label="Prev"
+            icon="pi pi-angle-left"
+            severity="info"
+            text
+          />
+
+          <p>Month</p>
+
+          <Button
+            @click="goToNextMonth"
+            label="Next"
+            icon="pi pi-angle-right"
+            iconPos="right"
+            severity="info"
+            text
           />
         </div>
-        <table class="w-full">
-          <thead class="h-[50px] text-left bg-slate-100">
-            <tr>
-              <th class="pl-[5px] text-black uppercase border border-slate-300/80 font-semibold">Date</th>
-              <th class="pl-[5px] text-black uppercase border border-slate-300/80 font-semibold">Time</th>
-              <th class="pl-[5px] text-black uppercase border border-slate-300/80 font-semibold">Amount</th>
-              <th class="pl-[5px] text-black uppercase border border-slate-300/80 font-semibold">Toll-Booth</th>
-              <th class="pl-[5px] text-black uppercase border border-slate-300/80 font-semibold">Reference Number</th>
-              <th class="pl-[5px] text-black uppercase border border-slate-300/80 font-semibold">Teller</th>
-              <th class="pl-[5px] text-black uppercase border border-slate-300/80 font-semibold">Type</th>
-              <th class="pl-[5px] text-black uppercase border border-slate-300/80 font-semibold">Receipt</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="h-[45px]" v-for="(transaction, index) in filteredTransactions" :key="index" :class="getTransactionClass(transaction)">
-              <td class="border border-slate-300 pl-[5px] font-light">{{ formatDate(transaction.date_of_payment) }}</td>
-              <td class="border border-slate-300 pl-[5px] font-light">{{ formatTime(transaction.date_of_payment) }}</td>
-              <td class="border border-slate-300 pl-[5px] font-light">{{ transaction.amount }}</td>
-              <td class="border border-slate-300 pl-[5px] font-light">{{ transaction.branch }}</td>
-              <td class="border border-slate-300 pl-[5px] font-light">{{ transaction.reference_key }}</td>
-              <td class="border border-slate-300 pl-[5px] font-light">{{ transaction.teller }}</td>
-              <td class="border border-slate-300 pl-[5px] font-light"><strong>{{ transaction.type.toUpperCase() }}</strong></td>
-              <td class="border border-slate-300 pl-[5px] font-light flex justify-center p-2">
-                <Button severity="success" @click="generateReceipt(transaction, unit)" icon="pi pi-file-pdf" />
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="flex justify-center mt-4">
-          <div class="flex items-center gap-5">
-            <Button
-              @click="prevPageTransactions"
-              :disabled="currentPageTransactions === 0"
-              label="Previous"
-              icon="pi pi-angle-double-left"
-              severity="info"
-            />
-            <strong>Page {{ currentPageTransactions + 1 }} of {{ totalPagesTransactions }}</strong>
-            <Button
-              @click="nextPageTransactions"
-              :disabled="currentPageTransactions === totalPagesTransactions - 1"
-              label="Next"
-              icon="pi pi-angle-double-right"
-              iconPos="right"
-              severity="info"
-            />
-          </div>
-        </div>
-      </div>
-    </Dialog>
-    </main>
-  </template>
+        <div class="flex justify-between items-center mt-3">
+          <Button
+            @click="goToPreviousYear"
+            label="Prev"
+            icon="pi pi-angle-double-left"
+            severity="info"
+            text
+          />
 
+          <p>Year</p>
+
+          <Button
+            @click="goToNextYear"
+            label="Next"
+            icon="pi pi-angle-double-right"
+            iconPos="right"
+            severity="info"
+            text
+          />
+        </div>
+      
+      <table class="w-full mt-3">
+        <thead class="h-[50px] text-left bg-slate-100">
+          <tr>
+            <th class="pl-[5px] text-black uppercase border border-slate-300/80 font-semibold" v-for="day in weekDays" :key="day">{{ day }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="h-[45px]" v-for="week in calendarWeeks" :key="week">
+            <td class="border border-slate-300 pl-[5px] font-light" v-for="day in week" :key="day" :class="getCellClass(day)">
+              <strong v-if="day">{{ day }}</strong>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </Dialog>
+    <Dialog header="Transactions" v-model:visible="showModalTransactions" class="w-[800px]" modal>
+  <div class="w-full">
+    <div>
+      <!-- <input type="text" v-model="searchTerm" placeholder="Search..." class="p-2 border border-gray-300 rounded"> -->
+      <InputText v-model:modelValue="searchTerm" placeholder="Search..." class="w-full"/>
+      
+    </div>
+    <div class=" overflow-scroll md:overflow-hidden w-[350px] md:w-full">
+      <table class="w-full mt-3">
+      <thead class="h-[50px] text-left bg-slate-100">
+        <tr>
+          <th class="pl-[5px] text-black uppercase border border-slate-300/80 font-semibold">Date</th>
+          <th class="pl-[5px] text-black uppercase border border-slate-300/80 font-semibold">Time</th>
+          <th class="pl-[5px] text-black uppercase border border-slate-300/80 font-semibold">Amount</th>
+          <th class="pl-[5px] text-black uppercase border border-slate-300/80 font-semibold">Toll-Booth</th>
+          <th class="pl-[5px] text-black uppercase border border-slate-300/80 font-semibold">Reference Number</th>
+          <th class="pl-[5px] text-black uppercase border border-slate-300/80 font-semibold">Teller</th>
+          <th class="pl-[5px] text-black uppercase border border-slate-300/80 font-semibold">Type</th>
+          <th class="pl-[5px] text-black uppercase border border-slate-300/80 font-semibold">Receipt</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="h-[45px]" v-for="(transaction, index) in filteredTransactions" :key="index" :class="getTransactionClass(transaction)">
+          <td class="border border-slate-300 pl-[5px] font-light">{{ new Date(transaction.date_of_payment).toISOString().split('T')[0] }}</td>
+          <td class="border border-slate-300 pl-[5px] font-light">{{ new Date(transaction.date_of_payment).toLocaleTimeString('en-US', { timeZone: 'GMT' }) }}</td>
+          <td class="border border-slate-300 pl-[5px] font-light">{{ transaction.amount }}</td>
+          <td class="border border-slate-300 pl-[5px] font-light">{{ transaction.branch }}</td>
+          <td class="border border-slate-300 pl-[5px] font-light">{{ transaction.reference_key }}</td>
+          <td class="border border-slate-300 pl-[5px] font-light">{{ transaction.teller }}</td>
+          <td class="border border-slate-300 pl-[5px] font-light"><strong>{{ transaction.type.toUpperCase() }}</strong></td>
+          <td class="border border-slate-300 pl-[5px] font-light flex justify-center p-2">
+            <Button severity="success" @click="generateReceipt(transaction, unit)" icon="pi pi-file-pdf" label="Receipt"/>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="flex justify-center mt-4">
+      <div class="flex items-center gap-5">
+        <Button
+          @click="prevPageTransactions"
+          :disabled="currentPageTransactions === 0"
+          label="Previous"
+          icon="pi pi-angle-double-left"
+          severity="info"
+        />
+        <strong>Page {{ currentPageTransactions + 1 }} of {{ totalPagesTransactions }}</strong>
+        <Button
+          @click="nextPageTransactions"
+          :disabled="currentPageTransactions === totalPagesTransactions - 1"
+          label="Next"
+          icon="pi pi-angle-double-right"
+          iconPos="right"
+          severity="info"
+        />
+      </div>
+    </div>
+  </div>
+</Dialog>
+  </main>
+</template>
   <script>
     import { ref, computed, watch, onUnmounted } from 'vue';
     import axios from 'axios';
     import { useRouter } from 'vue-router';
     import { format } from 'date-fns';
     import jsPDF from 'jspdf';
-  import Unit from '../SuperAdmin/pages/Unit.vue';
+  import Unit from '../views/Unit.vue';
     export default {
       setup() {
         

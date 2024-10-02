@@ -26,6 +26,7 @@
     </form>
   </main>
 </template>
+
 <script>
 import axios from 'axios';
 import { defineAsyncComponent } from 'vue';

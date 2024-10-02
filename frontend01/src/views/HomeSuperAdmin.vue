@@ -43,6 +43,7 @@
     </div>
   </main>
 </template>
+
 <script>
 import axios from 'axios';
 import { RouterLink } from 'vue-router';

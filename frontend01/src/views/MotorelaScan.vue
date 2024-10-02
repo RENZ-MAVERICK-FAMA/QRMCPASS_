@@ -1,5 +1,6 @@
+
 <template>
-  <main class="mt-10 p-5 md:px-[5%] lg:px-[15%]">
+  <main class="mt-1 p-5 md:px-[5%] lg:px-[15%] bg-slate-100">
     <div class="bg-white rounded-[10px] p-5">
       <RouterLink to="/homeTeller">
         <Button icon="pi pi-arrow-left" label="Go Back" text class="mb-2" />
@@ -190,7 +191,6 @@
   </Dialog>
   </main>
 </template>
-
 <script>
   import { ref, onMounted } from 'vue';
   import { QrcodeStream } from 'vue-qrcode-reader';
