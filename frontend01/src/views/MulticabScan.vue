@@ -264,7 +264,7 @@ this.fetchDelinquencies();
   setup(){
     const teller = ref({ id: null, username: '', first_name: '', last_name: '' })
 
-axios.get('https://y2mifxhqo2.loclx.io/Teller', {
+axios.get('https://zfhlpd2pxk.loclx.io/Teller', {
 headers: {
   Authorization: `Bearer ${localStorage.getItem('access_token')}`
 }
@@ -490,7 +490,7 @@ generateAndDownloadPDF() {
     saveDetectedCodesToLocalStorage() {
 localStorage.setItem('detectedCodesMulticab', JSON.stringify(this.detectedCodes));
 }, fetchDelinquencies() {
-      axios.get('https://y2mifxhqo2.loclx.io/admin/delinquencies/multicab/daily', {
+      axios.get('https://zfhlpd2pxk.loclx.io/admin/delinquencies/multicab/daily', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('access_token')}`,
         },
@@ -503,7 +503,7 @@ localStorage.setItem('detectedCodesMulticab', JSON.stringify(this.detectedCodes)
       });
     },
     fetchUnits() {
-      axios.get('https://y2mifxhqo2.loclx.io/unitpaid', {
+      axios.get('https://zfhlpd2pxk.loclx.io/unitpaid', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('access_token')}`,
         },
@@ -551,7 +551,7 @@ let data = {
 
 console.log('data to be sent:', data);
 
-axios.post('https://y2mifxhqo2.loclx.io/deduct', data, {
+axios.post('https://zfhlpd2pxk.loclx.io/deduct', data, {
   headers: {
     Authorization: `Bearer ${localStorage.getItem('access_token')}`,
     'Content-Type': 'application/json',
@@ -600,7 +600,7 @@ axios.post('https://y2mifxhqo2.loclx.io/deduct', data, {
     
     console.log('data to be sent:', data);
     
-    axios.post('https://y2mifxhqo2.loclx.io/manualpay', data, {
+    axios.post('https://zfhlpd2pxk.loclx.io/manualpay', data, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('access_token')}`,
         'Content-Type': 'application/json',
@@ -650,7 +650,7 @@ axios.post('https://y2mifxhqo2.loclx.io/deduct', data, {
     const detectedWrCode = detectedStrings[0];
 
     try {
-        const response = await axios.get(`https://y2mifxhqo2.loclx.io/api/check-unit/multicab?unit_info=${detectedWrCode}`);
+        const response = await axios.get(`https://zfhlpd2pxk.loclx.io/api/check-unit/multicab?unit_info=${detectedWrCode}`);
 
         if (!response.data.exists) {
             this.error = `Unit with QR code "${detectedWrCode}" is not a Multicab unit.`;
@@ -667,7 +667,7 @@ axios.post('https://y2mifxhqo2.loclx.io/deduct', data, {
                 return;
             }
 
-            const paymentResponse = await axios.get(`https://y2mifxhqo2.loclx.io/payment-details?unit_info=${detectedWrCode}`);
+            const paymentResponse = await axios.get(`https://zfhlpd2pxk.loclx.io/payment-details?unit_info=${detectedWrCode}`);
 
 
                 const paymentDetails = paymentResponse.data;

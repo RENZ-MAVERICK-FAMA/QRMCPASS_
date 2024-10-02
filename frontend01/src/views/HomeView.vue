@@ -80,7 +80,7 @@ export default {
 
     const user = ref({ id: null, email: '', first_name: '', last_name: '' })
 
-    axios.get('https://y2mifxhqo2.loclx.io/user', {
+    axios.get('https://zfhlpd2pxk.loclx.io/user', {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('access_token')}`,
         'X-Frontend-URL': window.location.href,
@@ -94,7 +94,7 @@ export default {
     .catch(error => {
       console.error('Error fetching user:', error)
     })
-    axios.get('https://y2mifxhqo2.loclx.io/operator/analytics', {
+    axios.get('https://zfhlpd2pxk.loclx.io/operator/analytics', {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('access_token')}`
       }
@@ -106,7 +106,7 @@ export default {
     .catch(error => {
       console.error('Error fetching analytics:', error)
     })
-    axios.get('https://y2mifxhqo2.loclx.io/operator/paid_units_today', {
+    axios.get('https://zfhlpd2pxk.loclx.io/operator/paid_units_today', {
   headers: {
     Authorization: `Bearer ${localStorage.getItem('access_token')}`
   }
@@ -118,7 +118,7 @@ export default {
 .catch(error => {
   console.error('Error fetching paid units count:', error)
 })
-axios.get('https://y2mifxhqo2.loclx.io/operator/delinquent_units_today', {
+axios.get('https://zfhlpd2pxk.loclx.io/operator/delinquent_units_today', {
   headers: {
     Authorization: `Bearer ${localStorage.getItem('access_token')}`
   }
@@ -131,7 +131,7 @@ axios.get('https://y2mifxhqo2.loclx.io/operator/delinquent_units_today', {
   console.error('Error fetching paid units count:', error)
 })
     const logout = () => {
-      axios.post('https://y2mifxhqo2.loclx.io/logout')
+      axios.post('https://zfhlpd2pxk.loclx.io/logout')
         .then(response => {
           // Handle successful logout
           console.log(response.data.message)

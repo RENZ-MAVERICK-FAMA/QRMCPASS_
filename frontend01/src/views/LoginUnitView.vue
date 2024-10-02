@@ -43,7 +43,7 @@
     },
     methods: {
     loginunit() {
-      axios.post('https://y2mifxhqo2.loclx.io/loginunit', this.formData)
+      axios.post('https://zfhlpd2pxk.loclx.io/loginunit', this.formData)
         .then(response => {
           // Store the access token in local storage
           localStorage.setItem('access_token', response.data.access_token);

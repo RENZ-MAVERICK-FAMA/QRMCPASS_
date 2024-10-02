@@ -186,7 +186,7 @@ export default {
     });
 
     axios
-      .get("httpss://y2mifxhqo2.loclx.io/Teller", {
+      .get("httpss://zfhlpd2pxk.loclx.io/Teller", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
@@ -225,7 +225,7 @@ export default {
 
     fetchUnits() {
       axios
-        .get("https://y2mifxhqo2.loclx.io/units", {
+        .get("https://zfhlpd2pxk.loclx.io/units", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
           },
@@ -241,7 +241,7 @@ export default {
     fetchUnitDelinquencies() {
       if (this.selectedUnit) {
         axios
-          .get(`https://y2mifxhqo2.loclx.io/units/${this.selectedUnit.id}/delinquencies`, {
+          .get(`https://zfhlpd2pxk.loclx.io/units/${this.selectedUnit.id}/delinquencies`, {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("access_token")}`,
             },
@@ -275,7 +275,7 @@ export default {
       };
 
       axios
-        .post("https://y2mifxhqo2.loclx.io/paymentdel", data, {
+        .post("https://zfhlpd2pxk.loclx.io/paymentdel", data, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
             "Content-Type": "application/json",

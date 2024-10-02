@@ -339,7 +339,7 @@ export default {
         });
     },
     fetchUnits() {
-      axios.get("https://y2mifxhqo2.loclx.io/user_units", {
+      axios.get("https://zfhlpd2pxk.loclx.io/user_units", {
         headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
       })
         .then((response) => {
@@ -352,7 +352,7 @@ export default {
         });
     },
     fetchBalance(unit) {
-      axios.get(`https://y2mifxhqo2.loclx.io/unit/${unit.id}/balances`, {
+      axios.get(`https://zfhlpd2pxk.loclx.io/unit/${unit.id}/balances`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
       })
         .then((response) => {
@@ -368,10 +368,10 @@ export default {
 
       // Fetch delinquencies and transactions concurrently using Promise.all
       Promise.all([
-        axios.get(`https://y2mifxhqo2.loclx.io/unit/${unit.id}/delinquencies`, {
+        axios.get(`https://zfhlpd2pxk.loclx.io/unit/${unit.id}/delinquencies`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         }),
-        axios.get(`https://y2mifxhqo2.loclx.io/unit/${unit.id}/transactions`, {
+        axios.get(`https://zfhlpd2pxk.loclx.io/unit/${unit.id}/transactions`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
         })
       ])
@@ -426,7 +426,7 @@ export default {
     },
     showTransactions(unit) {
       this.selectedUnit = unit; // Set the selected unit
-      axios.get(`https://y2mifxhqo2.loclx.io/unit/${unit.id}/transactions`, {
+      axios.get(`https://zfhlpd2pxk.loclx.io/unit/${unit.id}/transactions`, {
         headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` }
       })
         .then((response) => {

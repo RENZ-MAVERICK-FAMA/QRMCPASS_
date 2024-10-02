@@ -176,7 +176,7 @@ export default {
   methods: {
     async fetchUsers() {
 try {
-  const response = await axios.get('https://y2mifxhqo2.loclx.io/users');
+  const response = await axios.get('https://zfhlpd2pxk.loclx.io/users');
   this.users = response.data.users.map(user => ({
     id: user.id,
     username: user.username,
