@@ -1,5 +1,5 @@
 <template>
-  <main class="p-5 md:px-[10%]" >
+  <main class="p-5 md:px-[10%] bg-slate-100" >
     <div class="bg-white mt-5 md:mt-10 p-5 shadow rounded-[10px]" >
       <RouterLink to="/HomeSuperAdmin" >
           <div class="flex gap-5 h-[40px] items-center hover:text-slate-300" >
@@ -13,7 +13,8 @@
             <span>ALL UNITS</span>
           </div>
           <div>
-        <input type="text" v-model="searchTerm" placeholder="Search...">
+        <!-- <input type="text" v-model="searchTerm" placeholder="Search..."> -->
+        <InputText v-model:modelValue="searchTerm" placeholder="Search..." class="w-full"/>
       </div>
         </template>
         <template #empty>
@@ -25,11 +26,7 @@
         <Column header="Unit Info" field="unit_info" />
         <Column header="Unit Type" field="unit_type" />
         <Column header="Color" field="color" />
-        <Column header="Action">
-    <template #body="{ data }">
-      <button @click="editAdmin(data)" class="btn btn-primary">Edit</button>
-    </template>
-  </Column>
+        
       </DataTable>
       <Dialog v-model:visible="showEditModal" header="Update Admin" modal class=" w-full md:w-[600px]" >
       <div class="modal-content">
@@ -142,7 +139,7 @@ export default {
       console.error(error);
     });
 }
-,
+, 
   },computed: {
     filteredUnit() {
       if (!this.searchTerm) {
