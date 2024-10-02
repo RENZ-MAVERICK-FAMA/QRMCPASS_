@@ -1,5 +1,5 @@
 <template>
-  <main class="p-5 md:px-[10%] bg-slate-100" >
+  <main class="p-5 md:px-[10%]" >
     <div class="bg-white mt-5 md:mt-10 p-5 shadow rounded-[10px]" >
       <RouterLink to="/HomeSuperAdmin" >
           <div class="flex gap-5 h-[40px] items-center hover:text-slate-300" >
@@ -13,8 +13,7 @@
             <span>ALL UNITS</span>
           </div>
           <div>
-        <!-- <input type="text" v-model="searchTerm" placeholder="Search..."> -->
-        <InputText v-model:modelValue="searchTerm" placeholder="Search..." class="w-full"/>
+        <input type="text" v-model="searchTerm" placeholder="Search...">
       </div>
         </template>
         <template #empty>
@@ -26,8 +25,43 @@
         <Column header="Unit Info" field="unit_info" />
         <Column header="Unit Type" field="unit_type" />
         <Column header="Color" field="color" />
-        
+        <Column header="Action">
+    <template #body="{ data }">
+      <button @click="editAdmin(data)" class="btn btn-primary">Edit</button>
+    </template>
+  </Column>
       </DataTable>
+      <Dialog v-model:visible="showEditModal" header="Update Admin" modal class=" w-full md:w-[600px]" >
+      <div class="modal-content">
+    <span class="close" @click="closeModal">&times;</span>
+ 
+    <form @submit.prevent="updateTeller">
+      <!-- Username -->
+      <div class="mt-3">
+        <label>Unit Info</label>
+        <InputText v-model="editedTeller.unit_info" type="text" id="editUsername" required class="w-full" />
+      </div>
+      <!-- First Name -->
+      <div class="mt-3">
+        <label>Unit Type</label>
+        <InputText v-model="editedTeller.unit_type" type="text" id="editFirstname" required class="w-full"  />
+      </div>
+      <!-- Last Name -->
+      <div class="mt-3">
+        <label>Color</label>
+        <InputText v-model="editedTeller.color" type="text" id="editLastname" required class="w-full" />
+      </div>
+      <!-- Address -->
+      <!-- Password -->
+      <div class="mt-3">
+        <label>Password</label>
+        <InputText v-model="editedTeller.password" type="password" id="editPassword" required class="w-full" />
+      </div>
+      <br />
+      <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+  </div>
+</Dialog>
     </div>
   </main>
 </template>
@@ -39,6 +73,17 @@ export default {
     return {
       units: [],
       searchTerm: '',
+      showEditModal: false,
+      password: '',
+      unit_info: '',
+      Unit_type: '',
+      color: '', editedTeller: {
+        id: null,
+        color: '',
+        unit_type: '',
+        unit_info: '',
+        password: ''
+      }
     };
   },
   mounted() {
@@ -52,7 +97,52 @@ export default {
       } catch (error) {
         console.error(error);
       }
+    },editAdmin(admin) {
+      this.editedTeller = {
+        id: admin.id,
+       color: admin.color,
+        unit_info: admin.unit_info,
+        unit_type: admin.unit_type,
+        password: admin.password1
+      };
+      this.showEditModal = true;
     },
+    closeModal() {
+      this.showEditModal = false;
+    },
+    updateTeller() {
+  const { id, color, unit_info, unit_type, password } = this.editedTeller;
+  const updatedData = { color, unit_info, unit_type, password };
+
+  axios.put(`https://qrmcpass.loca.lt/updateUnit/${id}`, updatedData)
+    .then(response => {
+      // Find the index of the unit in the array
+      const index = this.units.findIndex(unit => unit.id === id);
+      
+      // If the unit exists, update the array locally
+      if (index !== -1) {
+        this.units[index] = { id, color, unit_info, unit_type,password };
+      }
+      
+      // Close the modal after updating
+      this.showEditModal = false;
+      
+      // Optionally, reset the editedTeller object
+      this.editedTeller = {
+        id: null,
+        color: '',
+        unit_info: '',
+        unit_type: '',
+        password: ''
+      };
+      
+      console.log('Unit updated successfully!');
+    })
+    .catch(error => {
+      console.error(error);
+    });
+}
+,
   },computed: {
     filteredUnit() {
       if (!this.searchTerm) {
