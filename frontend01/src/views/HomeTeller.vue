@@ -99,7 +99,7 @@ export default {
     });
 
     axios
-      .get("https://zfhlpd2pxk.loclx.io/Teller", {
+      .get("https://qrmcpass.loca.lt/Teller", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
@@ -115,7 +115,7 @@ export default {
 
     const logout = () => {
       axios
-        .post("https://zfhlpd2pxk.loclx.io/logout")
+        .post("https://qrmcpass.loca.lt/logout")
         .then((response) => {
           // Handle successful logout
           console.log(response.data.message);

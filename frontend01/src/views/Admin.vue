@@ -167,7 +167,7 @@
       formData.append('password1', this.password1);
       formData.append('password2', this.password2);
 
-      axios.post('https://zfhlpd2pxk.loclx.io/addAdmin', formData)
+      axios.post('https://qrmcpass.loca.lt/addAdmin', formData)
         .then(response => {
       this.username = '';
       this.firstName = '';
@@ -188,7 +188,7 @@
     },
       async fetchadmins() {
         try {
-          const response = await axios.get('https://zfhlpd2pxk.loclx.io/admins');
+          const response = await axios.get('https://qrmcpass.loca.lt/admins');
           this.admins = response.data.admins;
         } catch (error) {
           console.error(error);
@@ -211,7 +211,7 @@
   const { id, username, firstName, lastName, address, password } = this.editedTeller;
   const updatedData = { username, firstName, lastName, address, password };
 
-  axios.put(`https://zfhlpd2pxk.loclx.io/updateAdmin/${id}`, updatedData)
+  axios.put(`https://qrmcpass.loca.lt/updateAdmin/${id}`, updatedData)
     .then(response => {
       // Find the index of the admin in the array
       const index = this.admins.findIndex(admin => admin.id === id);

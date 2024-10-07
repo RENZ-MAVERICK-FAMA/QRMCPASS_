@@ -131,7 +131,7 @@ import axios from 'axios';
       formData.append('password1', this.password1);
       formData.append('password2', this.password2);
 
-      axios.post('https://zfhlpd2pxk.loclx.io/addAdmin', formData)
+      axios.post('https://qrmcpass.loca.lt/addAdmin', formData)
         .then(response => {
       this.username = '';
       this.firstName = '';

@@ -186,7 +186,7 @@ export default {
     });
 
     axios
-      .get("httpss://zfhlpd2pxk.loclx.io/Teller", {
+      .get("httpss://qrmcpass.loca.lt/Teller", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
@@ -225,7 +225,7 @@ export default {
 
     fetchUnits() {
       axios
-        .get("https://zfhlpd2pxk.loclx.io/units", {
+        .get("https://qrmcpass.loca.lt/units", {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
           },
@@ -241,7 +241,7 @@ export default {
     fetchUnitDelinquencies() {
       if (this.selectedUnit) {
         axios
-          .get(`https://zfhlpd2pxk.loclx.io/units/${this.selectedUnit.id}/delinquencies`, {
+          .get(`https://qrmcpass.loca.lt/units/${this.selectedUnit.id}/delinquencies`, {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("access_token")}`,
             },
@@ -275,7 +275,7 @@ export default {
       };
 
       axios
-        .post("https://zfhlpd2pxk.loclx.io/paymentdel", data, {
+        .post("https://qrmcpass.loca.lt/paymentdel", data, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
             "Content-Type": "application/json",
