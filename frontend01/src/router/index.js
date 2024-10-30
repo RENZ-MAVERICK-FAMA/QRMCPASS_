@@ -32,7 +32,8 @@ import Operators from '../views/Operators.vue'
 import Teller from '../views/Teller.vue'
 import Admin  from '../views/Admin.vue'
 import AddSuperAdmin from '../views/AddSuperAdmin.vue'
-import Kiosk from '../views/Kiosk.vue'
+import Kiosk from '../views/Kiosk.vue' 
+import Officeteller from '../views/Officeteller.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -149,6 +150,13 @@ const router = createRouter({
       path: '/motorelascan',
       name: 'motorelascan',
       component: MotorelaScan,
+      meta: { requiresAuth: true, accountType: 'teller' },
+      props: (route) => ({ teller: route.params.teller })
+    },
+    {
+      path: '/officeteller',
+      name: 'officeteller',
+      component: Officeteller,
       meta: { requiresAuth: true, accountType: 'teller' },
       props: (route) => ({ teller: route.params.teller })
     }, {
