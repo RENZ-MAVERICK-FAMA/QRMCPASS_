@@ -78,7 +78,7 @@
   </Dialog>
   <Dialog v-model:visible="showEditModal" header="Update Operator" modal class=" w-full md:w-[600px]" >
     <div class="modal-content">
-  <span class="close" @click="closeModal">&times;</span>
+ 
 
   <form @submit.prevent="updateTeller">
     <!-- Username -->
