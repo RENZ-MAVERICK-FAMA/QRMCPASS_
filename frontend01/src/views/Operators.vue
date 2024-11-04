@@ -76,7 +76,7 @@
         <Button type="submit" class="mt-3 w-full" severity="success" icon="pi pi-plus" label="Submit" />
     </form>
   </Dialog>
-  <Dialog v-model:visible="showEditModal" header="Update Admin" modal class=" w-full md:w-[600px]" >
+  <Dialog v-model:visible="showEditModal" header="Update Operator" modal class=" w-full md:w-[600px]" >
     <div class="modal-content">
   <span class="close" @click="closeModal">&times;</span>
 
