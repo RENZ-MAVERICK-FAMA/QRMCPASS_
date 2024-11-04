@@ -26,11 +26,16 @@
         <Column header="Unit Info" field="unit_info" />
         <Column header="Unit Type" field="unit_type" />
         <Column header="Color" field="color" />
-        
+          <Column header="Action">
+    <template #body="{ data }">
+      <!-- <button @click="editAdmin(data)" class="btn btn-primary">Edit</button> -->
+      <Button @click="editAdmin(data)" severity="success" label="Edit" icon="pi pi-pencil"/>
+    </template>
+  </Column>
       </DataTable>
       <Dialog v-model:visible="showEditModal" header="Update Admin" modal class=" w-full md:w-[600px]" >
       <div class="modal-content">
-    <span class="close" @click="closeModal">&times;</span>
+  
  
     <form @submit.prevent="updateTeller">
       <!-- Username -->
@@ -39,10 +44,7 @@
         <InputText v-model="editedTeller.unit_info" type="text" id="editUsername" required class="w-full" />
       </div>
       <!-- First Name -->
-      <div class="mt-3">
-        <label>Unit Type</label>
-        <InputText v-model="editedTeller.unit_type" type="text" id="editFirstname" required class="w-full"  />
-      </div>
+      
       <!-- Last Name -->
       <div class="mt-3">
         <label>Color</label>
@@ -99,7 +101,7 @@ export default {
         id: admin.id,
        color: admin.color,
         unit_info: admin.unit_info,
-        unit_type: admin.unit_type,
+       
         password: admin.password1
       };
       this.showEditModal = true;
@@ -108,8 +110,8 @@ export default {
       this.showEditModal = false;
     },
     updateTeller() {
-  const { id, color, unit_info, unit_type, password } = this.editedTeller;
-  const updatedData = { color, unit_info, unit_type, password };
+  const { id, color, unit_info,  password } = this.editedTeller;
+  const updatedData = { color, unit_info,  password };
 
   axios.put(`https://qrmcpass.loca.lt/updateUnit/${id}`, updatedData)
     .then(response => {
@@ -129,7 +131,7 @@ export default {
         id: null,
         color: '',
         unit_info: '',
-        unit_type: '',
+        
         password: ''
       };
       
