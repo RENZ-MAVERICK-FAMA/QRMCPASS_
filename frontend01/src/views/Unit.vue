@@ -44,10 +44,7 @@
         <InputText v-model="editedTeller.unit_info" type="text" id="editUsername" required class="w-full" />
       </div>
       <!-- First Name -->
-      <div class="mt-3">
-        <label>Unit Type</label>
-        <InputText v-model="editedTeller.unit_type" type="text" id="editFirstname" required class="w-full"  />
-      </div>
+      
       <!-- Last Name -->
       <div class="mt-3">
         <label>Color</label>
