@@ -26,10 +26,12 @@
         <Column header="Unit Info" field="unit_info" />
         <Column header="Unit Type" field="unit_type" />
         <Column header="Color" field="color" />
-         <template #body="{ data }">
+          <Column header="Action">
+    <template #body="{ data }">
       <!-- <button @click="editAdmin(data)" class="btn btn-primary">Edit</button> -->
       <Button @click="editAdmin(data)" severity="success" label="Edit" icon="pi pi-pencil"/>
     </template>
+  </Column>
       </DataTable>
       <Dialog v-model:visible="showEditModal" header="Update Admin" modal class=" w-full md:w-[600px]" >
       <div class="modal-content">
