@@ -496,9 +496,9 @@ this.sortedUnits.forEach((unit, index) => {
 
     doc.setFontSize(12);
  // Set initial coordinates for positioning
-const labelX = 60; 
-const labelxy = 100;      // X position for labels
-const countX = 140;       // X position for count values
+const labelX = 100; 
+const labelxy = 150;      // X position for labels
+const countX = 160;       // X position for count values
 const amountX = 180;      // X position for amount values
 const headerY = startY + 30;  // Y position for the header row
 const lineSpacing1 = 5;   // Spacing between lines
