@@ -429,6 +429,7 @@ let totalCollected = 0;
 let delinquencyCount = 0;
 let count = 0;
 let delcount = 0;
+let totalUnits = 0; 
 // Loop through sortedUnits and add each unit to the table
 this.sortedUnits.forEach((unit, index) => {
     let status = '';
@@ -473,11 +474,12 @@ this.sortedUnits.forEach((unit, index) => {
         startX = 10; // Reset to left margin
         startY += cellHeight; // Move down by cell height
     }
+    totalUnits++;
 });
 
     doc.setFontSize(12);
     
-    doc.text(`Total Number of Multicab: ${count}`, 140, startY + 10);
+    doc.text(`Total Number of Multicab:/${totalUnits} ${count}`, 140, startY + 10);
     doc.text(`Total Amount Collected: ${totalCollected}`, 140, startY + 20);
     doc.text(`Total Number of Delinquent: ${delcount}`, 140, startY + 40);
     doc.text(`Amount of Delinquencies: ${delinquencyCount}`, 140, startY + 50);
