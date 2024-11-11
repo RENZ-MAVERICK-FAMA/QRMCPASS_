@@ -485,20 +485,24 @@ this.sortedUnits.forEach((unit, index) => {
     doc.text(`Amount of Delinquencies: ${delinquencyCount}`, 140, startY + 50);
     // Add teller information at the bottom of the PDF
 
-const pageHeight = doc.internal.pageSize.getHeight(); // Retrieve page height
-const margin = 10; // Margin from the bottom-right corner
+    const margin = 10; // Margin from the bottom-right corner
+const lineSpacing = 8; // Space between lines
 
-// Calculate the starting position from the bottom-right corner
-const tellerTextWidth = doc.getTextWidth("Approved by:"); // Widest text line to account for spacing
-const tellerTextX = pageWidth - tellerTextWidth - margin; 
-const tellerTextY = pageHeight - margin - 30; // Adjust Y positioning for the block of text
+// Define the text positions
+const preparedTextX = pageWidth - 100; // Adjust X position based on available space
+const preparedTextY = pageHeight - margin - 30; // Adjust Y position for the text block
 
-// Position each line individually for better control
-doc.text("Prepared by:", tellerTextX, tellerTextY);
-doc.text(`${this.teller.first_name} ${this.teller.last_name}`, tellerTextX, tellerTextY + 10);
-doc.text("Collection Officer", tellerTextX, tellerTextY + 20);
-doc.text("Approved by:", tellerTextX, tellerTextY + 40);
+// Draw the text with positioning
+doc.text("Prepared by:", preparedTextX, preparedTextY);
+doc.text(`${this.teller.first_name} ${this.teller.last_name}`, preparedTextX + 40, preparedTextY); // Adjust X for name alignment
+doc.text("Collection Officer", preparedTextX + 40, preparedTextY + lineSpacing);
 
+// Draw underline below the name
+const nameWidth = doc.getTextWidth(`${this.teller.first_name} ${this.teller.last_name}`);
+doc.line(preparedTextX + 40, preparedTextY + 2, preparedTextX + 40 + nameWidth, preparedTextY + 2); // Adjust Y for underline position
+
+// Add "Approved by" text below
+doc.text("Approved by:", preparedTextX, preparedTextY + lineSpacing * 3);
 
 
     const filename = `Multicab_Report_${new Date().toISOString().split('T')[0]}.pdf`;
