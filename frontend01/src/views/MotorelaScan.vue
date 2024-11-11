@@ -123,7 +123,7 @@
     <p>Please confirm to continue your transaction.</p>
     <div class="flex justify-end mt-4">
       <Button label="Cancel" class="p-button-text" @click="showConfirmModal = false" />
-      <Button label="Confirm" class="p-button-danger" @click="proceedTransaction" />
+      <Button label="Confirm" class="p-button-danger" @click="manual" />
     </div>
   </Dialog>
       </div>
@@ -655,7 +655,7 @@ doc.text("Approved by:", startXy, startYx + lineSpacing * 3);
     }
   });
   }, manual() {
-        
+    this.showConfirmModal = false;
         if (!this.selectedUnit) {
         this.error = 'Please select a unit';
         return;
