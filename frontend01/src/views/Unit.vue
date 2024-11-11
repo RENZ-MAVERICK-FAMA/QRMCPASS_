@@ -23,7 +23,7 @@
           </div>
         </template>
         
-        <Column header="Unit Info" field="unit_info" />
+        <Column header="Body Number" field="unit_info" />
         <Column header="Unit Type" field="unit_type" />
         <Column header="Color" field="color" />
           <Column header="Action">

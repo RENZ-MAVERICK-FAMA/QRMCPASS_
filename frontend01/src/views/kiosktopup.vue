@@ -39,7 +39,7 @@
         ></Select>
       </div>
       <div class="grid">
-        <label class="m-0 p-0">Top Up</label>
+        <label class="m-0 p-0">CASH IN</label>
         <InputNumber
           v-model="amount"
           type="number"

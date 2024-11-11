@@ -14,7 +14,7 @@
         </div>
         <div>
           <div class="flex items-end mt-3 " >
-            <span class="text-[20px]" >Unit: </span>
+            <span class="text-[20px]" >Body Number: </span>
             <span class="font-bold text-[20px] text-green-400" >{{unit.unit_info}}</span>
           </div>
           <div class="flex " >

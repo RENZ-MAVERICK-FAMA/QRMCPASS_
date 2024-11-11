@@ -72,7 +72,7 @@
         <form @submit.prevent="onFormSubmit" class="mt-5 md:mt-0">
           <h1 class="text-[20px]">Motorela Payment</h1>
           <div class="grid mt-3">
-            <label>Unit</label>
+            <label>Body Number</label>
             <select v-model="selectedUnit" class="h-[45px] w-full md:max-w-[400px] border rounded hover:border-slate-400 outline-none border-slate-200" id="unit" name="unit" required>
               <option v-for="unit in filteredUnits" :key="unit.id" :value="unit">{{ unit.unit_info }}</option>
             </select>

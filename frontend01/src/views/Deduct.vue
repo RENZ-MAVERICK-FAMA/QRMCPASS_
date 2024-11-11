@@ -33,7 +33,7 @@
 
         <!-- Select Unit -->
         <div class="mt-3 grid">
-          <label for="unit">Unit</label>
+          <label for="unit">Body Number</label>
           <Select
             class="w-full"
             v-model="selectedUnit"
