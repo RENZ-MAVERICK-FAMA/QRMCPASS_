@@ -409,11 +409,11 @@ unit.transactions.slice(startIndex1).forEach((transaction, index) => {
 
     doc.text(dateText, dateTextX, dateTextY);
 
-    const docWidth = doc.internal.pageSize.getWidth();
-const minCellWidth = 30; // Minimum width for each cell
-const columns = Math.floor(docWidth / minCellWidth); // Dynamic number of columns
-const cellWidth = docWidth / columns; // Adjust cell width to fill entire horizontal space
-const cellHeight = 10; // Set the cell height
+const docWidth = doc.internal.pageSize.getWidth()-2;
+const minCellWidth =20; 
+const columns = Math.floor(docWidth / minCellWidth); 
+const cellWidth = docWidth / columns; 
+const cellHeight = 10; 
 
 // Define initial position for table
 let startX = 10;
