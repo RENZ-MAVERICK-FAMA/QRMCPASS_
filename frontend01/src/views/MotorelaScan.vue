@@ -401,15 +401,21 @@ unit.transactions.slice(startIndex1).forEach((transaction, index) => {
     doc.text(headerText, headerTextX, 80)
 
     doc.setFontSize(12);
-    let dateText = `Date: ${new Date().toLocaleDateString()}`;
-    let dateTextWidth = doc.getTextWidth(dateText);
-    let rightMargin = 10; // Margin from the right edge
-    let dateTextX = pageWidth - dateTextWidth - rightMargin;
-    let dateTextY = 60; // Y-coordinate where the text should appear
+    const leftMargin = 10; // Left margin
+const rightMargin = 10; // Right margin
+const docWidth = pageWidth - leftMargin - rightMargin; // Total width available after margins
 
-    doc.text(dateText, dateTextX, dateTextY);
+let dateText = `Date: ${new Date().toLocaleDateString()}`;
+let dateTextWidth = doc.getTextWidth(dateText);
 
-const docWidth = doc.internal.pageSize.getWidth()-2;
+// X position considering the right margin
+let dateTextX = pageWidth - dateTextWidth - rightMargin; 
+let dateTextY = 60; // Y-coordinate where the text should appear
+
+// Apply text to the document
+doc.text(dateText, dateTextX, dateTextY);
+
+
 const minCellWidth =20; 
 const columns = Math.floor(docWidth / minCellWidth); 
 const cellWidth = docWidth / columns; 
