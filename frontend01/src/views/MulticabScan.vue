@@ -444,7 +444,7 @@ this.sortedUnits.forEach((unit, index) => {
         status = 'Delinquency Unpaid';
         color = '#FF0000';
         textclr = '#FFFF';
-        delinquencyCount++;
+        delinquencyCount+=6;
     } else {
         status = 'No Payment/Delinquency';
         color = '#fff'; // Default
