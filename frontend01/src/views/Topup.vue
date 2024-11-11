@@ -17,10 +17,10 @@
       >
         <template #header>
           <div class="flex items-center justify-between">
-            <span>Recent Top Up</span>
+            <span>Recent Cash In</span>
             <Button
               @click="showModal = true"
-              label="Top Up"
+              label="Cash In"
               icon="pi pi-plus"
               severity="success"
               class="md:w-[200px]"
@@ -54,7 +54,7 @@
   <Dialog header="TOP UP" modal v-model:visible="showModal">
     <form @submit.prevent="topup" class="w-full md:w-[400px]">
       <div class="mt-3 grid">
-        <label for="">Unit</label>
+        <label for="">Body Number</label>
         <Select
           v-model="selectedUnit"
           editable
@@ -81,7 +81,7 @@
   </div> -->
       </div>
       <div class="mt-3 grid">
-        <label for="">Top Up</label>
+        <label for="">Cash In</label>
         <InputNumber v-model="amount" required />
       </div>
       <Button
