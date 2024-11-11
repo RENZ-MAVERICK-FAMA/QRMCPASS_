@@ -478,15 +478,16 @@ this.sortedUnits.forEach((unit, index) => {
 
     doc.setFontSize(12);
  // Set initial coordinates for positioning
-const labelX = 100;       // X position for labels
+const labelX = 60; 
+const labelxy = 100;      // X position for labels
 const countX = 140;       // X position for count values
 const amountX = 180;      // X position for amount values
-const headerY = startY + 10;  // Y position for the header row
+const headerY = startY + 30;  // Y position for the header row
 const lineSpacing1 = 10;   // Spacing between lines
 
 // Headers
 doc.setFontSize(12);
-doc.text("Total Number of Motorela", labelX, headerY);
+doc.text("Total Number of Motorela", labelxy, headerY);
 doc.text("Total Amount", amountX, headerY);
 
 // Values
