@@ -79,7 +79,6 @@ export default {
       color: '', editedTeller: {
         id: null,
         color: '',
-        unit_type: '',
         unit_info: '',
         password: ''
       }
@@ -102,7 +101,7 @@ export default {
        color: admin.color,
         unit_info: admin.unit_info,
        
-        password: admin.password1
+        password: admin.password
       };
       this.showEditModal = true;
     },
