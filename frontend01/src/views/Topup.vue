@@ -1,7 +1,7 @@
 <template>
   <main class="p-5 md:px-[10%] bg-slate-100">
     <div class="bg-white mt-5 md:mt-10 p-5 shadow rounded-[10px]">
-      <RouterLink to="/homeTeller">
+      <RouterLink to="/officeteller">
         <div class="flex gap-5 h-[40px] items-center hover:text-slate-300">
           <i class="pi pi-arrow-left"></i>
           <span>Go Back</span>

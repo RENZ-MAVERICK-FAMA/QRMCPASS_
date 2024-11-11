@@ -89,7 +89,7 @@
             label="Confirm"
             class="w-full"
           />
-          <RouterLink to="/homeTeller">
+          <RouterLink to="/officeteller">
             <Button
               severity="secondary"
               icon="pi pi-times"
