@@ -4,7 +4,7 @@
       <div class=" bg-white p-14 justify-center items-center rounded-[10px] shadow w-full md:w-full">
         <h1 class="text-[25px] font-bold">Manually TopUp</h1>
         <p class="font-light">Motorela & Multicab</p>
-        <p class="font-extralight">Allows to Top Up manually.</p>
+        <p class="font-extralight">Allows to Cash In manually.</p>
         <RouterLink class="nav-link" to="/topup">
           <Button
             label="Manually TopUp"
