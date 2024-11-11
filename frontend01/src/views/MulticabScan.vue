@@ -481,18 +481,24 @@ this.sortedUnits.forEach((unit, index) => {
     
     doc.text(`Total Number of Multicab:/${totalUnits} ${count}`, 140, startY + 10);
     doc.text(`Total Amount Collected: ${totalCollected}`, 140, startY + 20);
-    doc.text(`Total Number of Delinquent: ${delcount}`, 140, startY + 40);
+    doc.text(`Total Number of Delinquent: ${delcount}/${totalUnits}`, 140, startY + 40);
     doc.text(`Amount of Delinquencies: ${delinquencyCount}`, 140, startY + 50);
     // Add teller information at the bottom of the PDF
 
-     const tellerInfo = ` Prepared by:\n  ${this.teller.first_name} ${this.teller.last_name}\nCollection Officer\n\n Approved by:`;
-    const tellerTextWidth = doc.getTextWidth(tellerInfo);
-    const pageHeight = doc.internal.pageSize.getHeight();
-    const margin = 10; // Margin from the bottom-right corner
-    const tellerTextX = pageWidth - tellerTextWidth - margin;
-    const tellerTextY = pageHeight - margin;
+const pageHeight = doc.internal.pageSize.getHeight(); // Retrieve page height
+const margin = 10; // Margin from the bottom-right corner
 
-    doc.text(tellerInfo, tellerTextX, tellerTextY);
+// Calculate the starting position from the bottom-right corner
+const tellerTextWidth = doc.getTextWidth("Approved by:"); // Widest text line to account for spacing
+const tellerTextX = pageWidth - tellerTextWidth - margin; 
+const tellerTextY = pageHeight - margin - 30; // Adjust Y positioning for the block of text
+
+// Position each line individually for better control
+doc.text("Prepared by:", tellerTextX, tellerTextY);
+doc.text(`${this.teller.first_name} ${this.teller.last_name}`, tellerTextX, tellerTextY + 10);
+doc.text("Collection Officer", tellerTextX, tellerTextY + 20);
+doc.text("Approved by:", tellerTextX, tellerTextY + 40);
+
 
 
     const filename = `Multicab_Report_${new Date().toISOString().split('T')[0]}.pdf`;
