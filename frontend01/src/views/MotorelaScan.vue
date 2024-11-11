@@ -477,9 +477,9 @@ this.sortedUnits.forEach((unit, index) => {
 });
 
     doc.setFontSize(12);
-    doc.text(`Total Number of Motorela: ${count}/${totalUnits}`, 100, startY + 20);
+    doc.text(`Total Number of Motorela: ${count}/${totalUnits}`, 80, startY + 20);
     doc.text(`Total Amount Collected: ${totalCollected}`, 140, startY + 20);
-    doc.text(`Total Number of Delinquent: ${delcount}/${totalUnits}`, 100, startY +30);
+    doc.text(`Total Number of Delinquent: ${delcount}/${totalUnits}`, 80, startY +30);
     doc.text(`Amount of Delinquencies: ${delinquencyCount}`, 140, startY + 30);
     // Add teller information at the bottom of the PDF
 
