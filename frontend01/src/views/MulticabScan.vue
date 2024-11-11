@@ -476,7 +476,7 @@ this.sortedUnits.forEach((unit, index) => {
 
     doc.setFontSize(12);
     doc.text(`Total Amount Collected: ${totalCollected}`, 140, startY + 20);
-    doc.text(`Delinquencies: ${delinquencyCount}`, 140, startY + 30);
+    doc.text(`Amount of Delinquencies: ${delinquencyCount}`, 140, startY + 30);
     // Add teller information at the bottom of the PDF
 
      const tellerInfo = `   ${this.teller.first_name} ${this.teller.last_name}\nCollection Officer`;
