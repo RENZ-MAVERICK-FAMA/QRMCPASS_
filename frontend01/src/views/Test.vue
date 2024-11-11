@@ -2,7 +2,7 @@
   <div class=" h-auto p-5 grid place-content-center mt-5 md:mt-10" >
       <div class="bg-white shadow rounded-[20px] p-10 grid grid-rows-[100px,1fr] grid-cols-1 md:grid-rows-1 md:grid-cols-2 md:w-[800px]" >
         <div class="" >
-          <h1 class=" text-[25px] md:text-[30px] font-medium  text-center md:text-left " >Welcome sa QRMCPASS</h1>
+          <h1 class=" text-[25px] md:text-[30px] font-medium  text-center md:text-left " >Welcome sa</h1>
           <h2 class="text-[35px] md:text-[40px] font-bold  text-center md:text-left "> QRMCPASS</h2>
           <p class="hidden md:block font-light" >Maayong pag-abot sa QRMCPASS, ang imong tiwala nga solusyon alang sa pagdumala sa kalidad ug katalagman sa imong mga proyekto.</p><br/>
           <p class="hidden md:block font-light" >Pinaagi sa QRMCPASS, makapapalong ka sa imong mga proseso sa pagdumala sa proyekto, makailhan sa mga potensyal nga katalagman, ug makasiguro nga ang mga pamatasan sa kalidad gipatuman.</p><br/>
