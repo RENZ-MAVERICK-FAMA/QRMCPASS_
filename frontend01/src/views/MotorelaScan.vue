@@ -490,18 +490,24 @@ doc.text("Total Number of Motorela", labelX, headerY);
 doc.text("Total Amount", amountX, headerY);
 
 // Values
-doc.setFontSize(10);
+doc.setFontSize(12);
 doc.text(`Total number of payments:`, labelX, headerY + lineSpacing1 * 2);
 doc.text(`${count}`, countX, headerY + lineSpacing1 * 2);
+doc.setFontSize(14);
 doc.text(`${totalCollected}`, amountX, headerY + lineSpacing1 * 2);
+doc.setFontSize(14);
 
 doc.text(`Total number of delinquents:`, labelX, headerY + lineSpacing1 * 4);
 doc.text(`${delcount}`, countX, headerY + lineSpacing1 * 4);
+doc.setFontSize(14);
 doc.text(`${delinquencyCount}`, amountX, headerY + lineSpacing1 * 4);
+doc.setFontSize(14);
 
 doc.text(`Overall total amount:`, labelX, headerY + lineSpacing1 * 6);
 doc.text(`${totalUnits}`, countX, headerY + lineSpacing1 * 6);
+doc.setFontSize(14);
 doc.text(`${totalCollected + delinquencyCount}`, amountX, headerY + lineSpacing1 * 6);
+doc.setFontSize(14);
 
  
 const pageHeight = doc.internal.pageSize.getHeight();
