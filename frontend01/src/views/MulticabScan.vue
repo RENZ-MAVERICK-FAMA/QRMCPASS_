@@ -415,7 +415,7 @@ let dateTextY = 60; // Y-coordinate where the text should appear
 doc.text(dateText, dateTextX, dateTextY);
 
 
-const minCellWidth =20; 
+const minCellWidth =40; 
 const columns = Math.floor(docWidth / minCellWidth); 
 const cellWidth = docWidth / columns; 
 const cellHeight = 10; 
@@ -445,7 +445,7 @@ this.sortedUnits.forEach((unit, index) => {
         status = 'Delinquency Unpaid';
         color = '#FF0000';
         textclr = '#FFFF';
-        delinquencyCount+=6;
+        delinquencyCount+= 6;
         delcount ++;
     } else {
         status = 'No Payment/Delinquency';
@@ -478,19 +478,46 @@ this.sortedUnits.forEach((unit, index) => {
 });
 
     doc.setFontSize(12);
-    
-    doc.text(`Total Number of Multicab:/${totalUnits} ${count}`, 140, startY + 10);
-    doc.text(`Total Amount Collected: ${totalCollected}`, 140, startY + 20);
-    doc.text(`Total Number of Delinquent: ${delcount}/${totalUnits}`, 140, startY + 40);
-    doc.text(`Amount of Delinquencies: ${delinquencyCount}`, 140, startY + 50);
-    // Add teller information at the bottom of the PDF
+ // Set initial coordinates for positioning
+const labelX = 60; 
+const labelxy = 100;      // X position for labels
+const countX = 140;       // X position for count values
+const amountX = 180;      // X position for amount values
+const headerY = startY + 30;  // Y position for the header row
+const lineSpacing1 = 5;   // Spacing between lines
 
-    const pageHeight = doc.internal.pageSize.getHeight();
+// Headers
+doc.setFontSize(12);
+doc.text("Total Number of Multicab", labelxy, headerY);
+doc.text("Total Amount", amountX, headerY);
+
+// Values
+doc.setFontSize(10);
+doc.text(`Total number of payments:`, labelX, headerY + lineSpacing1 * 2);
+doc.setFont("helvetica", "bold"); // Set font to bold
+doc.text(`${count}`, countX, headerY + lineSpacing1 * 2);
+doc.text(`${totalCollected}`, amountX, headerY + lineSpacing1 * 2);
+doc.setFont("helvetica", "normal");
+
+doc.text(`Total number of delinquents:`, labelX, headerY + lineSpacing1 * 4);
+doc.setFont("helvetica", "bold"); // Set font to bold
+doc.text(`${delcount}`, countX, headerY + lineSpacing1 * 4);
+doc.text(`${delinquencyCount}`, amountX, headerY + lineSpacing1 * 4);
+doc.setFont("helvetica", "normal");
+
+doc.text(`Overall total amount:`, labelX, headerY + lineSpacing1 * 6);
+doc.setFont("helvetica", "bold"); // Set font to bold
+doc.text(`${count+delcount}`, countX, headerY + lineSpacing1 * 6);
+doc.text(`${totalCollected + delinquencyCount}`, amountX, headerY + lineSpacing1 * 6);
+doc.setFont("helvetica", "normal");
+
+ 
+const pageHeight = doc.internal.pageSize.getHeight();
 const margin = 10; // Margin from the bottom-right corner
 const lineSpacing = 8; // Space between lines
 
 // Define the text positions
-const startXy = pageWidth - 100; // Adjust X position based on available space
+const startXy = pageWidth - 60; // Adjust X position based on available space
 const startYx= pageHeight - margin - 30; // Adjust Y position for the text block
 
 // Draw "Prepared by:" and name
