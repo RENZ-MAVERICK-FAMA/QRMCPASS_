@@ -427,7 +427,8 @@ let startY = 90 + (cellHeight / 2); // Start at the center of the cell height
 // Variables to calculate total collected and count of delinquencies
 let totalCollected = 0;
 let delinquencyCount = 0;
-
+let count = 0;
+let delcount = 0;
 // Loop through sortedUnits and add each unit to the table
 this.sortedUnits.forEach((unit, index) => {
     let status = '';
@@ -438,11 +439,13 @@ this.sortedUnits.forEach((unit, index) => {
         status = 'Payment Done';
         color = '#90ee90'; // Green
         totalCollected += 6;
+        count ++;
     } else if (unit.has_delinquency_unpaid) {
         status = 'Delinquency Unpaid';
         color = '#FF0000';
         textclr = '#FFFF';
         delinquencyCount+=6;
+        delcount ++;
     } else {
         status = 'No Payment/Delinquency';
         color = '#fff'; // Default
@@ -473,11 +476,14 @@ this.sortedUnits.forEach((unit, index) => {
 });
 
     doc.setFontSize(12);
+    
+    doc.text(`Total Number of Multicab: ${count}`, 140, startY + 10);
     doc.text(`Total Amount Collected: ${totalCollected}`, 140, startY + 20);
-    doc.text(`Amount of Delinquencies: ${delinquencyCount}`, 140, startY + 30);
+    doc.text(`Total Number of Delinquent: ${delcount}`, 140, startY + 40);
+    doc.text(`Amount of Delinquencies: ${delinquencyCount}`, 140, startY + 50);
     // Add teller information at the bottom of the PDF
 
-     const tellerInfo = `   ${this.teller.first_name} ${this.teller.last_name}\nCollection Officer`;
+     const tellerInfo = ` Prepared by:\n  ${this.teller.first_name} ${this.teller.last_name}\nCollection Officer\n\n Approved by:`;
     const tellerTextWidth = doc.getTextWidth(tellerInfo);
     const pageHeight = doc.internal.pageSize.getHeight();
     const margin = 10; // Margin from the bottom-right corner
