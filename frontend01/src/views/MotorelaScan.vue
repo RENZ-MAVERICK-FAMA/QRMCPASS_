@@ -516,7 +516,7 @@ const margin = 10; // Margin from the bottom-right corner
 const lineSpacing = 8; // Space between lines
 
 // Define the text positions
-const startXy = pageWidth - 100; // Adjust X position based on available space
+const startXy = pageWidth - 60; // Adjust X position based on available space
 const startYx= pageHeight - margin - 30; // Adjust Y position for the text block
 
 // Draw "Prepared by:" and name
