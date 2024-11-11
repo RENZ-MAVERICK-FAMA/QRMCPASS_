@@ -409,56 +409,63 @@ unit.transactions.slice(startIndex1).forEach((transaction, index) => {
 
     doc.text(dateText, dateTextX, dateTextY);
 
-   ;
+    const docWidth = doc.internal.pageSize.getWidth();
+const minCellWidth = 50; // Minimum width for each cell
+const columns = Math.floor(docWidth / minCellWidth); // Dynamic number of columns
+const cellWidth = docWidth / columns; // Adjust cell width to fill entire horizontal space
+const cellHeight = 10; // Set the cell height
 
-    // Define cell width and height
-    const cellWidth = 13;
-    const cellHeight = 10;
+// Define initial position for table
+let startX = 10;
+let startY = 90 + (cellHeight / 2); // Start at the center of the cell height
 
-    // Define initial position for table
-    let startX = 10;
-    let startY = 90 + (cellHeight / 2); // Start at the center of the cell height
+// Variables to calculate total collected and count of delinquencies
+let totalCollected = 0;
+let delinquencyCount = 0;
 
-    // Variables to calculate total collected and count of delinquencies
-    let totalCollected = 0;
-    let delinquencyCount = 0;
+// Loop through sortedUnits and add each unit to the table
+this.sortedUnits.forEach((unit, index) => {
+    let status = '';
+    let color = '';
+    let textclr = '';
 
-    // Loop through sortedUnits and add each unit to the table
-    this.sortedUnits.forEach((unit, index) => {
-        let status = '';
-        let color = '';
-        let textclr = '';
+    if (unit.has_toll_payment_today) {
+        status = 'Payment Done';
+        color = '#90ee90'; // Green
+        totalCollected += 6;
+    } else if (unit.has_delinquency_unpaid) {
+        status = 'Delinquency Unpaid';
+        color = '#FF0000';
+        textclr = '#FFFF';
+        delinquencyCount++;
+    } else {
+        status = 'No Payment/Delinquency';
+        color = '#fff'; // Default
+    }
 
-        if (unit.has_toll_payment_today) {
-            status = 'Payment Done';
-            color = '#90ee90'; // Green
-            totalCollected += 6;
-        } else if (unit.has_delinquency_unpaid) {
-            status = 'Delinquency Unpaid';
-            color = '#FF0000'; 
-            textclr ='#FFFF';
-            delinquencyCount++;
-        } else {
-            status = 'No Payment/Delinquency';
-            color = '#fff'; // Black
-        }
+    // Set fill and text color for each cell
+    doc.setFillColor(color);
+    doc.setTextColor(textclr);
+    doc.rect(startX, startY - (cellHeight / 2), cellWidth, cellHeight, 'F');
+    doc.setTextColor(0); // Reset to black for text
 
-        doc.setFillColor(color);
-        doc.setTextColor(textclr);
-        doc.rect(startX, startY - (cellHeight / 2), cellWidth, cellHeight, 'F');
-        doc.setTextColor(0);
-        if (unit.unit_info) {
-            doc.text(unit.unit_info, startX + 2, startY + 2);
-        }
-        doc.rect(startX, startY - (cellHeight / 2), cellWidth, cellHeight);
+    // Display unit info
+    if (unit.unit_info) {
+        doc.text(unit.unit_info, startX + 2, startY + 2);
+    }
 
-        startX += cellWidth;
+    // Draw cell outline
+    doc.rect(startX, startY - (cellHeight / 2), cellWidth, cellHeight);
 
-        if (index % 3 === 2) {
-            startX = 10;
-            startY += cellHeight;
-        }
-    });
+    // Move to the next column
+    startX += cellWidth;
+
+    // Move to the next row after reaching the calculated number of columns
+    if ((index + 1) % columns === 0) {
+        startX = 10; // Reset to left margin
+        startY += cellHeight; // Move down by cell height
+    }
+});
 
     doc.setFontSize(12);
     doc.text(`Total Amount Collected: ${totalCollected}`, 140, startY + 20);
