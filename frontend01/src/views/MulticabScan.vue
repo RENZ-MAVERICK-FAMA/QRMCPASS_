@@ -402,69 +402,84 @@ generateAndDownloadPDF() {
     doc.text(headerText, headerTextX, 80)
 
     doc.setFontSize(12);
-    let dateText = `Date: ${new Date().toLocaleDateString()}`;
-    let dateTextWidth = doc.getTextWidth(dateText);
-    let rightMargin = 10; // Margin from the right edge
-    let dateTextX = pageWidth - dateTextWidth - rightMargin;
-    let dateTextY = 60; // Y-coordinate where the text should appear
+    const leftMargin = 10; // Left margin
+const rightMargin = 10; // Right margin
+const docWidth = pageWidth - leftMargin - rightMargin; // Total width available after margins
 
-    doc.text(dateText, dateTextX, dateTextY);
+let dateText = `Date: ${new Date().toLocaleDateString()}`;
+let dateTextWidth = doc.getTextWidth(dateText);
 
-   ;
-    const cellWidth = 13;
-    const cellHeight = 10;
+// X position considering the right margin
+let dateTextX = pageWidth - dateTextWidth - rightMargin; 
+let dateTextY = 60; // Y-coordinate where the text should appear
 
-    
-    let startX = 10;
-    let startY = 50 + (cellHeight / 2); 
+// Apply text to the document
+doc.text(dateText, dateTextX, dateTextY);
 
 
-    let totalCollected = 0;
-    let delinquencyCount = 0;
+const minCellWidth =20; 
+const columns = Math.floor(docWidth / minCellWidth); 
+const cellWidth = docWidth / columns; 
+const cellHeight = 10; 
 
+// Define initial position for table
+let startX = 10;
+let startY = 90 + (cellHeight / 2); // Start at the center of the cell height
 
-    this.sortedUnits.forEach((unit, index) => {
-     
-        let status = '';
-        let color = '';
+// Variables to calculate total collected and count of delinquencies
+let totalCollected = 0;
+let delinquencyCount = 0;
 
-        if (unit.has_toll_payment_today) {
-            status = 'Payment Done';
-            color = '#90ee90'; 
-            totalCollected += 6;
-        } else if (unit.has_delinquency_unpaid) {
-            status = 'Delinquency Unpaid';
-            color = '#FF0000'; 
-        
-            delinquencyCount++;
-        } else {
-            status = 'No Payment/Delinquency';
-            color = '#fff'; 
-        }
+// Loop through sortedUnits and add each unit to the table
+this.sortedUnits.forEach((unit, index) => {
+    let status = '';
+    let color = '';
+    let textclr = '';
 
-       
-        doc.setFillColor(color);
-        doc.rect(startX, startY - (cellHeight / 2), cellWidth, cellHeight, 'F');
-        doc.setTextColor(0);
-        if (unit.unit_info) {
-            doc.text(unit.unit_info, startX + 2, startY + 2);
-        }
-        doc.rect(startX, startY - (cellHeight / 2), cellWidth, cellHeight);
+    if (unit.has_toll_payment_today) {
+        status = 'Payment Done';
+        color = '#90ee90'; // Green
+        totalCollected += 6;
+    } else if (unit.has_delinquency_unpaid) {
+        status = 'Delinquency Unpaid';
+        color = '#FF0000';
+        textclr = '#FFFF';
+        delinquencyCount++;
+    } else {
+        status = 'No Payment/Delinquency';
+        color = '#fff'; // Default
+    }
 
-        startX += cellWidth;
+    // Set fill and text color for each cell
+    doc.setFillColor(color);
+    doc.setTextColor(textclr);
+    doc.rect(startX, startY - (cellHeight / 2), cellWidth, cellHeight, 'F');
+    doc.setTextColor(0); // Reset to black for text
 
-        if (index % 3 === 2) {
-            startX = 10;
-            startY += cellHeight;
-        }
-    });
+    // Display unit info
+    if (unit.unit_info) {
+        doc.text(unit.unit_info, startX + 2, startY + 2);
+    }
 
-   
+    // Draw cell outline
+    doc.rect(startX, startY - (cellHeight / 2), cellWidth, cellHeight);
+
+    // Move to the next column
+    startX += cellWidth;
+
+    // Move to the next row after reaching the calculated number of columns
+    if ((index + 1) % columns === 0) {
+        startX = 10; // Reset to left margin
+        startY += cellHeight; // Move down by cell height
+    }
+});
+
     doc.setFontSize(12);
     doc.text(`Total Amount Collected: ${totalCollected}`, 140, startY + 20);
     doc.text(`Delinquencies: ${delinquencyCount}`, 140, startY + 30);
+    // Add teller information at the bottom of the PDF
 
-    const tellerInfo = `   ${this.teller.first_name} ${this.teller.last_name}\nCollection Officer`;
+     const tellerInfo = `   ${this.teller.first_name} ${this.teller.last_name}\nCollection Officer`;
     const tellerTextWidth = doc.getTextWidth(tellerInfo);
     const pageHeight = doc.internal.pageSize.getHeight();
     const margin = 10; // Margin from the bottom-right corner
@@ -472,6 +487,7 @@ generateAndDownloadPDF() {
     const tellerTextY = pageHeight - margin;
 
     doc.text(tellerInfo, tellerTextX, tellerTextY);
+
 
     const filename = `Multicab_Report_${new Date().toISOString().split('T')[0]}.pdf`;
     doc.save(filename);
