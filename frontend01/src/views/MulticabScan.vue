@@ -392,12 +392,10 @@ generateAndDownloadPDF() {
     let text0 = 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon';
     let text0X = (pageWidth - doc.getTextWidth(text0)) / 2;
     doc.text(text0, text0X, 35);
-    let text3 = 'Multicab  Units Report';
-    let text3X = (pageWidth - doc.getTextWidth(text3)) / 2;
-    doc.text(text3, text3X, 70);
+   
 
     doc.setFontSize(12);
-    let headerText = 'Units with Payments and Delinquencies';
+    let headerText = 'Daily Multicab Collection Report';
     let headerTextX = (pageWidth - doc.getTextWidth(headerText)) / 2;
     doc.text(headerText, headerTextX, 80)
 
