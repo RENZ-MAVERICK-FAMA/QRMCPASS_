@@ -112,7 +112,7 @@
             />
             <Button
               type="submit"
-              @click="manual"
+              @click="confirmTransaction"
               label="Manually Payment"
               icon="pi pi-money-bill"
               severity="success"
@@ -120,6 +120,13 @@
             />
           </div>
         </form>
+        <Dialog header="Confirm Transaction" modal v-model:visible="showConfirmModal">
+    <p>Please confirm to continue your transaction.</p>
+    <div class="flex justify-end mt-4">
+      <Button label="Cancel" class="p-button-text" @click="showConfirmModal = false" />
+      <Button label="Confirm" class="p-button-danger" @click="manual" />
+    </div>
+  </Dialog>
       </div>
       <div class="p-5 bg-slate-100 mt-3 shadow rounded">
         <table class="table">
@@ -223,6 +230,7 @@ export default {
       detectedCodes: [],
       showMulticab: true,
       showModal: false,
+      showConfirmModal: false,
         modalContent: '',
 
     delinquencies: []
@@ -293,7 +301,15 @@ return { teller }
   }
 },
   methods: { 
-  
+    confirmTransaction() {
+      // Close the initial modal and open the confirmation modal
+      this.showModal = false;
+      this.showConfirmModal = true;
+    },proceedTransaction() {
+      // Handle the confirmed transaction here
+      this.showConfirmModal = false;
+      this.manual(); // Call the topup method to proceed
+    },
     openModal(unit) {
     
     let unitDetails = ``;
@@ -646,6 +662,7 @@ axios.post('https://qrmcpass.loca.lt/deduct', data, {
       this.error = 'Please select a unit';
       return;
     }
+    this.showConfirmModal = false;
     
     let unitType = this.selectedUnit.unit_type;
     let amount = unitType === 'multicab' ? 11 : (unitType === 'motorela' ? 6 : 0);

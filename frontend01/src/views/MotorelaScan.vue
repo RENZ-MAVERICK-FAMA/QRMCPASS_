@@ -655,12 +655,12 @@ doc.text("Approved by:", startXy, startYx + lineSpacing * 3);
     }
   });
   }, manual() {
-    this.showConfirmModal = false;
+    
         if (!this.selectedUnit) {
         this.error = 'Please select a unit';
         return;
       }
-      
+      this.showConfirmModal = false;
       let unitType = this.selectedUnit.unit_type;
       let amount = unitType === 'multicab' ? 11 : (unitType === 'motorela' ? 6 : 0);
       
