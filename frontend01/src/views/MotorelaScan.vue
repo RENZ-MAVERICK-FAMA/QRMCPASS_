@@ -111,7 +111,7 @@
             />
             <Button
               type="submit"
-              @click="manual"
+              @click="manualPaymentConfirmation"
               label="Manually Payment"
               icon="pi pi-money-bill"
               severity="success"
@@ -119,6 +119,13 @@
             />
           </div>
         </form>
+        <Dialog header="Confirm Transaction" modal v-model:visible="showConfirmModal">
+    <p>Please confirm to continue your transaction.</p>
+    <div class="flex justify-end mt-4">
+      <Button label="Cancel" class="p-button-text" @click="showConfirmModal = false" />
+      <Button label="Confirm" class="p-button-danger" @click="proceedTransaction" />
+    </div>
+  </Dialog>
       </div>
       <div class="p-5 bg-slate-100 mt-3 shadow rounded">
         <table class="table">
@@ -222,6 +229,7 @@
         detectedCodes: [],
         showMotorela: true,
         showModal: false,
+        showConfirmModal: false,
         modalContent: '',
       delinquencies: []
         
@@ -290,7 +298,17 @@
       return this.units.filter(unit => unit.unit_type === 'motorela');
     }
   },
-    methods: { 
+    methods: {   confirmTransaction() {
+      // Close the initial modal and open the confirmation modal
+      this.showModal = false;
+      this.showConfirmModal = true;
+    },proceedTransaction() {
+      // Handle the confirmed transaction here
+      this.showConfirmModal = false;
+      this.manual(); // Call the topup method to proceed
+    },
+
+
       openModal(unit) {
     
     let unitDetails = ``;
