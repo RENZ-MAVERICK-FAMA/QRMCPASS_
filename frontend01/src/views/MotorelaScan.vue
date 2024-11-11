@@ -410,7 +410,7 @@ unit.transactions.slice(startIndex1).forEach((transaction, index) => {
     doc.text(dateText, dateTextX, dateTextY);
 
     const docWidth = doc.internal.pageSize.getWidth();
-const minCellWidth = 50; // Minimum width for each cell
+const minCellWidth = 30; // Minimum width for each cell
 const columns = Math.floor(docWidth / minCellWidth); // Dynamic number of columns
 const cellWidth = docWidth / columns; // Adjust cell width to fill entire horizontal space
 const cellHeight = 10; // Set the cell height
