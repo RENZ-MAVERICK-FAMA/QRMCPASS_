@@ -481,7 +481,7 @@ this.sortedUnits.forEach((unit, index) => {
 const labelX = 60;        // X position for labels
 const countX = 140;       // X position for count values
 const amountX = 180;      // X position for amount values
-const headerY = startY + 10;  // Y position for the header row
+const headerY = startY + 30;  // Y position for the header row
 const lineSpacing1 = 10;   // Spacing between lines
 
 // Headers
