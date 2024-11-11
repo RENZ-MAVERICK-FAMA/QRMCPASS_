@@ -477,11 +477,31 @@ this.sortedUnits.forEach((unit, index) => {
 });
 
     doc.setFontSize(12);
-    doc.text(`Total Number of Motorela: ${count}/${totalUnits}`, 60, startY + 20);
-    doc.text(`Total Amount Collected: ${totalCollected}`, 140, startY + 20);
-    doc.text(`Total Number of Delinquent: ${delcount}/${totalUnits}`, 60, startY +30);
-    doc.text(`Amount of Delinquencies: ${delinquencyCount}`, 140, startY + 30);
-    // Add teller information at the bottom of the PDF
+ // Set initial coordinates for positioning
+const labelX = 60;        // X position for labels
+const countX = 140;       // X position for count values
+const amountX = 180;      // X position for amount values
+const headerY = startY + 10;  // Y position for the header row
+const lineSpacing1 = 10;   // Spacing between lines
+
+// Headers
+doc.setFontSize(12);
+doc.text("Total Number of Motorela", labelX, headerY);
+doc.text("Total Amount", amountX, headerY);
+
+// Values
+doc.setFontSize(10);
+doc.text(`Total number of payments:`, labelX, headerY + lineSpacing1 * 2);
+doc.text(`${count}`, countX, headerY + lineSpacing1 * 2);
+doc.text(`${totalCollected}`, amountX, headerY + lineSpacing1 * 2);
+
+doc.text(`Total number of delinquents:`, labelX, headerY + lineSpacing1 * 4);
+doc.text(`${delcount}`, countX, headerY + lineSpacing1 * 4);
+doc.text(`${delinquencyCount}`, amountX, headerY + lineSpacing1 * 4);
+
+doc.text(`Overall total amount:`, labelX, headerY + lineSpacing1 * 6);
+doc.text(`${totalUnits}`, countX, headerY + lineSpacing1 * 6);
+doc.text(`${totalCollected + delinquencyCount}`, amountX, headerY + lineSpacing1 * 6);
 
  
 const pageHeight = doc.internal.pageSize.getHeight();
