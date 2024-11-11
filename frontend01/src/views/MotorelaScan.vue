@@ -111,7 +111,7 @@
             />
             <Button
               type="submit"
-              @click="manualPaymentConfirmation"
+              @click="confirmTransaction"
               label="Manually Payment"
               icon="pi pi-money-bill"
               severity="success"
