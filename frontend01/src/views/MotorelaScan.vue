@@ -506,7 +506,7 @@ doc.setFont("helvetica", "normal");
 
 doc.text(`Overall total amount:`, labelX, headerY + lineSpacing1 * 6);
 doc.setFont("helvetica", "bold"); // Set font to bold
-doc.text(`${totalUnits}`, countX, headerY + lineSpacing1 * 6);
+doc.text(`${count+delcount}`, countX, headerY + lineSpacing1 * 6);
 doc.text(`${totalCollected + delinquencyCount}`, amountX, headerY + lineSpacing1 * 6);
 doc.setFont("helvetica", "normal");
 
