@@ -62,37 +62,41 @@
           optionValue="id"
           optionLabel="unit_info"
           placeholder="Select Unit"
-          
         ></Select>
       </div>
       <div class="mt-3 grid">
         <label>Branch</label>
-            <InputText
-              v-model="selectedBranch"
-              class="w-full md:max-w-[400px]"
-              placeholder="Office"
-              value="office"
-              required
-              readonly
-            />
-        <!-- <div class="readonly-field">
-    <div class="label">Toll Booth:<div class="value">{{ office }}</div></div>
-    
-  </div> -->
+        <InputText
+          v-model="selectedBranch"
+          class="w-full md:max-w-[400px]"
+          placeholder="Office"
+          value="office"
+          required
+          readonly
+        />
       </div>
       <div class="mt-3 grid">
         <label for="">Cash In</label>
         <InputNumber v-model="amount" required />
       </div>
       <Button
-        type="submit"
+        type="button"
         icon="pi pi-check"
         severity="success"
         label="Confirm"
         class="mt-3 w-full"
-        @click="showModal = false"
+        @click="confirmTransaction"
       />
     </form>
+  </Dialog>
+
+  <!-- Confirmation Modal -->
+  <Dialog header="Confirm Transaction" modal v-model:visible="showConfirmModal">
+    <p>Please confirm to continue your transaction.</p>
+    <div class="flex justify-end mt-4">
+      <Button label="Cancel" class="p-button-text" @click="showConfirmModal = false" />
+      <Button label="Confirm" class="p-button-danger" @click="proceedTransaction" />
+    </div>
   </Dialog>
 
   <!-- <Dialog modal v-model:visible="showSuccessModal">
@@ -125,6 +129,7 @@ export default {
   data() {
     return {
       showModal: false,
+      showConfirmModal: false,
       units: [],
       selectedBranch: "market",
        office: 'Office',
@@ -174,6 +179,15 @@ export default {
     }, 1000);
   },
   methods: {
+    confirmTransaction() {
+      // Close the initial modal and open the confirmation modal
+      this.showModal = false;
+      this.showConfirmModal = true;
+    },proceedTransaction() {
+      // Handle the confirmed transaction here
+      this.showConfirmModal = false;
+      this.topup(); // Call the topup method to proceed
+    },
     clearError() {
       this.error = "";
     },
