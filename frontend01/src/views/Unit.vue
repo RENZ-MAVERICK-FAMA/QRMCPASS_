@@ -90,7 +90,7 @@ export default {
   methods: {
     async fetchUnits() {
       try {
-        const response = await axios.get('https://qrmcpass.loca.lt/units');
+        const response = await axios.get('https://qrmcpass.loca.lt/unit');
         this.units = response.data.units;
       } catch (error) {
         console.error(error);
@@ -119,7 +119,7 @@ export default {
       
       // If the unit exists, update the array locally
       if (index !== -1) {
-        this.units[index] = { id, color, unit_info,password };
+        this.units[index] = { id, color, unit_info, unit_type,password };
       }
       
       // Close the modal after updating
