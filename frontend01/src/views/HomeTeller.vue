@@ -41,7 +41,7 @@
       <div class="bg-white p-14 justify-center items-center rounded-[10px] shadow w-full md:w-full">
         <h1 class="text-[25px] font-bold">Office Teller</h1>
      
-        <p class="font-extralight">Allows to pay deliquinces.</p>
+
         <RouterLink class="nav-link" to="/officeteller">
           <Button
             label="Office Teller"

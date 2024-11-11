@@ -34,7 +34,7 @@
         </template>
         <Column header="Unit" field="unitid" />
         <Column header="Amount" field="amount" />
-        <Column header="Date">
+        <Column header="Date 0f Payment">
           <template #body="{ data }">
             {{ new Date(data.date).toISOString().split("T")[0] }}
           </template>
