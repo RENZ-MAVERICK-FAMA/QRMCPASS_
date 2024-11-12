@@ -130,38 +130,47 @@
       </div>
       <div class="p-5 bg-slate-100 mt-3 shadow rounded">
         <table class="table">
-          <thead>
-            <tr>
-              <th><strong class="text-[40px]">Multicab</strong></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>
-                <template v-if="showMulticab">
-                  <table class="w-full">
-                    <tbody>
-                      <div class="flex gap-2">
-                        <tr v-for="unit in sortedUnits" :key="unit.id">
-                          <td
-                            :class="{
-                              'bg-green-400 text-white p-2':
-                                unit.has_toll_payment_today, // Payment is done
-                              'bg-red-400 text-white p-2':
-                                unit.has_delinquency_unpaid, // Unpaid delinquency
-                            }"
-                          >
-                            {{ unit.unit_info }}
-                          </td>
-                        </tr>
-                      </div>
-                    </tbody>
-                  </table>
-                </template>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+  <thead>
+    <tr>
+      <th>
+        <strong class="text-[40px]">Multicab</strong>
+        <span class="ml-4 text-green-500">
+          Paid: {{ totalPaidUnits }}
+        </span>
+        <span class="ml-4 text-red-500">
+          Delinquent: {{ totalDelinquentUnits }}
+        </span>
+        <span class="ml-4 text-gray-700">
+          Total: {{ totalUnits }}
+        </span>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <template v-if="showMulticab">
+          <table class="w-full">
+            <tbody>
+              <div class="flex gap-2">
+                <tr v-for="unit in sortedUnits" :key="unit.id">
+                  <td
+                    :class="{
+                      'bg-green-400 text-white p-2': unit.has_toll_payment_today,
+                      'bg-red-400 text-white p-2': unit.has_delinquency_unpaid,
+                    }"
+                  >
+                    {{ unit.unit_info }}
+                  </td>
+                </tr>
+              </div>
+            </tbody>
+          </table>
+        </template>
+      </td>
+    </tr>
+  </tbody>
+</table>
       </div>
     </div>
     <Dialog
@@ -288,7 +297,16 @@ return { teller }
 
 
   },
-  computed: { sortedUnits() {
+  computed: { totalPaidUnits() {
+    return this.sortedUnits.filter(unit => unit.has_toll_payment_today).length;
+  },
+  totalDelinquentUnits() {
+    return this.sortedUnits.filter(unit => unit.has_delinquency_unpaid).length;
+  },
+  totalUnits() {
+    return this.sortedUnits.length;
+  },
+     sortedUnits() {
         return this.filteredUnits.slice().sort((a, b) => a.id - b.id);
     },
   getUniqueUnitTypes() {
