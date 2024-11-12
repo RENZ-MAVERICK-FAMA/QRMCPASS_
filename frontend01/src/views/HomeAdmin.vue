@@ -288,9 +288,9 @@ delinquencies.sort((a, b) => new Date(a.date_of_payment) - new Date(b.date_of_pa
   const filename = `Motorela Delinquency Report for ${startDate} & ${endDate}.pdf`;
   
   // Create table body with header row and delinquency data
-  const tableHeaderRow = ['Unit', 'Date', 'Status']; // Plain text values for the header row
+  const tableHeaderRow = ['Body Number', 'Date', 'Status']; // Plain text values for the header row
   const tableBody = [
-    [{ text: 'Unit', style: 'tableHeader' }, { text: 'Date', style: 'tableHeader' }, { text: 'Status', style: 'tableHeader' }],
+    [{ text: 'Body Number', style: 'tableHeader' }, { text: 'Date', style: 'tableHeader' }, { text: 'Status', style: 'tableHeader' }],
     ...delinquencies.map(delinquency => [
       delinquency.unit_id, 
       new Date(delinquency.date_of_payment).toLocaleDateString('en-US'), // Convert date to readable format
@@ -418,12 +418,12 @@ generatedelmulticabdailyExcelFile(delinquencies,startDate, endDate) {
   const filename = `Multicab Delinquencies Report for ${startDate} & ${endDate}.pdf`;
   
 
-  const tableHeaderRow = ['Unit', 'Date', 'Status']; // Plain text values for the header row
+  const tableHeaderRow = ['Body Number', 'Date of Delinquency', 'Status','Date of Payment','Timestamp']; // Plain text values for the header row
   const tableBody = [
-    [{ text: 'Unit', style: 'tableHeader' }, { text: 'Date', style: 'tableHeader' }, { text: 'Status', style: 'tableHeader' }],
+    [{ text: 'Body Number', style: 'tableHeader' }, { text: 'Date', style: 'tableHeader' }, { text: 'Status', style: 'tableHeader' }],
     ...delinquencies.map(delinquency => [
       delinquency.unit_id, 
-      new Date(delinquency.date_of_payment).toLocaleDateString('en-US'), // Convert date to readable format
+      new Date(delinquency.date_of_payment).toLocaleDateString('en-US'), 
       delinquency.status
     ])
   ];
@@ -620,7 +620,7 @@ generateMulticabPaymentExcelFile(transactions, startDate, endDate) {
           headerRows: 1,
           widths: ['auto', 'auto', 'auto', 'auto'],
           body: [
-            [{ text: 'Unit', style: 'tableHeader' }, { text: 'Date', style: 'tableHeader' }, { text: 'Amount', style: 'tableHeader' }, { text: 'Type', style: 'tableHeader' }],
+            [{ text: 'Body Number', style: 'tableHeader' }, { text: 'Date', style: 'tableHeader' }, { text: 'Amount', style: 'tableHeader' }, { text: 'Type', style: 'tableHeader' }],
             ...transactions.map(transaction => [
               transaction.id, 
               new Date(transaction.date).toLocaleDateString('en-US'), // Convert date to readable format
@@ -749,7 +749,7 @@ generateMotorelaPaymentPDF(transactions, startDate, endDate) {
           headerRows: 1,
           widths: ['auto', 'auto', 'auto', 'auto'],
           body: [
-            [{ text: 'Unit', style: 'tableHeader' }, { text: 'Date', style: 'tableHeader' }, { text: 'Amount', style: 'tableHeader' }, { text: 'Type', style: 'tableHeader' }],
+            [{ text: 'Body Number', style: 'tableHeader' }, { text: 'Date', style: 'tableHeader' }, { text: 'Amount', style: 'tableHeader' }, { text: 'Type', style: 'tableHeader' }],
             ...transactions.map(transaction => [
               transaction.id, 
               new Date(transaction.date).toLocaleDateString('en-US'), // Convert date to readable format
@@ -857,7 +857,7 @@ pdfMake.createPdf(docDefinition).download(filename);
             { text: '', margin: [0, 10] },
             { text: `Daily Report for ${this.getMonthName(month)}-${parseInt(day) + 1}-${year}`, style: 'subheader', alignment: 'center' },
             { text: '', margin: [0, 10] },
-            { text: 'Unit', style: 'tableHeader', alignment: 'center' },
+            { text: 'Body Number', style: 'tableHeader', alignment: 'center' },
             { text: '', margin: [0, 10] },
             ...(Array.isArray(dailyReport[day].delinquencies) ? 
                 dailyReport[day].delinquencies.map(entry => [entry.unit]) :
@@ -935,7 +935,7 @@ pdfMake.createPdf(docDefinition).download(filename);
         },
         { text: '', margin: [0, 10] },
         { text: 'Overall Report', style: 'subheader', alignment: 'center' },
-        { text: 'Unit', style: 'tableHeader', alignment: 'center' }
+        { text: 'Body Number', style: 'tableHeader', alignment: 'center' }
     ];
 
     Object.keys(overallReport).forEach(unit => {
@@ -1067,7 +1067,7 @@ generateMonthlymulticabReports(dailyReport, overallReport, month, year) {
             { text: '', margin: [0, 10] },
             { text: `Daily Report ${this.getMonthName(month)}-${parseInt(day) + 1}-${year}`, style: 'subheader', alignment: 'center' },
             { text: '', margin: [0, 10] },
-            { text: 'Unit', style: 'tableHeader', alignment: 'center' },
+            { text: 'Body Number', style: 'tableHeader', alignment: 'center' },
             { text: '', margin: [0, 10] },
             ...(Array.isArray(dailyReport[day].delinquencies) ? 
                 dailyReport[day].delinquencies.map(entry => [entry.unit]) :
@@ -1145,7 +1145,7 @@ generateMonthlymulticabReports(dailyReport, overallReport, month, year) {
         },
         { text: '', margin: [0, 10] },
         { text: 'Overall Report', style: 'subheader', alignment: 'center' },
-        { text: 'Unit', style: 'tableHeader', alignment: 'center' }
+        { text: 'Body Number', style: 'tableHeader', alignment: 'center' }
     ];
 
     Object.keys(overallReport).forEach(unit => {
@@ -1264,7 +1264,7 @@ generateMonthlymulticabReports(dailyReport, overallReport, month, year) {
                     widths: ['*', '*', '*'],
                     body: [
                         [
-                            { text: 'Unit', style: 'tableHeader' },
+                            { text: 'Body Number', style: 'tableHeader' },
                             { text: 'Amount', style: 'tableHeader' },
                             { text: 'Type', style: 'tableHeader' }
                         ], // Table header row
@@ -1488,7 +1488,7 @@ generateMonthlymulticabReports(dailyReport, overallReport, month, year) {
                     widths: ['*', '*', '*'],
                     body: [
                         [
-                            { text: 'Unit', style: 'tableHeader' },
+                            { text: 'Body Number', style: 'tableHeader' },
                             { text: 'Amount', style: 'tableHeader' },
                             { text: 'Type', style: 'tableHeader' }
                         ], // Table header row
