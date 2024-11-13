@@ -156,8 +156,8 @@
       <ul>
       <li v-for="(transaction, index) in visibleTransactions" :key="transaction.id" class="mt-2 p-2 border rounded">
         <p><strong>Date:</strong> {{ transaction.date_of_payment }}</p>
-        <p><strong>Status:</strong> {{ transaction.status }}</p>
-        <p><strong>Date of Delinquency:</strong> {{ transaction.date }}</p>
+        <p><strong>Status:</strong> {{ transaction.type }}</p>
+        <p><strong>Date of Delinquency:</strong> {{ new Date(transaction.date).toISOString().split('T')[0] }}</p>
         <p><strong>Amount:</strong> {{ transaction.amount }}</p>
       </li>
     </ul>
