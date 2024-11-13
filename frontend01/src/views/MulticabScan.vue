@@ -129,10 +129,6 @@
   </Dialog>
       </div>
       <div class="p-5 bg-slate-100 mt-3 shadow rounded">
-        <table class="table">
-  <thead>
-    <tr>
-      <th>
         <strong class="text-[40px]">Multicab</strong>
         <span class="ml-4 text-green-500">
           Paid: {{ totalPaidUnits }}
@@ -143,6 +139,11 @@
         <span class="ml-4 text-gray-700">
           Total: {{ totalUnits }}
         </span>
+        <table class="table">
+  <thead>
+    <tr>
+      <th>
+        
       </th>
     </tr>
   </thead>
