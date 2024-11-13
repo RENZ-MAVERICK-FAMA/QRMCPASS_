@@ -147,6 +147,9 @@
     <p v-if="delinquencies.length === 0" class="text-gray-500">
       No delinquencies for the selected unit.
     </p>
+    <div v-if="delinquencies.length > 0" class="mt-3 p-2 border rounded">
+    <p><strong>Total Amount:</strong> {{ totalAmount }}</p>
+  </div>
   </div>
   
  
@@ -234,7 +237,17 @@ export default {
       return this.showMore ? this.delinquencies : this.delinquencies.slice(0, 5);
     },visibleTransactions() {
       return this.showMore ? this.transactions : this.transactions.slice(0, 5);
-    },
+    }, totalAmount() {
+    if (!this.selectedUnit) return 0;
+
+    // Define the multiplier based on unit type
+    const multiplier = this.selectedUnit.unit_type === 'motorela' ? 6 : this.selectedUnit.unit_type === 'multicab' ? 11 : 0;
+
+    // Calculate the total amount by summing the delinquency amounts multiplied by the multiplier
+    return this.delinquencies.reduce((total, delinquency) => {
+      return total + (delinquency.amount * multiplier);
+    }, 0);
+  }
   },
   methods: {
     toggleShowMore() {
