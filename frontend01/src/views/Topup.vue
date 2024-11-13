@@ -13,12 +13,16 @@
         :rows="5"
         :rowsPerPageOptions="[5, 10, 20, 50]"
         class="mt-3"
-        :value="reversedTransactions"
+        :value="filteredTransactions"
       >
         <template #header>
           <div class="flex items-center justify-between">
             <span>Recent Cash In</span>
-            <InputText v-model:modelValue="searchTerm" placeholder="Search..." class="w-full"/>
+            <InputText 
+        v-model="searchQuery" 
+        placeholder="Search..." 
+        class="w-1/3 md:w-1/4"
+      />
             <Button
               @click="showModal = true"
               label="Cash In"
@@ -154,8 +158,8 @@ export default {
       success: "",
       error: "",
       transactions: [],
-      searchTerm: "",
-      reversedTransactions:[]
+      searchQuery: '',
+      
       
     };
   },
@@ -190,25 +194,16 @@ export default {
       // return this.transactions.slice(0, 10).reverse();
        return this.transactions.slice(0, 10);
     }, filteredTransactions() {
-    // Check if the searchTerm is empty, then return the full list of transactions
-    if (!this.searchTerm) {
-      return this.reversedTransactions;
+      if (!this.searchQuery) return this.reversedTransactions;
+      
+      const query = this.searchQuery.toLowerCase();
+      
+      return this.reversedTransactions.filter(transaction => {
+        return Object.values(transaction).some(value =>
+          String(value).toLowerCase().includes(query)
+        );
+      });
     }
-
-    // Filter the transactions based on the searchTerm
-    return this.reversedTransactions.filter(transaction => {
-      // Convert the searchTerm to lowercase for case-insensitive comparison
-      const search = this.searchTerm.toLowerCase();
-
-      // Check if the transaction fields match the search term
-      return (
-        transaction.reference.toLowerCase().includes(search) || 
-        transaction.unitid.toLowerCase().includes(search) ||
-        transaction.amount.toString().includes(search) ||
-        new Date(transaction.date).toISOString().split("T")[0].includes(search)
-      );
-    });
-  }
   },
   mounted() {
     this.fetchRecentTransactions();
