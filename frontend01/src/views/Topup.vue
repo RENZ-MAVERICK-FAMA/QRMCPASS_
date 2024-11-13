@@ -196,7 +196,7 @@ export default {
   methods: { 
     generateReceipt(reference, unitid) {
     // Fetch the transaction and unit data using reference and unitid
-    axios.get(`/api/transactions/${reference}/${unitid}`)
+    axios.get(`https://qrmcpass.loca.lt/api/transactions/${reference}/${unitid}`)
       .then(response => {
         const transaction = response.data.transaction;
         const unit = response.data.unit;
