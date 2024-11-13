@@ -22,7 +22,7 @@
       <div class="bg-green-100 size-[300px] rounded-[50%] shadow p-3 hover:bg-slate-50" >
         <div class="bg-green-200 rounded-[50%] shadow w-full  hover:animate-pulse h-full grid place-content-center" >
           <div class="text-center" >
-            <i class="pi pi-truck text-[50px]" ></i>
+            <i class="pi pi-money-bill text-[50px]" ></i>
             <h6 class="text-[35px] font-extrabold text-black/80" >Payment Deliquency</h6>
           </div>
         </div>
