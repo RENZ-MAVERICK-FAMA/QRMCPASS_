@@ -281,23 +281,25 @@ export default {
       });
   }
 },fetchTransaction() {
-  if (this.selectedUnit) {
-    axios
-      .get(`https://qrmcpass.loca.lt/unit/${this.selectedUnit.id}/transactions`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-        },
-      })
-      .then((response) => {
-        // Filter delinquencies to only include those with a status of 'unpaid'
-        this.transactions = response.data.transactions.filter(transaction => transaction.type === "DELINQUENCY_PAYMENT");
-        console.log(this.transactions);
-      })
-      .catch((error) => {
-        console.error("Error fetching transaction:", error);
-      });
-  }
-},
+    if (this.selectedUnit) {
+      axios
+        .get(`https://qrmcpass.loca.lt/unit/${this.selectedUnit.id}/transactions`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        })
+        .then((response) => {
+          // Filter transactions to only include those with a specific type, if needed
+          this.transactions = response.data.transactions.filter(
+            transaction => transaction.type === "DELINQUENCY_PAYMENT"
+          );
+          console.log(this.transactions);
+        })
+        .catch((error) => {
+          console.error("Error fetching transaction:", error);
+        });
+    }
+  },
 
     deduct() {
       if (!this.selectedUnit) {
