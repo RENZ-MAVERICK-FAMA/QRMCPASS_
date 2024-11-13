@@ -62,7 +62,7 @@
       >
        
         <Column header="ID" field="id" />
-        <Column header="Unit" field="unitid" />
+        <Column header="Body Number" field="unitid" />
         <Column header="Amount" field="amount" />
         <Column header="Date">
           <template #body="{ data }">
