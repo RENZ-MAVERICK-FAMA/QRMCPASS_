@@ -129,20 +129,20 @@
   </Dialog>
       </div>
       <div class="p-5 bg-slate-100 mt-3 shadow rounded">
+        <strong class="text-[40px]">Multicab</strong> <br>
+        <span class="ml-4 text-green-500">
+          Paid: {{ totalPaidUnits }}
+        </span> <br>
+        <span class="ml-4 text-red-500">
+          Delinquent: {{ totalDelinquentUnits }}
+        </span> <br>
+        <span class="ml-4 text-gray-700">
+          Total: {{ totalUnits }}
+        </span>
         <table class="table">
   <thead>
     <tr>
       <th>
-        <strong class="text-[40px]">Multicab</strong>
-        <span class="ml-4 text-green-500">
-          Paid: {{ totalPaidUnits }}
-        </span>
-        <span class="ml-4 text-red-500">
-          Delinquent: {{ totalDelinquentUnits }}
-        </span>
-        <span class="ml-4 text-gray-700">
-          Total: {{ totalUnits }}
-        </span>
       </th>
     </tr>
   </thead>
