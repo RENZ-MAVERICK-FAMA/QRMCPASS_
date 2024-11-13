@@ -283,7 +283,7 @@ export default {
 },fetchTransaction() {
   if (this.selectedUnit) {
     axios
-      .get(`https://qrmcpass.loca.lt/units/${this.selectedUnit.id}/transactions`, {
+      .get(`https://qrmcpass.loca.lt/unit/${this.selectedUnit.id}/transactions`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
