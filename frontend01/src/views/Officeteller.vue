@@ -1,4 +1,5 @@
 <template>
+ <main class="p-5 md:px-[10%]" >
  <div class=" w-full p-5 grid grid-rows-3 grid-cols-1 md:grid-rows-1 md:grid-cols-3 md:w-full gap-2 justify-center items-center">
       
       <div class=" bg-white p-14 justify-center items-center rounded-[10px] shadow w-full md:w-full">
@@ -30,4 +31,5 @@
       </div>
      
     </div>
+  </main>
 </template>
