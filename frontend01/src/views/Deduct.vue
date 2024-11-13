@@ -148,6 +148,19 @@
       No delinquencies for the selected unit.
     </p>
   </div>
+  <div class="scrollable-list mt-2">
+      <ul>
+      <li v-for="(transaction, index) in visibleTransaction" :key="transaction.id" class="mt-2 p-2 border rounded">
+        <p><strong>Date:</strong> {{ transaction.date_of_payment }}</p>
+        <p><strong>Status:</strong> {{ transaction.status }}</p>
+        <p><strong>Date of Delinquency:</strong> {{ transaction.date }}</p>
+        <p><strong>Amount:</strong> {{ transaction.amount }}</p>
+      </li>
+    </ul>
+    <p v-if="transactions.length === 0" class="text-gray-500">
+      No transactions for the selected unit.
+    </p>
+  </div>
   </div>
     </div>
 
@@ -169,7 +182,8 @@ export default {
       error: "",
       success: "",
       teller: "",
-      delinquencies: []
+      delinquencies: [],
+      transactions: []
     };
   },
 
@@ -209,6 +223,8 @@ export default {
   computed: {
     visibleDelinquencies() {
       return this.showMore ? this.delinquencies : this.delinquencies.slice(0, 5);
+    },visibleTransaction() {
+      return this.showMore ? this.transactions : this.transactions.slice(0, 5);
     },
   },
   methods: {
@@ -255,6 +271,23 @@ export default {
         console.error("Error fetching delinquencies:", error);
       });
   }
+},fetchTransaction() {
+  if (this.selectedUnit) {
+    axios
+      .get(`https://qrmcpass.loca.lt/units/${this.selectedUnit.id}/paid`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      })
+      .then((response) => {
+        // Filter delinquencies to only include those with a status of 'unpaid'
+        this.transactions = response.data.transactions.filter(transaction => transaction.type === "DELINQUENCY_PAYMENT");
+        console.log(this.transactions);
+      })
+      .catch((error) => {
+        console.error("Error fetching transaction:", error);
+      });
+  }
 },
 
     deduct() {
@@ -274,7 +307,7 @@ export default {
         amount: amount,
         teller: this.teller.id,
       };
-
+      console.log(data);
       axios
         .post("https://qrmcpass.loca.lt/paymentdel", data, {
           headers: {
