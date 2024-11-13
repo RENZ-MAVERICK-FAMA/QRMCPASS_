@@ -149,9 +149,9 @@
     <tr>
       <td>
         <template v-if="showMotorela">
-          <table class="w-full">
+           <table class="w-full">
             <tbody>
-              <div class="flex gap-2">
+              <div class="flex gap-2 flex-wrap"> 
                 <tr v-for="unit in sortedUnits" :key="unit.id">
                   <td
                     :class="{
