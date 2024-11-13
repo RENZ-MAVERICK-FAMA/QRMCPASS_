@@ -8,7 +8,7 @@
         <p class="font-extralight">Allows to Cash In manually.</p>
         <RouterLink class="nav-link" to="/topup">
           <Button
-            label="Manually TopUp"
+            label="Walk In Cash In"
             class="mt-3 w-full"
             icon="pi pi-money-bill"
             severity="success"
