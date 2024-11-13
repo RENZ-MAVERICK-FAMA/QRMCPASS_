@@ -153,6 +153,9 @@
   </div>
   
  
+  
+</div>
+<div class="p-5 shadow bg-white rounded-[10px] w-full">
   <div class=" grid grid-rows-1 grid-cols-2 gap-1">
     <h2 class="text-[18px] font-bold">Payments</h2>
   <div class="scrollable-list mt-2">
@@ -170,9 +173,11 @@
     <p v-if="visibleTransactions.length > 0" class="font-bold mt-3">
       <strong>Total Amount: </strong> {{ totalPaymentAmount }}
     </p>
-  </div>
 </div> 
-</div>
+
+
+    </div>
+    </div>
     </div>
 
     
