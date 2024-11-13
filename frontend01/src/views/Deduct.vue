@@ -154,7 +154,7 @@
     <h2 class="text-[18px] font-bold">Payments</h2>
   <div class="scrollable-list mt-2">
       <ul>
-      <li v-for="(transaction, index) in visibleTransaction" :key="transaction.id" class="mt-2 p-2 border rounded">
+      <li v-for="(transaction, index) in visibleTransactions" :key="transaction.id" class="mt-2 p-2 border rounded">
         <p><strong>Date:</strong> {{ transaction.date_of_payment }}</p>
         <p><strong>Status:</strong> {{ transaction.status }}</p>
         <p><strong>Date of Delinquency:</strong> {{ transaction.date }}</p>
@@ -205,7 +205,7 @@ export default {
     });
 
     axios
-      .get("httpss://qrmcpass.loca.lt/Teller", {
+      .get("https://qrmcpass.loca.lt/Teller", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
@@ -232,7 +232,7 @@ export default {
   computed: {
     visibleDelinquencies() {
       return this.showMore ? this.delinquencies : this.delinquencies.slice(0, 5);
-    },visibleTransaction() {
+    },visibleTransactions() {
       return this.showMore ? this.transactions : this.transactions.slice(0, 5);
     },
   },
@@ -289,12 +289,11 @@ export default {
           },
         })
         .then((response) => {
-          // Filter transactions to only include those with a specific type, if needed
-          this.transactions = response.data.transactions.filter(
-            transaction => transaction.type === "DELINQUENCY_PAYMENT"
-          );
-          console.log(this.transactions);
-        })
+  console.log(response.data); // Check the full structure of the response
+  this.transactions = response.data.transactions.filter(
+    transaction => transaction.type === "DELINQUENCY_PAYMENT"
+  );
+})
         .catch((error) => {
           console.error("Error fetching transaction:", error);
         });
