@@ -10,7 +10,7 @@
     >
  
       <Column header="ID" field="id" />
-      <Column header="Unit" field="unitid" />
+      <Column header="Body Number" field="unitid" />
       <Column header="Amount" field="amount" />
       <Column header="Date">
         <template #body="{ data }">
@@ -44,7 +44,7 @@
           v-model="amount"
           type="number"
           class="w-full"
-          placeholder="Enter Top Up"
+          placeholder="Enter Cash In Amount"
           required
           readonly
         />
