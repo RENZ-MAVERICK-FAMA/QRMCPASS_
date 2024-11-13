@@ -167,6 +167,9 @@
     <p v-if="transactions.length === 0" class="text-gray-500">
       No transactions for the selected unit.
     </p>
+    <p v-if="visibleTransactions.length > 0" class="font-bold mt-3">
+      <strong>Total Amount: </strong> {{ totalPaymentAmount }}
+    </p>
   </div>
 </div> 
 </div>
@@ -250,7 +253,11 @@ export default {
       // Here we assume each delinquency contributes a fixed amount based on unit type
       return total + multiplier; // Add the amount based on unit type
     }, 0); // Start with a total of 0
-}
+}, totalPaymentAmount() {
+    return this.visibleTransactions.reduce((total, transaction) => {
+      return total + transaction.amount;
+    }, 0);
+  }
   },
   methods: {
     toggleShowMore() {
