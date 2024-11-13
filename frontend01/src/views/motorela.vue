@@ -40,7 +40,7 @@
       <div class="col-md-6">
         <form @submit.prevent="deduct">
           <div class="form-group">
-            <label for="unit">Select Unit:</label>
+            <label for="unit">Select Body Number:</label>
             <select v-model="selectedUnit" class="form-control" id="unit" name="unit" required>
   <option v-for="unit in filteredUnits" :key="unit.id" :value="unit">{{ unit.unit_info }}</option>
 </select>
