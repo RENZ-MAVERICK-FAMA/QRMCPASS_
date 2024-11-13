@@ -28,13 +28,13 @@
         <form @submit.prevent="topup" class="mt-5 md:mt-0">
           <h1 class="text-[20px]">Cash In Form</h1>
           <div class="grid mt-3s">
-            <label>Ibutang ang imonga Unit</label>
+            <label>Body Number</label>
             <select v-model="selectedUnit" class="h-[45px] w-full md:max-w-[400px] border rounded hover:border-slate-400 outline-none border-slate-200" required>
               <option v-for="unit in units" :key="unit.id" :value="unit.id">{{ unit.unit_info }}</option>
             </select>
           </div>
           <div class="grid mt-3">
-            <label>Kantidad nga Gi hulog sa coin slot</label>
+            <label>Cash In Amount</label>
             <InputText
               v-model="amount"
               type="number"
