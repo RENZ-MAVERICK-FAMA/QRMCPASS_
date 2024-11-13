@@ -1,5 +1,11 @@
 <template>
  <main class="p-5 md:px-[10%]" >
+  <RouterLink to="/HomeSuperAdmin" >
+          <div class="flex gap-5 h-[40px] items-center hover:text-slate-300" >
+            <i class="pi pi-arrow-left" ></i>
+            <span>Go Back</span>
+          </div>
+      </RouterLink> 
  <div class="grid grid-rows-2 grid-cols-1 md:grid-rows-1 md:grid-cols-2 gap-10 md:pt-20 pt-10">
       <RouterLink to="/topup" >
       <div class="bg-green-100 size-[300px] rounded-[50%] shadow p-3 hover:bg-slate-50" >
