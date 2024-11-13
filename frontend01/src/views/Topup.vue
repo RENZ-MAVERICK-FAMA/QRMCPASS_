@@ -18,6 +18,7 @@
         <template #header>
           <div class="flex items-center justify-between">
             <span>Recent Cash In</span>
+            <InputText v-model:modelValue="searchTerm" placeholder="Search..." class="w-full"/>
             <Button
               @click="showModal = true"
               label="Cash In"
