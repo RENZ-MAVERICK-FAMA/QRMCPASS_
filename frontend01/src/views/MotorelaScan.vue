@@ -128,7 +128,7 @@
   </Dialog>
       </div>
       <div class="p-5 bg-slate-100 mt-3 shadow rounded">
-        <table class="table">
+        <table class="table w-full">
   <thead>
     <tr>
       <th>
