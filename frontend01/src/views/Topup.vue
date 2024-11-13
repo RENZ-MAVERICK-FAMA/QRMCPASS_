@@ -437,6 +437,11 @@ export default {
           console.error("Error fetching recent transactions:", error);
         });
     },
-  },
+  },watch: {
+  searchTerm() {
+    // Forces re-evaluation when searchTerm changes
+    this.filteredTransactions;
+  }
+}
 };
 </script>
