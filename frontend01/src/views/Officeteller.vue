@@ -1,35 +1,28 @@
 <template>
  <main class="p-5 md:px-[10%]" >
- <div class=" w-full p-5 grid grid-rows-3 grid-cols-1 md:grid-rows-1 md:grid-cols-3 md:w-full gap-2 justify-center items-center">
-      
-      <div class=" bg-white p-14 justify-center items-center rounded-[10px] shadow w-full md:w-full">
-        <h1 class="text-[25px] font-bold">Manually TopUp</h1>
-        <p class="font-light">Motorela & Multicab</p>
-        <p class="font-extralight">Allows to Cash In manually.</p>
-        <RouterLink class="nav-link" to="/topup">
-          <Button
-            label="Walk In Cash In"
-            class="mt-3 w-full"
-            icon="pi pi-money-bill"
-            severity="success"
-          />
-        </RouterLink>
+ <div class="grid grid-rows-2 grid-cols-1 md:grid-rows-1 md:grid-cols-2 gap-10 md:pt-20 pt-10">
+      <RouterLink to="/topup" >
+      <div class="bg-green-100 size-[300px] rounded-[50%] shadow p-3 hover:bg-slate-50" >
+        <div class="bg-green-200 rounded-[50%] shadow w-full  hover:animate-pulse h-full grid place-content-center" >
+          <div class="text-center" >
+            <i class="pi pi-money-bill text-[50px]" ></i>
+            <h6 class="text-[35px] font-extrabold text-black/80" >MOTORELA</h6>
+          </div>
+        </div>
       </div>
-      <!-- <Divider /> -->
-      <div class="bg-white p-14 justify-center items-center rounded-[10px] shadow w-full md:w-full">
-        <h1 class="text-[25px] font-bold">Pay Delinquencies</h1>
-        <p class="font-light">Motorela & Multicab</p>
-        <p class="font-extralight">Allows to pay deliquinces.</p>
-        <RouterLink class="nav-link" to="/deduct">
-          <Button
-            label="Pay Delinquency"
-            class="mt-3 w-full"
-            icon="pi pi-money-bill"
-            severity="success"
-          />
-        </RouterLink>
+    </RouterLink>
+
+    <RouterLink to="/deduct" >
+      <div class="bg-green-100 size-[300px] rounded-[50%] shadow p-3 hover:bg-slate-50" >
+        <div class="bg-green-200 rounded-[50%] shadow w-full  hover:animate-pulse h-full grid place-content-center" >
+          <div class="text-center" >
+            <i class="pi pi-truck text-[50px]" ></i>
+            <h6 class="text-[35px] font-extrabold text-black/80" >MULTICAB</h6>
+          </div>
+        </div>
       </div>
-     
+    </RouterLink>
+
     </div>
   </main>
 </template>
