@@ -138,16 +138,24 @@
     </div>
    
     <div class="scrollable-list mt-2">
-      <ul>
-      <li v-for="(delinquency, index) in visibleDelinquencies" :key="delinquency.id" class="mt-2 p-2 border rounded">
-        <p><strong>Date:</strong> {{ delinquency.date_of_payment }}</p>
-        <p><strong>Status:</strong> {{ delinquency.status }}</p>
-      </li>
-    </ul>
-    <p v-if="delinquencies.length === 0" class="text-gray-500">
-      No delinquencies for the selected unit.
-    </p>
-  </div>
+  <h3>Paid Delinquencies</h3>
+  <ul v-if="paidDelinquencies.length > 0">
+    <li v-for="(delinquency, index) in paidDelinquencies" :key="delinquency.id" class="mt-2 p-2 border rounded">
+      <p><strong>Date:</strong> {{ delinquency.date_of_payment }}</p>
+      <p><strong>Status:</strong> {{ delinquency.status }}</p>
+    </li>
+  </ul>
+  <p v-else class="text-gray-500">No paid delinquencies for the selected unit.</p>
+
+  <h3>Unpaid Delinquencies</h3>
+  <ul v-if="unpaidDelinquencies.length > 0">
+    <li v-for="(delinquency, index) in unpaidDelinquencies" :key="delinquency.id" class="mt-2 p-2 border rounded">
+      <p><strong>Date:</strong> {{ delinquency.date_of_payment }}</p>
+      <p><strong>Status:</strong> {{ delinquency.status }}</p>
+    </li>
+  </ul>
+  <p v-else class="text-gray-500">No unpaid delinquencies for the selected unit.</p>
+</div>
   </div>
     </div>
 
