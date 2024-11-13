@@ -247,8 +247,8 @@ export default {
         },
       })
       .then((response) => {
-        // Filter delinquencies to only include unpaid ones
-        this.delinquencies = response.data.delinquencies.filter(delinquency => !delinquency.paid);
+        // Filter delinquencies to only include those with a status of 'unpaid'
+        this.delinquencies = response.data.delinquencies.filter(delinquency => delinquency.status === "unpaid");
         console.log(this.delinquencies);
       })
       .catch((error) => {

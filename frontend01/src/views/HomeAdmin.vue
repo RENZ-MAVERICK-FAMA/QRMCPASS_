@@ -290,7 +290,7 @@ delinquencies.sort((a, b) => new Date(a.date_of_payment) - new Date(b.date_of_pa
   // Create table body with header row and delinquency data
   const tableHeaderRow = ['Body Number', 'Date of Delinquency', 'Status']; // Plain text values for the header row
   const tableBody = [
-    [{ text: 'Body Number', style: 'tableHeader' }, { text: 'Date', style: 'tableHeader' }, { text: 'Status', style: 'tableHeader' }],
+    [{ text: 'Body Number', style: 'tableHeader' }, { text: 'Date of Delinquency', style: 'tableHeader' }, { text: 'Status', style: 'tableHeader' }],
     ...delinquencies.map(delinquency => [
       delinquency.unit_id, 
       new Date(delinquency.date_of_payment).toLocaleDateString('en-US'), // Convert date to readable format
@@ -935,7 +935,14 @@ pdfMake.createPdf(docDefinition).download(filename);
         },
         { text: '', margin: [0, 10] },
         { text: 'Overall Report', style: 'subheader', alignment: 'center' },
-        { text: 'Body Number', style: 'tableHeader', alignment: 'center' }
+        { text: 'Body Number', style: 'tableHeader', alignment: 'center' },
+
+        { text: '', margin: [0, 10] },
+      { text: 'Prepared by:', margin: [0, 30] },
+      { text: '', margin: [0, 10] },
+      { text: 'Verified by:', margin: [0, 30] },
+      { text: '', margin: [0, 10] },
+      { text: 'Approved by:', margin: [0, 30] },
     ];
 
     Object.keys(overallReport).forEach(unit => {
@@ -1145,7 +1152,14 @@ generateMonthlymulticabReports(dailyReport, overallReport, month, year) {
         },
         { text: '', margin: [0, 10] },
         { text: 'Overall Report', style: 'subheader', alignment: 'center' },
-        { text: 'Body Number', style: 'tableHeader', alignment: 'center' }
+        { text: 'Body Number', style: 'tableHeader', alignment: 'center' },
+        { text: '', margin: [0, 10] },
+      { text: 'Prepared by:', margin: [0, 30] },
+      { text: '', margin: [0, 10] },
+      { text: 'Verified by:', margin: [0, 30] },
+      { text: '', margin: [0, 10] },
+      { text: 'Approved by:', margin: [0, 30] },
+
     ];
 
     Object.keys(overallReport).forEach(unit => {
