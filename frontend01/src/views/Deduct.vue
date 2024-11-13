@@ -291,7 +291,7 @@ export default {
         .then((response) => {
   console.log(response.data); // Check the full structure of the response
   this.transactions = response.data.transactions.filter(
-    transaction => transaction.type === "DELINQUENCY_PAYMENT"
+    transaction => transaction.type === "delinquency payment"
   );
 })
         .catch((error) => {
