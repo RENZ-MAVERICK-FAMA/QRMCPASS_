@@ -2,7 +2,7 @@
   <main class="select-none justify-center p-4 bg-slate-100" >
     <div class=" bg-green-600 w-full mt-2 p-5 rounded-[10px] shadow md:w-full">
       <h1 class="text-[25px] text-white" >
-        WELCOME! Teller, 
+         WELCOME Collector, 
         <span id="operator-name" class="font-bold text-white uppercase">
         {{ teller.first_name }} {{ teller.last_name }}!</span>
       </h1>
