@@ -238,16 +238,19 @@ export default {
     },visibleTransactions() {
       return this.showMore ? this.transactions : this.transactions.slice(0, 5);
     }, totalAmount() {
-    if (!this.selectedUnit) return 0;
+  if (!this.selectedUnit.id) return 0; // Ensure there's a selected unit
 
-    // Define the multiplier based on unit type
-    const multiplier = this.selectedUnit.unit_type === 'motorela' ? 6 : this.selectedUnit.unit_type === 'multicab' ? 11 : 0;
+  // Define the multiplier based on unit type
+  const multiplier = this.selectedUnit.unit_type === 'motorela' ? 6 :
+                     this.selectedUnit.unit_type === 'multicab' ? 11 : 0;
 
-    // Calculate the total amount by summing the delinquency amounts multiplied by the multiplier
-    return this.delinquencies.reduce((total, delinquency) => {
-      return total + (delinquency.amount * multiplier);
-    }, 0);
-  }
+  // Calculate the total amount for unpaid delinquencies
+  return this.delinquencies.filter(delinquency => delinquency.status === 'unpaid') // Filter unpaid delinquencies
+    .reduce((total, delinquency) => {
+      // Here we assume each delinquency contributes a fixed amount based on unit type
+      return total + multiplier; // Add the amount based on unit type
+    }, 0); // Start with a total of 0
+}
   },
   methods: {
     toggleShowMore() {
