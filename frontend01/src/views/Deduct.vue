@@ -124,49 +124,52 @@
       {{ showMore ? 'Show Less' : 'See More' }}
     </button>
   </div> -->
-
   <div class="p-5 shadow bg-white rounded-[10px] w-full">
-    <div class=" grid grid-rows-1 grid-cols-2 gap-1">
-      <h2 class="text-[18px] font-bold">Delinquencies</h2>
+  <!-- Delinquencies Section -->
+  <div class="grid grid-rows-1 grid-cols-2 gap-1">
+    <h2 class="text-[18px] font-bold">Delinquencies</h2>
+    <!-- Optional button for show more/less functionality -->
     <!-- <button
       v-if="delinquencies.length > 5"
       @click="toggleShowMore"
-      class=" px-4 py-2 bg-blue-500 text-white rounded"
+      class="px-4 py-2 bg-blue-500 text-white rounded"
     >
       {{ showMore ? 'Show Less' : 'See More' }}
     </button> -->
-    </div>
-   
-    <div class="scrollable-list mt-2">
-      <ul>
+  </div>
+
+  <div class="scrollable-list mt-2">
+    <ul>
       <li v-for="(delinquency, index) in visibleDelinquencies" :key="delinquency.id" class="mt-2 p-2 border rounded">
         <p><strong>Date:</strong> {{ delinquency.date_of_payment }}</p>
         <p><strong>Status:</strong> {{ delinquency.status }}</p>
       </li>
     </ul>
-    <p v-if="delinquencies.length === 0" class="text-gray-500">
+    <p v-if="visibleDelinquencies.length === 0" class="text-gray-500">
       No delinquencies for the selected unit.
     </p>
   </div>
-  
- 
-  <div class=" grid grid-rows-1 grid-cols-2 gap-1">
+
+  <!-- Payments Section -->
+  <div class="grid grid-rows-1 grid-cols-2 gap-1 mt-6">
     <h2 class="text-[18px] font-bold">Payments</h2>
+  </div>
+
   <div class="scrollable-list mt-2">
-      <ul>
-      <li v-for="(transaction, index) in visibleTransaction" :key="transaction.id" class="mt-2 p-2 border rounded">
+    <ul>
+      <li v-for="(transaction, index) in visibleTransactions" :key="transaction.id" class="mt-2 p-2 border rounded">
         <p><strong>Date:</strong> {{ transaction.date_of_payment }}</p>
         <p><strong>Status:</strong> {{ transaction.status }}</p>
         <p><strong>Date of Delinquency:</strong> {{ transaction.date }}</p>
         <p><strong>Amount:</strong> {{ transaction.amount }}</p>
       </li>
     </ul>
-    <p v-if="transactions.length === 0" class="text-gray-500">
+    <p v-if="visibleTransactions.length === 0" class="text-gray-500">
       No transactions for the selected unit.
     </p>
   </div>
-</div> 
 </div>
+
     </div>
 
     
