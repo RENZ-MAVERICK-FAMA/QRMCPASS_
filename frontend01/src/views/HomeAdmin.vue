@@ -288,7 +288,7 @@ delinquencies.sort((a, b) => new Date(a.date_of_payment) - new Date(b.date_of_pa
   const filename = `Motorela Delinquency Report for ${startDate} & ${endDate}.pdf`;
   
   // Create table body with header row and delinquency data
-  const tableHeaderRow = ['Body Number', 'Date', 'Status']; // Plain text values for the header row
+  const tableHeaderRow = ['Body Number', 'Date of Delinquency', 'Status']; // Plain text values for the header row
   const tableBody = [
     [{ text: 'Body Number', style: 'tableHeader' }, { text: 'Date', style: 'tableHeader' }, { text: 'Status', style: 'tableHeader' }],
     ...delinquencies.map(delinquency => [

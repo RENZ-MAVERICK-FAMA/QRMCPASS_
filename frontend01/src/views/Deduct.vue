@@ -239,22 +239,23 @@ export default {
     },
 
     fetchUnitDelinquencies() {
-      if (this.selectedUnit) {
-        axios
-          .get(`https://qrmcpass.loca.lt/units/${this.selectedUnit.id}/delinquencies`, {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-            },
-          })
-          .then((response) => {
-            this.delinquencies = response.data.delinquencies;
-            console.log(this.delinquencies);
-          })
-          .catch((error) => {
-            console.error("Error fetching delinquencies:", error);
-          });
-      }
-    },
+  if (this.selectedUnit) {
+    axios
+      .get(`https://qrmcpass.loca.lt/units/${this.selectedUnit.id}/delinquencies`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      })
+      .then((response) => {
+        // Filter delinquencies to only include unpaid ones
+        this.delinquencies = response.data.delinquencies.filter(delinquency => !delinquency.paid);
+        console.log(this.delinquencies);
+      })
+      .catch((error) => {
+        console.error("Error fetching delinquencies:", error);
+      });
+  }
+},
 
     deduct() {
       if (!this.selectedUnit) {
