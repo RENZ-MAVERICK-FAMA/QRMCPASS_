@@ -7,7 +7,7 @@
           <span>Go Back</span>
         </div>
       </RouterLink>
-      <DataTable
+     <DataTable
         showGridlines
         paginator
         :rows="5"
@@ -32,6 +32,7 @@
             <small class="font-extralight capitalize">no data found. </small>
           </div>
         </template>
+        <Column header="Reference Number" field="/" />
         <Column header="Body Number" field="unitid" />
         <Column header="Amount" field="amount" />
         <Column header="Date 0f Payment">
@@ -48,6 +49,7 @@
             }}
           </template>
         </Column>
+        <Column header="Receipt" field="/" />
       </DataTable>
     </div>
   </main>
