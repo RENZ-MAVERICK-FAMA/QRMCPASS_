@@ -154,6 +154,8 @@ export default {
       success: "",
       error: "",
       transactions: [],
+      searchTerm: "",
+      
     };
   },
   created() {
@@ -186,7 +188,26 @@ export default {
     reversedTransactions() {
       // return this.transactions.slice(0, 10).reverse();
        return this.transactions.slice(0, 10);
-    },
+    }, filteredTransactions() {
+    // Check if the searchTerm is empty, then return the full list of transactions
+    if (!this.searchTerm) {
+      return this.reversedTransactions;
+    }
+
+    // Filter the transactions based on the searchTerm
+    return this.reversedTransactions.filter(transaction => {
+      // Convert the searchTerm to lowercase for case-insensitive comparison
+      const search = this.searchTerm.toLowerCase();
+
+      // Check if the transaction fields match the search term
+      return (
+        transaction.reference.toLowerCase().includes(search) || 
+        transaction.unitid.toLowerCase().includes(search) ||
+        transaction.amount.toString().includes(search) ||
+        new Date(transaction.date).toISOString().split("T")[0].includes(search)
+      );
+    });
+  }
   },
   mounted() {
     this.fetchRecentTransactions();
