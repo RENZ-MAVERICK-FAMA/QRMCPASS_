@@ -148,6 +148,9 @@
       No delinquencies for the selected unit.
     </p>
   </div>
+  
+ 
+  <div class=" grid grid-rows-1 grid-cols-2 gap-1">
   <div class="scrollable-list mt-2">
       <ul>
       <li v-for="(transaction, index) in visibleTransaction" :key="transaction.id" class="mt-2 p-2 border rounded">
@@ -161,7 +164,8 @@
       No transactions for the selected unit.
     </p>
   </div>
-  </div>
+</div> 
+</div>
     </div>
 
     
