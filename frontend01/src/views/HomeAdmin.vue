@@ -115,7 +115,7 @@ export default {
     return months[monthNumber - 1]; // Subtract 1 because month numbers are 1-based, but array indices are 0-based
   },
     GenerateOverall(selectedYear) {
-      axios.get(`http://127.0.0.1:9000/admin/analytics/overall?year=${selectedYear}`)
+      axios.get(`https://qrmcpass.loca.lt/admin/analytics/overall?year=${selectedYear}`)
         .then(response => {
           const data = response.data;
           this.generatePdfFile(data,selectedYear);
@@ -231,7 +231,7 @@ export default {
     this.selectedYear = currentYear;
   },
     fetchUnitCounts() {
-      axios.get('http://127.0.0.1:9000/admin/analytics', {
+      axios.get('https://qrmcpass.loca.lt/admin/analytics', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('access_token')}`,
         },
@@ -245,7 +245,7 @@ export default {
       });
     },
 generateDelReportMotorelaRange(startDate, endDate) {
-  axios.get(`http://127.0.0.1:9000/admin/delinquencies/motorela/daily?start_date=${startDate}&end_date=${endDate}`, {
+  axios.get(`https://qrmcpass.loca.lt/admin/delinquencies/motorela/daily?start_date=${startDate}&end_date=${endDate}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('access_token')}`,
     },
@@ -399,7 +399,7 @@ if (!Array.isArray(delinquencies)) {
 pdfMake.createPdf(docDefinition).download(`Motorela Delinquency Report for ${startDate} & ${endDate}.pdf`);
 },
 generateDelReportMulticabRange(startDate, endDate) {
-  axios.get(`http://127.0.0.1:9000/admin/delinquencies/multicab/daily?start_date=${startDate}&end_date=${endDate}`, {
+  axios.get(`https://qrmcpass.loca.lt/admin/delinquencies/multicab/daily?start_date=${startDate}&end_date=${endDate}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('access_token')}`,
     },
@@ -530,7 +530,7 @@ pdfMake.createPdf(docDefinition).download(`Multicab Delinquency Report for ${sta
 
 },
 generatedailyMulticabpayment(startDate, endDate) {
-  axios.get(`http://127.0.0.1:9000/admin/transactions/payment/multicab/daily?start_date=${startDate}&end_date=${endDate}`, {
+  axios.get(`https://qrmcpass.loca.lt/admin/transactions/payment/multicab/daily?start_date=${startDate}&end_date=${endDate}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('access_token')}`,
     },
@@ -659,7 +659,7 @@ pdfMake.createPdf(docDefinition).download(filename);
 
 },
 generatedailyMotorelapayment(startDate, endDate) {
-  axios.get(`http://127.0.0.1:9000/admin/transactions/payment/motorela/daily?start_date=${startDate}&end_date=${endDate}`, {
+  axios.get(`https://qrmcpass.loca.lt/admin/transactions/payment/motorela/daily?start_date=${startDate}&end_date=${endDate}`, {
       headers: {
       Authorization: `Bearer ${localStorage.getItem('access_token')}`,
     },
@@ -797,7 +797,7 @@ pdfMake.createPdf(docDefinition).download(filename);
 },generatemonthlyMotorelaDelinquenciesReport() {
     const [year, month] = this.monthlyMonth.split('-').map(Number);
 
-    axios.get(`http://127.0.0.1:9000/admin/delinquencies/motorela/monthly?month=${month}&year=${year}`, {
+    axios.get(`https://qrmcpass.loca.lt/admin/delinquencies/motorela/monthly?month=${month}&year=${year}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('access_token')}`,
       },
@@ -996,7 +996,7 @@ pdfMake.createPdf(docDefinition).download(`Motorela Delinquency Report for ${thi
 generatemonthlyMulticabDelinquenciesReport() {
     const [year, month] = this.monthlyMonth.split('-').map(Number);
 
-    axios.get(`http://127.0.0.1:9000/admin/delinquencies/multicab/monthly?month=${month}&year=${year}`, {
+    axios.get(`https://qrmcpass.loca.lt/admin/delinquencies/multicab/monthly?month=${month}&year=${year}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('access_token')}`,
       },
@@ -1206,7 +1206,7 @@ generateMonthlymulticabReports(dailyReport, overallReport, month, year) {
     generatemonthlyMulticabPaymentReport() {
       const [year, month] = this.monthlyMonth.split('-').map(Number);
 
-      axios.get(`http://127.0.0.1:9000/admin/transactions/payment/multicab/monthly?month=${month}&year=${year}`, {
+      axios.get(`https://qrmcpass.loca.lt/admin/transactions/payment/multicab/monthly?month=${month}&year=${year}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('access_token')}`,
         },
@@ -1430,7 +1430,7 @@ generateMonthlymulticabReports(dailyReport, overallReport, month, year) {
  generatemonthlyMotorelaPaymentReport() {
       const [year, month] = this.monthlyMonth.split('-').map(Number);
 
-      axios.get(`http://127.0.0.1:9000/admin/transactions/payment/motorela/monthly?month=${month}&year=${year}`, {
+      axios.get(`https://qrmcpass.loca.lt/admin/transactions/payment/motorela/monthly?month=${month}&year=${year}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('access_token')}`,
         },
