@@ -1,6 +1,5 @@
 <template>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+ 
   <main class=" md:mt-10 p-[20px] lg:px-[5%]" >
     <div class="" >
       <div class="grid grid-cols-2 gap-5 md:gap-10" >
@@ -116,7 +115,7 @@ export default {
     return months[monthNumber - 1]; // Subtract 1 because month numbers are 1-based, but array indices are 0-based
   },
     GenerateOverall(selectedYear) {
-      axios.get(`https://qrmcpass.loca.lt/admin/analytics/overall?year=${selectedYear}`)
+      axios.get(`http://127.0.0.1:9000/admin/analytics/overall?year=${selectedYear}`)
         .then(response => {
           const data = response.data;
           this.generatePdfFile(data,selectedYear);
@@ -132,115 +131,95 @@ export default {
     const totalTollPayments = totalPaymentsMulticab + totalpaymentsMotorela;
 
     const docDefinition = {
-    content: [
-        {
-          columns: [
-    {
-        width: 'auto', // Automatically size based on content
-        stack: [
+        content: [
+            // Title section
             {
-                image: logos.citylogo,
-                width: 40,
-                height: 40,
-                alignment: 'left'
-            }
-        ]
-    },
-    {
-        width: 'auto', // Automatically size based on content
-        stack: [
+                text: 'Annual Report',
+                style: 'titleText',
+                alignment: 'center', // Center the title
+                margin: [0, 10, 0, 10] // Add margin for spacing
+            },
+            // Table section
             {
-                image: logos.ceedmologo,
-                width: 50,
-                height: 40,
-                alignment: 'left'
-            }
-        ]
-    },
-    {
-        width: '*', // Takes up remaining space
-        stack: [
+                table: {
+                    headerRows: 1,
+                    widths: ['*', 'auto', 'auto', 'auto'],
+                    body: [
+                        [
+                            { text: 'Month', style: 'tableHeader' },
+                            { text: 'Total Collection', style: 'tableHeader' },
+                            { text: 'Total Delinquency Payments', style: 'tableHeader' },
+                            { text: 'Overall Total', style: 'tableHeader' }
+                        ],
+                        // Here you would populate the rows dynamically based on your data
+                        ['January', data.total_payments, data.total_delinquencies, totalOverall],
+                        ['February', data.total_payments, data.total_delinquencies, totalOverall],
+                        // Add other months similarly
+                    ]
+                }
+            },
+            { text: '', margin: [0, 10] },
+            // Total payment and delinquency summary section
             {
-                text: 'Province of Bukidnon',
-                style: 'headerText'
+                table: {
+                    headerRows: 1,
+                    widths: ['auto', 'auto'],
+                    body: [
+                        [{ text: 'Total Toll Payments: ' + totalTollPayments, style: 'headerText' }, ''],
+                        [{ text: 'Total Delinquencies: ' + data.total_delinquencies, style: 'headerText' }, ''],
+                        [{ text: 'Multicab', style: 'tableHeader' }, ''],
+                        ['Total Payments', data.total_payments_by_type.multicab],
+                        ['Total Delinquencies', data.total_delinquencies_by_type.multicab]
+                    ]
+                }
+            },
+            { text: '', margin: [0, 10] },
+            {
+                table: {
+                    headerRows: 1,
+                    widths: ['auto', 'auto'],
+                    body: [
+                        [{ text: 'Motorela', style: 'tableHeader' }, ''],
+                        ['Total Payments', data.total_payments_by_type.motorela],
+                        ['Total Delinquencies', data.total_delinquencies_by_type.motorela]
+                    ]
+                }
+            },
+            { text: '', margin: [0, 10] },
+            { text: 'Overall: ' + totalOverall, margin: [0, 0, 0, 10], bold: true, alignment: 'center' },
+            // Signatories section (aligned to right)
+            {
+                text: 'Approved by:',
+                alignment: 'right',
+                margin: [0, 20, 0, 0] // Add margin for spacing
             },
             {
-                text: 'City Government of Malaybalay',
-                style: 'headerText'
-            },
-            {
-                text: 'City Economic Enterprise Development and Management Office',
-                style: 'headerText'
-            },
-            {
-                text: 'Collectors Office',
-                style: 'headerText'
-            },
-            {
-                text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon',
-                style: 'headerText'
-            }
-        ],
-        alignment: 'center' // Center the header text
-    },
-    {
-        width: 'auto', // Automatically size based on content
-        stack: [
-            {
-                image: logos.qrlogo,
-                width: 50,
-                height: 40,
+                text: 'Noted by:',
                 alignment: 'right'
             }
-        ]
-    }
-]
-        },
-        {
-            table: {
-                headerRows: 1,
-                widths: ['auto', 'auto'],
-                body: [
-                  [{ text: 'Total Toll Payments: ' + totalTollPayments, style:'headerText'}, ''],
-                  [{ text: 'Total Delinquencies: ' + data.total_delinquencies, style:'headerText'}, ''],
-                    [{ text: 'Multicab', style: 'tableHeader' }, ''],
-                    ['Total Payments', data.total_payments_by_type.multicab ],
-                    ['Total Delinquencies', data.total_delinquencies_by_type.multicab]
-                ]
+        ],
+        styles: {
+            titleText: {
+                fontSize: 16,
+                bold: true
+            },
+            tableHeader: {
+                bold: true,
+                fontSize: 13,
+                color: 'black',
+                alignment: 'center'  // Center alignment for table headers
+            },
+            headerText: {
+                fontSize: 12,
+                bold: true
             }
-        },
-        { text: '', margin: [0, 10] },
-        {
-            table: {
-                headerRows: 1,
-                widths: ['auto', 'auto'],
-                body: [
-                    [{ text: 'Motorela', style: 'tableHeader' }, ''],
-                    ['Total Payments', data.total_payments_by_type.motorela ],
-                    ['Total Delinquencies', data.total_delinquencies_by_type.motorela]
-                ]
-            }
-        },
-        { text: '', margin: [0, 10] },
-        { text: 'Overall: ' + totalOverall, margin: [0, 0, 0, 10], bold: true, alignment: 'center' } // Centered Overall text
-    ],
-    styles: {
-        tableHeader: {
-            bold: true,
-            fontSize: 13,
-            color: 'black',
-            alignment: 'center'  // Center alignment for table headers
-        },
-        headerText: {
-        fontSize: 12,
-        bold: true
-      },
-    }
-};
+        }
+    };
 
-    const filename = `Overall Report for ${selectedYear}.pdf`;
+    const filename = `Annual_Report_${selectedYear}.pdf`;
     pdfMake.createPdf(docDefinition).download(filename);
 }
+
 
     ,populateYears() {
     const currentYear = new Date().getFullYear();
@@ -252,7 +231,7 @@ export default {
     this.selectedYear = currentYear;
   },
     fetchUnitCounts() {
-      axios.get('https://qrmcpass.loca.lt/admin/analytics', {
+      axios.get('http://127.0.0.1:9000/admin/analytics', {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('access_token')}`,
         },
@@ -266,7 +245,7 @@ export default {
       });
     },
 generateDelReportMotorelaRange(startDate, endDate) {
-  axios.get(`https://qrmcpass.loca.lt/admin/delinquencies/motorela/daily?start_date=${startDate}&end_date=${endDate}`, {
+  axios.get(`http://127.0.0.1:9000/admin/delinquencies/motorela/daily?start_date=${startDate}&end_date=${endDate}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('access_token')}`,
     },
@@ -288,15 +267,35 @@ delinquencies.sort((a, b) => new Date(a.date_of_payment) - new Date(b.date_of_pa
   const filename = `Motorela Delinquency Report for ${startDate} & ${endDate}.pdf`;
   
   // Create table body with header row and delinquency data
-  const tableHeaderRow = ['Body Number', 'Date of Delinquency', 'Status']; // Plain text values for the header row
+  const tableHeaderRow = ['Body Number', 'Date', 'Status']; // Plain text values for the header row
   const tableBody = [
-    [{ text: 'Body Number', style: 'tableHeader' }, { text: 'Date of Delinquency', style: 'tableHeader' }, { text: 'Status', style: 'tableHeader' }],
-    ...delinquencies.map(delinquency => [
-      delinquency.unit_id, 
-      new Date(delinquency.date_of_payment).toLocaleDateString('en-US'), // Convert date to readable format
-      delinquency.status
-    ])
-  ];
+  [
+    { text: 'No.', style: 'tableHeader' }, // New "No." header
+    { text: 'Body Number', style: 'tableHeader' },
+    { text: 'Date', style: 'tableHeader' },
+    { text: 'Status', style: 'tableHeader' }
+  ],
+  ...delinquencies.map((delinquency, index) => [
+    index + 1, // Add the index + 1 for the sequential number
+    delinquency.unit_id, 
+    new Date(delinquency.date_of_payment).toLocaleDateString('en-US'), // Convert date to readable format
+    delinquency.status
+  ])
+];
+
+// Ensure the widths array has 5 elements (one for each column)
+const widths = ['auto', 'auto', 'auto', 'auto', 'auto']; // 5 columns now
+
+// Check if delinquencies is defined and is an array
+if (!Array.isArray(delinquencies)) {
+  console.error('delinquencies is not an array:', delinquencies);
+} else {
+  console.log('delinquencies is an array:', delinquencies);
+}
+
+// Now, you can use `tableBody` and `widths` to construct your table
+
+
 
   const docDefinition = {
     content: [  
@@ -372,11 +371,11 @@ delinquencies.sort((a, b) => new Date(a.date_of_payment) - new Date(b.date_of_pa
           body: tableBody
         }
       },
-      { text: '', margin: [0, 10] },
+      { text: '', margin: [0, 15] },
       { text: 'Prepared by:', margin: [0, 30] },
-      { text: '', margin: [0, 10] },
+      { text: '', margin: [10, 15] },
       { text: 'Verified by:', margin: [0, 30] },
-      { text: '', margin: [0, 10] },
+      { text: '', margin: [0, 15] },
       { text: 'Approved by:', margin: [0, 30] },
     ],
     styles: {
@@ -400,7 +399,7 @@ delinquencies.sort((a, b) => new Date(a.date_of_payment) - new Date(b.date_of_pa
 pdfMake.createPdf(docDefinition).download(`Motorela Delinquency Report for ${startDate} & ${endDate}.pdf`);
 },
 generateDelReportMulticabRange(startDate, endDate) {
-  axios.get(`https://qrmcpass.loca.lt/admin/delinquencies/multicab/daily?start_date=${startDate}&end_date=${endDate}`, {
+  axios.get(`http://127.0.0.1:9000/admin/delinquencies/multicab/daily?start_date=${startDate}&end_date=${endDate}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('access_token')}`,
     },
@@ -531,7 +530,7 @@ pdfMake.createPdf(docDefinition).download(`Multicab Delinquency Report for ${sta
 
 },
 generatedailyMulticabpayment(startDate, endDate) {
-  axios.get(`https://qrmcpass.loca.lt/admin/transactions/payment/multicab/daily?start_date=${startDate}&end_date=${endDate}`, {
+  axios.get(`http://127.0.0.1:9000/admin/transactions/payment/multicab/daily?start_date=${startDate}&end_date=${endDate}`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('access_token')}`,
     },
@@ -660,7 +659,7 @@ pdfMake.createPdf(docDefinition).download(filename);
 
 },
 generatedailyMotorelapayment(startDate, endDate) {
-  axios.get(`https://qrmcpass.loca.lt/admin/transactions/payment/motorela/daily?start_date=${startDate}&end_date=${endDate}`, {
+  axios.get(`http://127.0.0.1:9000/admin/transactions/payment/motorela/daily?start_date=${startDate}&end_date=${endDate}`, {
       headers: {
       Authorization: `Bearer ${localStorage.getItem('access_token')}`,
     },
@@ -746,19 +745,27 @@ generateMotorelaPaymentPDF(transactions, startDate, endDate) {
       { text: `Today's Report ${startDate} & ${endDate}`, style: 'subheader', alignment: 'center', margin: [0, 10] },
       {
         table: {
-          headerRows: 1,
-          widths: ['auto', 'auto', 'auto', 'auto'],
-          body: [
-            [{ text: 'Body Number', style: 'tableHeader' }, { text: 'Date', style: 'tableHeader' }, { text: 'Amount', style: 'tableHeader' }, { text: 'Type', style: 'tableHeader' }],
-            ...transactions.map(transaction => [
-              transaction.id, 
-              new Date(transaction.date).toLocaleDateString('en-US'), // Convert date to readable format
-              transaction.amount.toFixed(2), 
-              transaction.type
-            ]),
-            [{ text: 'Total:', colSpan: 2, bold: true, alignment: 'right' }, {}, totalAmount.toFixed(2), '']
-          ]
-        }
+  headerRows: 1,
+  widths: ['auto', 'auto', 'auto', 'auto', 'auto'], // Add an additional 'auto' for the new 'No.' column
+  body: [
+    [
+      { text: 'No.', style: 'tableHeader' },  // New header for the 'No.' column
+      { text: 'Body Number', style: 'tableHeader' },
+      { text: 'Date', style: 'tableHeader' },
+      { text: 'Amount', style: 'tableHeader' },
+      { text: 'Type', style: 'tableHeader' }
+    ],
+    ...transactions.map((transaction, index) => [
+      index + 1,  // Add index + 1 to represent the row number (1-based)
+      transaction.id, 
+      new Date(transaction.date).toLocaleDateString('en-US'), // Convert date to readable format
+      transaction.amount.toFixed(2), 
+      transaction.type
+    ]),
+    [{ text: 'Total:', colSpan: 3, bold: true, alignment: 'right' }, {}, {}, totalAmount.toFixed(2), '']
+  ]
+}
+
       },
       { text: '', margin: [0, 30] },  // Add margin for spacing
       { text: 'Prepared by:', margin: [0, 30] },
@@ -790,7 +797,7 @@ pdfMake.createPdf(docDefinition).download(filename);
 },generatemonthlyMotorelaDelinquenciesReport() {
     const [year, month] = this.monthlyMonth.split('-').map(Number);
 
-    axios.get(`https://qrmcpass.loca.lt/admin/delinquencies/motorela/monthly?month=${month}&year=${year}`, {
+    axios.get(`http://127.0.0.1:9000/admin/delinquencies/motorela/monthly?month=${month}&year=${year}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('access_token')}`,
       },
@@ -806,160 +813,190 @@ pdfMake.createPdf(docDefinition).download(filename);
 },
 
 
-  generateMonthlyReports(dailyReport, overallReport, month, year) {
-    
-    const docDefinition = {
-        content: [],
-        styles: {
-            header: {
-                fontSize: 16,
-                bold: true,
-                margin: [0, 10]
-            },
-            subheader: {
-                fontSize: 14,
-                bold: true,
-                margin: [0, 5]
-            },
-            tableHeader: {
-                bold: true,
-                fontSize: 13,
-                color: 'black'
-            },
-            headerText: {
-        fontSize: 12,
-        bold: true
-      },
-        }
-    };
+generateMonthlyReports(dailyReport, overallReport, month, year) {
 
-    // Sort the dates in ascending order
-    const sortedDates = Object.keys(dailyReport).sort((a, b) => new Date(a) - new Date(b));
-    console.log('Daily Report for', dailyReport);
+const docDefinition = {
+    content: [],
+    styles: {
+        header: {
+            fontSize: 16,
+            bold: true,
+            margin: [0, 10]
+        },
+        subheader: {
+            fontSize: 14,
+            bold: true,
+            margin: [0, 5]
+        },
+        tableHeader: {
+            bold: true,
+            fontSize: 13,
+            color: 'black'
+        },
+        headerText: {
+            fontSize: 12,
+            bold: true
+        },
+    }
+};
 
-    // Add daily reports to the document content
-    sortedDates.forEach(day => {
-        const dailyContent = [
+// Sort the dates in ascending order
+const sortedDates = Object.keys(dailyReport).sort((a, b) => new Date(a) - new Date(b));
+console.log('Daily Report for', dailyReport);
+
+// Add daily reports to the document content
+sortedDates.forEach(day => {
+    const dailyContent = [
+        {
+            columns: [
+                {
+                    stack: [
+                        { text: 'Province of Bukidnon', style: 'headerText' },
+                        { text: 'City of Malaybalay', style: 'headerText' },
+                        { text: 'Market Site Brgy 9, Malaybalay City Bukidnon', style: 'headerText' },
+                        { text: 'City Economic Enterprise Development and Management Office', style: 'headerText' },
+                        { text: 'CEEDMO Motorela Booth', style: 'headerText' }
+                    ],
+                    alignment: 'center'
+                }
+            ]
+        },
+        { text: '', margin: [0, 10] },
+        { text: `Daily Report for ${this.getMonthName(month)}-${parseInt(day) + 1}-${year}`, style: 'subheader', alignment: 'center' },
+        { text: '', margin: [0, 10] },
+        {
+            table: {
+                widths: [25, '*', '*', '*'],  // Define the column widths
+                body: [
+                    [
+                        { text: 'No.', style: 'tableHeader', alignment: 'center' },
+                        { text: 'Body Number', style: 'tableHeader', alignment: 'center' },
+                        { text: 'Date of Delinquency', style: 'tableHeader', alignment: 'center' },
+                        { text: 'Amount', style: 'tableHeader', alignment: 'center' }
+                    ],
+                    // Add data rows dynamically based on the delinquencies
+                    ...(Array.isArray(dailyReport[day].delinquencies) ? 
+                        dailyReport[day].delinquencies.map((entry, index) => {
+                            // Ensure each row has 4 columns
+                            return [
+                                { text: index + 1, alignment: 'center' },
+                                entry.unit || '-', // Default value if missing
+                                entry.date || '-',  // Default value if missing
+                                entry.amount || '-'  // Default value if missing
+                            ];
+                        }) :
+                        [[1, dailyReport[day].delinquencies.unit || '-', dailyReport[day].delinquencies.date || '-', dailyReport[day].delinquencies.amount || '-']])
+                ]
+            }
+        },
+        { text: '', margin: [0, 10] }
+    ];
+
+    docDefinition.content.push(dailyContent);
+    docDefinition.content.push({ text: '', pageBreak: 'after' }); // Add page break after each day's report
+});
+
+// Add overall report to the document content
+const overallContent = [
+    {
+        columns: [
             {
-                columns: [
+                width: 'auto', // Automatically size based on content
+                stack: [
                     {
-                        stack: [
-                            { text: 'Province of Bukidnon', style: 'headerText' },
-                            { text: 'City of Malaybalay', style: 'headerText' },
-                            { text: 'Market Site Brgy 9, Malaybalay City Bukidnon', style: 'headerText' },
-                            { text: 'City Economic Enterprise Development and Management Office', style: 'headerText' },
-                            { text: 'CEEDMO Motorela Booth', style: 'headerText' }
-                        ],
-                        alignment: 'center'
+                        image: logos.citylogo,
+                        width: 40,
+                        height: 40,
+                        alignment: 'left'
                     }
                 ]
             },
-            { text: '', margin: [0, 10] },
-            { text: `Daily Report for ${this.getMonthName(month)}-${parseInt(day) + 1}-${year}`, style: 'subheader', alignment: 'center' },
-            { text: '', margin: [0, 10] },
-            { text: 'Body Number', style: 'tableHeader', alignment: 'center' },
-            { text: '', margin: [0, 10] },
-            ...(Array.isArray(dailyReport[day].delinquencies) ? 
-                dailyReport[day].delinquencies.map(entry => [entry.unit]) :
-                [[dailyReport[day].delinquencies.unit]])
-        ];
-
-        docDefinition.content.push(dailyContent);
-        docDefinition.content.push({ text: '', pageBreak: 'after' }); // Add page break after each day's report
-    });
-
-    // Add overall report to the document content
-    const overallContent = [
-        {
-          columns: [
-    {
-        width: 'auto', // Automatically size based on content
-        stack: [
             {
-                image: logos.citylogo,
-                width: 40,
-                height: 40,
-                alignment: 'left'
+                width: 'auto', // Automatically size based on content
+                stack: [
+                    {
+                        image: logos.ceedmologo,
+                        width: 50,
+                        height: 40,
+                        alignment: 'left'
+                    }
+                ]
+            },
+            {
+                width: '*', // Takes up remaining space
+                stack: [
+                    {
+                        text: 'Province of Bukidnon',
+                        style: 'headerText'
+                    },
+                    {
+                        text: 'City Government of Malaybalay',
+                        style: 'headerText'
+                    },
+                    {
+                        text: 'City Economic Enterprise Development and Management Office',
+                        style: 'headerText'
+                    },
+                    {
+                        text: 'CEEDMO Motorela Booth',
+                        style: 'headerText'
+                    },
+                    {
+                        text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon',
+                        style: 'headerText'
+                    }
+                ],
+                alignment: 'center' // Center the header text
+            },
+            {
+                width: 'auto', // Automatically size based on content
+                stack: [
+                    {
+                        image: logos.qrlogo,
+                        width: 50,
+                        height: 40,
+                        alignment: 'right'
+                    }
+                ]
             }
         ]
     },
+    { text: '', margin: [0, 10] },
+    { text: 'Overall Report', style: 'subheader', alignment: 'center' },
     {
-        width: 'auto', // Automatically size based on content
-        stack: [
-            {
-                image: logos.ceedmologo,
-                width: 50,
-                height: 40,
-                alignment: 'left'
-            }
-        ]
-    },
-    {
-        width: '*', // Takes up remaining space
-        stack: [
-            {
-                text: 'Province of Bukidnon',
-                style: 'headerText'
-            },
-            {
-                text: 'City Government of Malaybalay',
-                style: 'headerText'
-            },
-            {
-                text: 'City Economic Enterprise Development and Management Office',
-                style: 'headerText'
-            },
-            {
-                text: 'CEEDMO Motorela Booth',
-                style: 'headerText'
-            },
-            {
-                text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon',
-                style: 'headerText'
-            }
-        ],
-        alignment: 'center' // Center the header text
-    },
-    {
-        width: 'auto', // Automatically size based on content
-        stack: [
-            {
-                image: logos.qrlogo,
-                width: 50,
-                height: 40,
-                alignment: 'right'
-            }
-        ]
+        table: {
+            widths: [25, '*', '*', '*'],  // Define the column widths
+            body: [
+                [
+                    { text: 'No.', style: 'tableHeader', alignment: 'center' },
+                    { text: 'Body Number', style: 'tableHeader', alignment: 'center' },
+                    { text: 'Amount', style: 'tableHeader', alignment: 'center' },
+                    { text: 'Date of Delinquency', style: 'tableHeader', alignment: 'center' }
+                ],
+                // Add data rows dynamically based on the overall report
+                ...Object.keys(overallReport).map((unit, index) => [
+                    { text: index + 1, alignment: 'center' },
+                    unit,
+                    overallReport[unit].amount || '-', // Default value if missing
+                    overallReport[unit].date || '-'  // Default value if missing
+                ])
+            ]
+        }
     }
-]
-        },
-        { text: '', margin: [0, 10] },
-        { text: 'Overall Report', style: 'subheader', alignment: 'center' },
-        { text: 'Body Number', style: 'tableHeader', alignment: 'center' },
+];
 
-        { text: '', margin: [0, 10] },
-      { text: 'Prepared by:', margin: [0, 30] },
-      { text: '', margin: [0, 10] },
-      { text: 'Verified by:', margin: [0, 30] },
-      { text: '', margin: [0, 10] },
-      { text: 'Approved by:', margin: [0, 30] },
-    ];
+docDefinition.content.push(overallContent);
 
-    Object.keys(overallReport).forEach(unit => {
-        overallContent.push([unit, overallReport[unit]]);
-    });
+// Generate and download PDF
+pdfMake.createPdf(docDefinition).download(`Motorela Delinquency Report for ${this.getMonthName(month)}-${year}.pdf`);
+},
 
-    docDefinition.content.push(overallContent);
 
-    // Generate and download PDF
-    pdfMake.createPdf(docDefinition).download(`Motorela Delinquency Report for ${this.getMonthName(month)}-${year}.pdf`);
-}
-,
 
 generatemonthlyMulticabDelinquenciesReport() {
     const [year, month] = this.monthlyMonth.split('-').map(Number);
 
-    axios.get(`https://qrmcpass.loca.lt/admin/delinquencies/multicab/monthly?month=${month}&year=${year}`, {
+    axios.get(`http://127.0.0.1:9000/admin/delinquencies/multicab/monthly?month=${month}&year=${year}`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('access_token')}`,
       },
@@ -1152,14 +1189,7 @@ generateMonthlymulticabReports(dailyReport, overallReport, month, year) {
         },
         { text: '', margin: [0, 10] },
         { text: 'Overall Report', style: 'subheader', alignment: 'center' },
-        { text: 'Body Number', style: 'tableHeader', alignment: 'center' },
-        { text: '', margin: [0, 10] },
-      { text: 'Prepared by:', margin: [0, 30] },
-      { text: '', margin: [0, 10] },
-      { text: 'Verified by:', margin: [0, 30] },
-      { text: '', margin: [0, 10] },
-      { text: 'Approved by:', margin: [0, 30] },
-
+        { text: 'Body Number', style: 'tableHeader', alignment: 'center' }
     ];
 
     Object.keys(overallReport).forEach(unit => {
@@ -1176,7 +1206,7 @@ generateMonthlymulticabReports(dailyReport, overallReport, month, year) {
     generatemonthlyMulticabPaymentReport() {
       const [year, month] = this.monthlyMonth.split('-').map(Number);
 
-      axios.get(`https://qrmcpass.loca.lt/admin/transactions/payment/multicab/monthly?month=${month}&year=${year}`, {
+      axios.get(`http://127.0.0.1:9000/admin/transactions/payment/multicab/monthly?month=${month}&year=${year}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('access_token')}`,
         },
@@ -1400,7 +1430,7 @@ generateMonthlymulticabReports(dailyReport, overallReport, month, year) {
  generatemonthlyMotorelaPaymentReport() {
       const [year, month] = this.monthlyMonth.split('-').map(Number);
 
-      axios.get(`https://qrmcpass.loca.lt/admin/transactions/payment/motorela/monthly?month=${month}&year=${year}`, {
+      axios.get(`http://127.0.0.1:9000/admin/transactions/payment/motorela/monthly?month=${month}&year=${year}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('access_token')}`,
         },
@@ -1531,89 +1561,105 @@ generateMonthlymulticabReports(dailyReport, overallReport, month, year) {
 
     // Generate overall content
     const overallContent = [
-        {
-          columns: [
     {
-        width: 'auto', // Automatically size based on content
-        stack: [
+        columns: [
             {
-                image: logos.citylogo,
-                width: 40,
-                height: 40,
-                alignment: 'left'
-            }
-        ]
-    },
-    {
-        width: 'auto', // Automatically size based on content
-        stack: [
-            {
-                image: logos.ceedmologo,
-                width: 50,
-                height: 40,
-                alignment: 'left'
-            }
-        ]
-    },
-    {
-        width: '*', // Takes up remaining space
-        stack: [
-            {
-                text: 'Province of Bukidnon',
-                style: 'headerText'
+                width: 'auto', // Automatically size based on content
+                stack: [
+                    {
+                        image: logos.citylogo,
+                        width: 40,
+                        height: 40,
+                        alignment: 'left'
+                    }
+                ]
             },
             {
-                text: 'City Government of Malaybalay',
-                style: 'headerText'
+                width: 'auto', // Automatically size based on content
+                stack: [
+                    {
+                        image: logos.ceedmologo,
+                        width: 50,
+                        height: 40,
+                        alignment: 'left'
+                    }
+                ]
             },
             {
-                text: 'City Economic Enterprise Development and Management Office',
-                style: 'headerText'
+                width: '*', // Takes up remaining space
+                stack: [
+                    {
+                        text: 'Province of Bukidnon',
+                        style: 'headerText'
+                    },
+                    {
+                        text: 'City Government of Malaybalay',
+                        style: 'headerText'
+                    },
+                    {
+                        text: 'City Economic Enterprise Development and Management Office',
+                        style: 'headerText'
+                    },
+                    {
+                        text: 'CEEDMO Motorela Booth',
+                        style: 'headerText'
+                    },
+                    {
+                        text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon',
+                        style: 'headerText'
+                    }
+                ],
+                alignment: 'center' // Center the header text
             },
             {
-                text: 'CEEDMO Motorela Booth',
-                style: 'headerText'
-            },
-            {
-                text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon',
-                style: 'headerText'
-            }
-        ],
-        alignment: 'center' // Center the header text
-    },
-    {
-        width: 'auto', // Automatically size based on content
-        stack: [
-            {
-                image: logos.qrlogo,
-                width: 50,
-                height: 40,
-                alignment: 'right'
-            }
-        ]
-    }
-]
-        },
-        { text: '', margin: [0, 10] },
-        { text: `Overall Report for the month of ${this.getMonthName(month)}-${year}`, style: 'subheader' },
-        {
-            table: {
-                headerRows: 1,
-                widths: ['*', '*'],
-                body: [
-                    [
-                        { text: 'Date', style: 'tableHeader' },
-                        { text: 'Total Amount', style: 'tableHeader' }
-                    ], // Table header row
-                    ...sortedDates.map(day => [
-                        parseInt(day) + 1, 
-                        dailyReport[day].transactions.reduce((dayTotal, transaction) => dayTotal + transaction.amount, 0).toFixed(2)
-                    ]),  
-                    ['Total for the Month', totalAmountForMonth]
+                width: 'auto', // Automatically size based on content
+                stack: [
+                    {
+                        image: logos.qrlogo,
+                        width: 50,
+                        height: 40,
+                        alignment: 'right'
+                    }
                 ]
             }
-        },
-    ];
+        ]
+    },
+    { text: '', margin: [0, 10] },
+    { text: `Overall Report for the month of ${this.getMonthName(month)}-${year}`, style: 'subheader' },
+    {
+        table: {
+            headerRows: 1,
+            widths: ['*', '*'],
+            body: [
+                [
+                    { text: 'Date', style: 'tableHeader' },
+                    { text: 'Total Amount', style: 'tableHeader' }
+                ], // Table header row
+                ...sortedDates.map(day => [
+                    parseInt(day) + 1, 
+                    dailyReport[day].transactions.reduce((dayTotal, transaction) => dayTotal + transaction.amount, 0).toFixed(2)
+                ]),  
+                ['Total for the Month', totalAmountForMonth]
+            ]
+        }
+    },
+    { text: '', margin: [0, 15] }, // Add some space before the signatory section
+    {
+        text: 'Prepared by:', style: 'headerText', alignment: 'right'
+    },
+    { text: '', margin: [0, 15] },
+    {
+        text: 'Admin', style: 'headerText', alignment: 'right'
+    },
+    { text: '', margin: [0, 15] }, // Small space between Prepared and Approved
+    {
+        text: 'Approved by:', style: 'headerText', alignment: 'right'
+    },
+    { text: '', margin: [0, 15] },
+    {
+        text: 'Division Head', style: 'headerText', alignment: 'right'
+    }
+];
 
     docDefinition.content.push(overallContent);
 
