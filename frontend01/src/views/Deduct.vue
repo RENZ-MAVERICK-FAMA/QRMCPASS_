@@ -224,6 +224,10 @@ export default {
     setInterval(() => {
       this.fetchUnitDelinquencies();
     }, 2000); 
+    this.fetchTransaction();
+    setInterval(() => {
+      this.fetchTransaction();
+    }, 2000); 
   },
   computed: {
     visibleDelinquencies() {
