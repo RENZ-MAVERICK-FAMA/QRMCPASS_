@@ -1,5 +1,5 @@
 <template>
- <div class=" w-full p-5 grid grid-rows-3 grid-cols-1 md:grid-rows-1 md:grid-cols-3 md:w-full gap-2">
+ <div class=" w-full p-5 grid grid-rows-3 grid-cols-1 md:grid-rows-1 md:grid-cols-3 md:w-full gap-2 justify-center items-center">
       
       <div class=" bg-white p-14 justify-center items-center rounded-[10px] shadow w-full md:w-full">
         <h1 class="text-[25px] font-bold">Manually TopUp</h1>
