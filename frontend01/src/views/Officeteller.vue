@@ -6,7 +6,7 @@
         <div class="bg-green-200 rounded-[50%] shadow w-full  hover:animate-pulse h-full grid place-content-center" >
           <div class="text-center" >
             <i class="pi pi-money-bill text-[50px]" ></i>
-            <h6 class="text-[35px] font-extrabold text-black/80" >MOTORELA</h6>
+            <h6 class="text-[35px] font-extrabold text-black/80" >Walk In Cash In</h6>
           </div>
         </div>
       </div>
@@ -17,7 +17,7 @@
         <div class="bg-green-200 rounded-[50%] shadow w-full  hover:animate-pulse h-full grid place-content-center" >
           <div class="text-center" >
             <i class="pi pi-truck text-[50px]" ></i>
-            <h6 class="text-[35px] font-extrabold text-black/80" >MULTICAB</h6>
+            <h6 class="text-[35px] font-extrabold text-black/80" >Payment Deliquency</h6>
           </div>
         </div>
       </div>
