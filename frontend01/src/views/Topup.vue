@@ -134,6 +134,7 @@
 import { ref, toHandlers, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
+import jsPDF from 'jspdf';
 import axios from "axios";
 
 const authenticated = ref(false);
