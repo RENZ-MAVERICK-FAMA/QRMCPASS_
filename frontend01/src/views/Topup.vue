@@ -32,7 +32,7 @@
             <small class="font-extralight capitalize">no data found. </small>
           </div>
         </template>
-        <Column header="Unit" field="unitid" />
+        <Column header="Body Number" field="unitid" />
         <Column header="Amount" field="amount" />
         <Column header="Date 0f Payment">
           <template #body="{ data }">
