@@ -217,7 +217,12 @@ export default {
   computed: {
     visibleDelinquencies() {
       return this.showMore ? this.delinquencies : this.delinquencies.slice(0, 5);
-    },
+    }, paidDelinquencies() {
+    return this.delinquencies.filter(delinquency => delinquency.status === 'Paid');
+  },
+  unpaidDelinquencies() {
+    return this.delinquencies.filter(delinquency => delinquency.status === 'Unpaid');
+  }
   },
   methods: {
     toggleShowMore() {
