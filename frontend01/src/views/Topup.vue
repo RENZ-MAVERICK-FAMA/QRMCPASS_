@@ -155,6 +155,7 @@ export default {
       error: "",
       transactions: [],
       searchTerm: "",
+      reversedTransactions:[]
       
     };
   },
