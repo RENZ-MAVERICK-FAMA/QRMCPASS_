@@ -944,103 +944,88 @@ generatemonthlyMulticabDelinquenciesReport() {
 
 
 generateMonthlymulticabReports(dailyReport, overallReport, month, year) {
+    // Helper to get month name from month number
+    const getMonthName = (month) => new Date(year, month - 1).toLocaleString('default', { month: 'long' });
+
+    // Calculate number of days in the specified month and year
+    const daysInMonth = new Date(year, month, 0).getDate();
+
     const docDefinition = {
-    content: [],
-    styles: {
-        header: {
-            fontSize: 16,
-            bold: true,
-            margin: [0, 10]
-        },
-        subheader: {
-            fontSize: 14,
-            bold: true,
-            margin: [0, 5]
-        },
-        tableHeader: {
-            bold: true,
-            fontSize: 13,
-            color: 'black'
-        },
-        headerText: {
-            fontSize: 12,
-            bold: true
-        },
-    }
-};
-
-// Sort the dates in ascending order
-const sortedDates = Object.keys(dailyReport).sort((a, b) => new Date(a) - new Date(b));
-console.log('Daily Report for', dailyReport);
-
-// Add daily reports to the document content
-sortedDates.forEach(day => {
-    const dailyContent = [
-        {
-            columns: [
-                {
-                    stack: [
-                        { text: 'Province of Bukidnon', style: 'headerText' },
-                        { text: 'City of Malaybalay', style: 'headerText' },
-                        { text: 'Market Site Brgy 9, Malaybalay City Bukidnon', style: 'headerText' },
-                        { text: 'City Economic Enterprise Development and Management Office', style: 'headerText' },
-                        { text: 'CEEDMO Multicab Booth', style: 'headerText' }
-                    ],
-                    alignment: 'center'
-                }
-            ]
-        },
-        { text: '', margin: [0, 10] },
-        { text: `Daily Report for ${this.getMonthName(month)}-${parseInt(day) + 1}-${year}`, style: 'subheader', alignment: 'center' },
-        { text: '', margin: [0, 10] },
-        {
-  table: {
-    widths: [25, '*', '*', '*'],  // Define the column widths
-    body: [
-      [
-        { text: 'No.', style: 'tableHeader', alignment: 'center' },
-        { text: 'Body Number', style: 'tableHeader', alignment: 'center' },
-        { text: 'Date of Delinquency', style: 'tableHeader', alignment: 'center' },
-        { text: 'Amount', style: 'tableHeader', alignment: 'center' }
-      ],
-      // Add data rows dynamically based on the delinquencies
-      ...(Array.isArray(dailyReport[day].delinquencies) 
-        ? dailyReport[day].delinquencies.map((entry, index) => {
-            return [
-              { text: index + 1, alignment: 'center' },
-              entry.unit || '-', // Default value if missing
-              entry.date || '-', // Default value if missing
-              entry.amount ? entry.amount * 11 : '11' // Multiply amount by 6 or default to 6
-            ];
-          }) 
-        : [[1, dailyReport[day].delinquencies.unit || '-', dailyReport[day].delinquencies.date || '-', dailyReport[day].delinquencies.amount ? dailyReport[day].delinquencies.amount * 6 : '6']]
-      ),
-      // Calculate and add the total amount row
-      [
-        { text: '', colSpan: 3, border: [false, true, false, false] },
-        {}, // Placeholder for spanning the column
-        {},
-        {
-          text: `Total: ${Array.isArray(dailyReport[day].delinquencies) 
-            ? dailyReport[day].delinquencies.reduce((sum, entry) => sum + (entry.amount ? entry.amount * 6 : 6), 0) 
-            : dailyReport[day].delinquencies.amount ? dailyReport[day].delinquencies.amount * 6 : 6}`,
-          alignment: 'center',
-          style: 'totalRow',
-          bold: true
+        content: [],
+        styles: {
+            header: { fontSize: 16, bold: true, margin: [0, 10] },
+            subheader: { fontSize: 14, bold: true, margin: [0, 5] },
+            tableHeader: { bold: true, fontSize: 13, color: 'black' },
+            headerText: { fontSize: 12, bold: true }
         }
-      ]
-    ]
-  }
-},
-{ text: '', margin: [0, 10] }
-    ];
+    };
 
-    docDefinition.content.push(dailyContent);
-    docDefinition.content.push({ text: '', pageBreak: 'after' }); // Add page break after each day's report
-});
+    // Sort dates in ascending order
+    const sortedDates = Object.keys(dailyReport).sort((a, b) => new Date(a) - new Date(b));
 
-// Add overall report to the document content
-const overallContent = [
+    // Add daily reports
+    sortedDates.forEach(day => {
+        const dailyContent = [
+            {
+                columns: [
+                    {
+                        stack: [
+                            { text: 'Province of Bukidnon', style: 'headerText' },
+                            { text: 'City of Malaybalay', style: 'headerText' },
+                            { text: 'Market Site Brgy 9, Malaybalay City Bukidnon', style: 'headerText' },
+                            { text: 'City Economic Enterprise Development and Management Office', style: 'headerText' },
+                            { text: 'CEEDMO Multicab Booth', style: 'headerText' }
+                        ],
+                        alignment: 'center'
+                    }
+                ]
+            },
+            { text: '', margin: [0, 10] },
+            { text: `Daily Report for ${getMonthName(month)}-${parseInt(day) + 1}-${year}`, style: 'subheader', alignment: 'center' },
+            { text: '', margin: [0, 10] },
+            {
+                table: {
+                    widths: [25, '*', '*', '*'],
+                    body: [
+                        [
+                            { text: 'No.', style: 'tableHeader', alignment: 'center' },
+                            { text: 'Body Number', style: 'tableHeader', alignment: 'center' },
+                            { text: 'Date of Delinquency', style: 'tableHeader', alignment: 'center' },
+                            { text: 'Amount', style: 'tableHeader', alignment: 'center' }
+                        ],
+                        ...(Array.isArray(dailyReport[day].delinquencies) 
+                            ? dailyReport[day].delinquencies.map((entry, index) => [
+                                { text: index + 1, alignment: 'center' },
+                                entry.unit || '-', 
+                                entry.date || '-', 
+                                (entry.amount ? entry.amount * 11 : 11).toFixed(2)
+                              ])
+                            : [[1, dailyReport[day].delinquencies.unit || '-', dailyReport[day].delinquencies.date || '-', (dailyReport[day].delinquencies.amount ? dailyReport[day].delinquencies.amount * 6 : 6).toFixed(2)]]
+                        ),
+                        [
+                            { text: '', colSpan: 3, border: [false, true, false, false] },
+                            {}, {}, 
+                            { 
+                                text: `Total: ${
+                                    Array.isArray(dailyReport[day].delinquencies) 
+                                    ? dailyReport[day].delinquencies.reduce((sum, entry) => sum + (entry.amount ? entry.amount * 6 : 6), 0) 
+                                    : (dailyReport[day].delinquencies.amount ? dailyReport[day].delinquencies.amount * 11 : 6)
+                                }`,
+                                alignment: 'center',
+                                bold: true
+                            }
+                        ]
+                    ]
+                }
+            },
+            { text: '', margin: [0, 10] }
+        ];
+
+        docDefinition.content.push(dailyContent);
+        docDefinition.content.push({ text: '', pageBreak: 'after' });
+    });
+
+    const overallContent = [
     {
         columns: [
             { width: 'auto', stack: [{ image: logos.citylogo, width: 40, height: 40, alignment: 'left' }] },
@@ -1094,7 +1079,7 @@ const overallContent = [
                         text: Object.keys(dailyReport).reduce((sum, day) => {
                             const dailyData = dailyReport[day];
                             const delinquencyCount = dailyData.delinquencies.length;
-                            return sum + (delinquencyCount * 6);  // Add up the delinquency totals for the month
+                            return sum + (delinquencyCount * 11);  // Add up the delinquency totals for the month
                         }, 0).toFixed(2),
                         alignment: 'center', bold: true 
                     }
