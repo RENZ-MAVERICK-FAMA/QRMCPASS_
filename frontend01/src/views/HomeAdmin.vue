@@ -875,15 +875,20 @@ generateMonthlyReports(dailyReport, overallReport, month, year) {
                     { text: 'Total Amount', style: 'tableHeader', alignment: 'center' }
                 ],
                 // Loop through each day to calculate the delinquencies and total amount for each date
-                ...Object.keys(dailyReport).map(day => {
-                    const dailyData = dailyReport[day];  // Get the daily report data for the day
+                ...Object.keys(dailyReport).map((dayKey, index) => {
+                    const dailyData = dailyReport[dayKey];  // Get the daily report data for the day
+                    
+                    // Format the date to 'YYYY-MM-DD' (e.g. 2024-11-01)
+                    const date = new Date(dayKey);
+                    const formattedDate = date.toISOString().split('T')[0]; // Gets YYYY-MM-DD
+
                     const delinquencyCount = dailyData.delinquencies.length;  // Count the delinquencies for the day
                     const totalAmount = delinquencyCount * 6;  // Total amount for the day (assuming 6 per delinquency)
 
                     // Return an array with formatted data for each row in the table
                     return [
-                        { text: parseInt(day) + 1, alignment: 'center' },  // Day (1-based index)
-                        day,  // Date (formatted as YYYY-MM-DD)
+                        { text: index + 1, alignment: 'center' },  // Day (1-based index)
+                        formattedDate,  // Date (formatted as YYYY-MM-DD)
                         { text: delinquencyCount, alignment: 'center' },  // Number of delinquencies
                         { text: totalAmount.toFixed(2), alignment: 'center' }  // Total amount for the day
                     ];
@@ -893,8 +898,8 @@ generateMonthlyReports(dailyReport, overallReport, month, year) {
                     { text: 'Total for the Month', colSpan: 3, alignment: 'center', bold: true },
                     {}, {},
                     { 
-                        text: Object.keys(dailyReport).reduce((sum, day) => {
-                            const dailyData = dailyReport[day];
+                        text: Object.keys(dailyReport).reduce((sum, dayKey) => {
+                            const dailyData = dailyReport[dayKey];
                             const delinquencyCount = dailyData.delinquencies.length;
                             return sum + (delinquencyCount * 6);  // Add up the delinquency totals for the month
                         }, 0).toFixed(2),
