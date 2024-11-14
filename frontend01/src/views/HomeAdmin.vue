@@ -877,23 +877,23 @@ generateMonthlyReports(dailyReport, overallReport, month, year) {
         ],
         // Loop through each day to calculate the delinquencies and total amount for each date
         ...Object.keys(dailyReport).map((day, index) => {
-            const dailyData = dailyReport[day];  // Get the daily report data for the day
-            // Check if the delinquencies array exists and has a length
-            const delinquencyCount = (dailyData && Array.isArray(dailyData.delinquencies)) ? dailyData.delinquencies.length : 0;
-            const totalAmount = delinquencyCount * 6;  // Total amount for the day (assuming 6 per delinquency)
+    console.log("Processing day:", day);  // Log the day for debugging
 
-            // Format the day as YYYY-MM-DD, ensure the day is in the correct format
-            const dateParts = day.split('-');
-            const formattedDate = dateParts.length === 3 ? `${dateParts[0]}-${dateParts[1]}-${dateParts[2]}` : 'Invalid Date';
+    const dailyData = dailyReport[day];  // Get the daily report data for the day
+    const delinquencyCount = (dailyData && Array.isArray(dailyData.delinquencies)) ? dailyData.delinquencies.length : 0;
+    const totalAmount = delinquencyCount * 6;  // Total amount for the day (assuming 6 per delinquency)
 
-            // Return an array with formatted data for each row in the table
-            return [
-                { text: index + 1, alignment: 'center' },  // Day (1-based index)
-                formattedDate,  // Date (formatted as YYYY-MM-DD)
-                { text: delinquencyCount, alignment: 'center' },  // Number of delinquencies
-                { text: totalAmount.toFixed(2), alignment: 'center' }  // Total amount for the day
-            ];
-        }),
+    // Format the day as YYYY-MM-DD, ensure the day is in the correct format
+    const dateParts = day.split('-');
+    const formattedDate = dateParts.length === 3 ? `${dateParts[0]}-${dateParts[1]}-${dateParts[2]}` : 'Invalid Date';
+
+    return [
+        { text: index + 1, alignment: 'center' },  // Day (1-based index)
+        formattedDate,  // Date (formatted as YYYY-MM-DD)
+        { text: delinquencyCount, alignment: 'center' },  // Number of delinquencies
+        { text: totalAmount.toFixed(2), alignment: 'center' }  // Total amount for the day
+    ];
+}),
         // Calculate total delinquency for the month
         [
             { text: 'Total for the Month', colSpan: 3, alignment: 'center', bold: true },
