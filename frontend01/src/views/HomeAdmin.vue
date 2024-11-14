@@ -865,31 +865,45 @@ sortedDates.forEach(day => {
         { text: `Daily Report for ${this.getMonthName(month)}-${parseInt(day) + 1}-${year}`, style: 'subheader', alignment: 'center' },
         { text: '', margin: [0, 10] },
         {
-            table: {
-                widths: [25, '*', '*', '*'],  // Define the column widths
-                body: [
-                    [
-                        { text: 'No.', style: 'tableHeader', alignment: 'center' },
-                        { text: 'Body Number', style: 'tableHeader', alignment: 'center' },
-                        { text: 'Date of Delinquency', style: 'tableHeader', alignment: 'center' },
-                        { text: 'Amount', style: 'tableHeader', alignment: 'center' }
-                    ],
-                    // Add data rows dynamically based on the delinquencies
-                    ...(Array.isArray(dailyReport[day].delinquencies) ? 
-                        dailyReport[day].delinquencies.map((entry, index) => {
-                            // Ensure each row has 4 columns
-                            return [
-                                { text: index + 1, alignment: 'center' },
-                                entry.unit || '-', // Default value if missing
-                                entry.date || '-',  // Default value if missing
-                                entry.amount ? entry.amount * 6 : '6'
-                            ];
-                        }) :
-                        [[1, dailyReport[day].delinquencies.unit || '-', dailyReport[day].delinquencies.date || '-', dailyReport[day].delinquencies.amount || '-']])
-                ]
-            }
-        },
-        { text: '', margin: [0, 10] }
+  table: {
+    widths: [25, '*', '*', '*'],  // Define the column widths
+    body: [
+      [
+        { text: 'No.', style: 'tableHeader', alignment: 'center' },
+        { text: 'Body Number', style: 'tableHeader', alignment: 'center' },
+        { text: 'Date of Delinquency', style: 'tableHeader', alignment: 'center' },
+        { text: 'Amount', style: 'tableHeader', alignment: 'center' }
+      ],
+      // Add data rows dynamically based on the delinquencies
+      ...(Array.isArray(dailyReport[day].delinquencies) 
+        ? dailyReport[day].delinquencies.map((entry, index) => {
+            return [
+              { text: index + 1, alignment: 'center' },
+              entry.unit || '-', // Default value if missing
+              entry.date || '-', // Default value if missing
+              entry.amount ? entry.amount * 6 : '6' // Multiply amount by 6 or default to 6
+            ];
+          }) 
+        : [[1, dailyReport[day].delinquencies.unit || '-', dailyReport[day].delinquencies.date || '-', dailyReport[day].delinquencies.amount ? dailyReport[day].delinquencies.amount * 6 : '6']]
+      ),
+      // Calculate and add the total amount row
+      [
+        { text: '', colSpan: 3, border: [false, true, false, false] },
+        {}, // Placeholder for spanning the column
+        {},
+        {
+          text: `Total: ${Array.isArray(dailyReport[day].delinquencies) 
+            ? dailyReport[day].delinquencies.reduce((sum, entry) => sum + (entry.amount ? entry.amount * 6 : 6), 0) 
+            : dailyReport[day].delinquencies.amount ? dailyReport[day].delinquencies.amount * 6 : 6}`,
+          alignment: 'center',
+          style: 'totalRow',
+          bold: true
+        }
+      ]
+    ]
+  }
+},
+{ text: '', margin: [0, 10] }
     ];
 
     docDefinition.content.push(dailyContent);
