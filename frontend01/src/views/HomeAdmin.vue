@@ -359,13 +359,19 @@ generatedelmulticabdailyExcelFile(delinquencies,startDate, endDate) {
 
   const tableHeaderRow = ['Body Number', 'Date of Delinquency', 'Status','Date of Payment','Timestamp']; // Plain text values for the header row
   const tableBody = [
-    [{ text: 'Body Number', style: 'tableHeader' }, { text: 'Date of Delinquency', style: 'tableHeader' }, { text: 'Status', style: 'tableHeader' }],
-    ...delinquencies.map(delinquency => [
-      delinquency.unit_id, 
-      new Date(delinquency.date_of_payment).toLocaleDateString('en-US'), 
-      delinquency.status
-    ])
-  ];
+  [
+    { text: 'No.', style: 'tableHeader' },
+    { text: 'Body Number', style: 'tableHeader' },
+    { text: 'Date', style: 'tableHeader' },
+    { text: 'Status', style: 'tableHeader' }
+  ],
+  ...delinquencies.map((delinquency, index) => [
+    index + 1, // Sequential number
+    delinquency.unit_id || '-',  // Use '-' if unit_id is missing
+    new Date(delinquency.date_of_payment).toLocaleDateString('en-US'), // Format date
+    delinquency.status || '-' // Use '-' if status is missing
+  ])
+];
 
   const docDefinition = {
     content: [
