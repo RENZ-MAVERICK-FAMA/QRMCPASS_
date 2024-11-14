@@ -984,7 +984,7 @@ sortedDates.forEach(day => {
                         { text: 'City of Malaybalay', style: 'headerText' },
                         { text: 'Market Site Brgy 9, Malaybalay City Bukidnon', style: 'headerText' },
                         { text: 'City Economic Enterprise Development and Management Office', style: 'headerText' },
-                        { text: 'CEEDMO Motorela Booth', style: 'headerText' }
+                        { text: 'CEEDMO Multicab Booth', style: 'headerText' }
                     ],
                     alignment: 'center'
                 }
@@ -1010,7 +1010,7 @@ sortedDates.forEach(day => {
               { text: index + 1, alignment: 'center' },
               entry.unit || '-', // Default value if missing
               entry.date || '-', // Default value if missing
-              entry.amount ? entry.amount * 6 : '6' // Multiply amount by 6 or default to 6
+              entry.amount ? entry.amount * 11 : '11' // Multiply amount by 6 or default to 6
             ];
           }) 
         : [[1, dailyReport[day].delinquencies.unit || '-', dailyReport[day].delinquencies.date || '-', dailyReport[day].delinquencies.amount ? dailyReport[day].delinquencies.amount * 6 : '6']]
@@ -1043,96 +1043,77 @@ sortedDates.forEach(day => {
 const overallContent = [
     {
         columns: [
+            { width: 'auto', stack: [{ image: logos.citylogo, width: 40, height: 40, alignment: 'left' }] },
+            { width: 'auto', stack: [{ image: logos.ceedmologo, width: 50, height: 40, alignment: 'left' }] },
             {
-                width: 'auto', // Automatically size based on content
+                width: '*',
                 stack: [
-                    {
-                        image: logos.citylogo,
-                        width: 40,
-                        height: 40,
-                        alignment: 'left'
-                    }
-                ]
-            },
-            {
-                width: 'auto', // Automatically size based on content
-                stack: [
-                    {
-                        image: logos.ceedmologo,
-                        width: 50,
-                        height: 40,
-                        alignment: 'left'
-                    }
-                ]
-            },
-            {
-                width: '*', // Takes up remaining space
-                stack: [
-                    {
-                        text: 'Province of Bukidnon',
-                        style: 'headerText'
-                    },
-                    {
-                        text: 'City Government of Malaybalay',
-                        style: 'headerText'
-                    },
-                    {
-                        text: 'City Economic Enterprise Development and Management Office',
-                        style: 'headerText'
-                    },
-                    {
-                        text: 'CEEDMO Motorela Booth',
-                        style: 'headerText'
-                    },
-                    {
-                        text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon',
-                        style: 'headerText'
-                    }
+                    { text: 'Province of Bukidnon', style: 'headerText' },
+                    { text: 'City Government of Malaybalay', style: 'headerText' },
+                    { text: 'City Economic Enterprise Development and Management Office', style: 'headerText' },
+                    { text: 'CEEDMO Multicab Booth', style: 'headerText' },
+                    { text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon', style: 'headerText' }
                 ],
-                alignment: 'center' // Center the header text
+                alignment: 'center'
             },
-            {
-                width: 'auto', // Automatically size based on content
-                stack: [
-                    {
-                        image: logos.qrlogo,
-                        width: 50,
-                        height: 40,
-                        alignment: 'right'
-                    }
-                ]
-            }
+            { width: 'auto', stack: [{ image: logos.qrlogo, width: 50, height: 40, alignment: 'right' }] }
         ]
     },
     { text: '', margin: [0, 10] },
-    { text: 'Overall Report', style: 'subheader', alignment: 'center' },
+    { text: `Overall Report for the month of ${getMonthName(month)}-${year}`, style: 'subheader' },
     {
         table: {
-            widths: [25, '*', '*', '*'],  // Define the column widths
+            headerRows: 1,
+            widths: [25, '*', '*', '*'],
             body: [
                 [
                     { text: 'No.', style: 'tableHeader', alignment: 'center' },
-                    { text: 'Body Number', style: 'tableHeader', alignment: 'center' },
-                    { text: 'Amount', style: 'tableHeader', alignment: 'center' },
-                    { text: 'Date of Delinquency', style: 'tableHeader', alignment: 'center' }
+                    { text: 'Date of Delinquency', style: 'tableHeader', alignment: 'center' },
+                    { text: 'Number of Delinquencies', style: 'tableHeader', alignment: 'center' },
+                    { text: 'Total Amount', style: 'tableHeader', alignment: 'center' }
                 ],
-                // Add data rows dynamically based on the overall report
-                ...Object.keys(overallReport).map((unit, index) => [
-                    { text: index + 1, alignment: 'center' },
-                    unit,
-                    overallReport[unit].amount || '-', // Default value if missing
-                    overallReport[unit].date || '-'  // Default value if missing
-                ])
+                // Loop through each day to calculate the delinquencies and total amount for each date
+                ...Object.keys(dailyReport).map(day => {
+                    const dailyData = dailyReport[day];  // Get the daily report data for the day
+                    const delinquencyCount = dailyData.delinquencies.length;  // Count the delinquencies for the day
+                    const totalAmount = delinquencyCount * 11;  // Total amount for the day (assuming 6 per delinquency)
+
+                    // Return an array with formatted data for each row in the table
+                    return [
+                        { text: parseInt(day) + 1, alignment: 'center' },  // Day (1-based index)
+                        parseInt(day)+1,  // Date (formatted as YYYY-MM-DD)
+                        { text: delinquencyCount, alignment: 'center' },  // Number of delinquencies
+                        { text: totalAmount.toFixed(2), alignment: 'center' }  // Total amount for the day
+                    ];
+                }),
+                // Calculate total delinquency for the month
+                [
+                    { text: 'Total for the Month', colSpan: 3, alignment: 'center', bold: true },
+                    {}, {},
+                    { 
+                        text: Object.keys(dailyReport).reduce((sum, day) => {
+                            const dailyData = dailyReport[day];
+                            const delinquencyCount = dailyData.delinquencies.length;
+                            return sum + (delinquencyCount * 6);  // Add up the delinquency totals for the month
+                        }, 0).toFixed(2),
+                        alignment: 'center', bold: true 
+                    }
+                ]
             ]
         }
-    }
-    ];
+    },
+    { text: '', margin: [0, 15] },
+    { text: 'Prepared by:', style: 'headerText', alignment: 'right' },
+    { text: '', margin: [0, 15] },
+    { text: 'Admin', style: 'headerText', alignment: 'right' },
+    { text: '', margin: [0, 15] },
+    { text: 'Approved by:', style: 'headerText', alignment: 'right' },
+    { text: '', margin: [0, 15] },
+    { text: 'Division Head', style: 'headerText', alignment: 'right' }
+];
 
-    Object.keys(overallReport).forEach(unit => {
-        overallContent.push([unit, overallReport[unit]]);
-    });
-
-    docDefinition.content.push(overallContent);
+// Add the overall content to the document
+docDefinition.content.push(overallContent);
 
     // Generate and download PDF
     pdfMake.createPdf(docDefinition).download(`Multicab Delinquency Report for ${this.getMonthName(month)}-${year}.pdf`);
@@ -1212,7 +1193,7 @@ const overallContent = [
                 style: 'headerText'
             },
             {
-                text: 'CEEDMO Motorela Booth',
+                text: 'CEEDMO Multicab Booth',
                 style: 'headerText'
             },
             {
