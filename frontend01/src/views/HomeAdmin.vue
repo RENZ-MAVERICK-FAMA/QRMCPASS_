@@ -865,46 +865,48 @@ generateMonthlyReports(dailyReport, overallReport, month, year) {
         { text: '', margin: [0, 10] },
         { text: `Overall Report for the month of ${getMonthName(month)}-${year}`, style: 'subheader' },
         {
-            table: {
-    headerRows: 1,
-    widths: [25, '*', '*', '*'],
-    body: [
-        [
-            { text: 'No.', style: 'tableHeader', alignment: 'center' },
-            { text: 'Date of Delinquency', style: 'tableHeader', alignment: 'center' },
-            { text: 'Number of Delinquencies', style: 'tableHeader', alignment: 'center' },
-            { text: 'Total Amount', style: 'tableHeader', alignment: 'center' }
-        ],
-        ...Array.from({ length: daysInMonth }, (_, index) => {
-            const day = index + 1;
-            const dateKey = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-            const entry = overallReport[dateKey] || {};
-            const delinquencyCount = entry.delinquencies ? entry.delinquencies.length : 0; // Count of delinquencies for the date
-            const totalAmount = delinquencyCount * 6;
+            
+    table: {
+        headerRows: 1,
+        widths: [25, '*', '*', '*'],
+        body: [
+            [
+                { text: 'No.', style: 'tableHeader', alignment: 'center' },
+                { text: 'Date of Delinquency', style: 'tableHeader', alignment: 'center' },
+                { text: 'Number of Delinquencies', style: 'tableHeader', alignment: 'center' },
+                { text: 'Total Amount', style: 'tableHeader', alignment: 'center' }
+            ],
+            ...Array.from({ length: daysInMonth }, (_, index) => {
+                const day = index + 1;
+                const dateKey = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                
+                // Ensure each day has an entry in overallReport, even if no delinquencies
+                const entry = overallReport[dateKey] || { delinquencies: [] };
+                const delinquencyCount = entry.delinquencies.length; // Count of delinquencies for the date
+                const totalAmount = delinquencyCount * 6;
 
-            return [
-                { text: day, alignment: 'center' },
-                dateKey,
-                { text: delinquencyCount, alignment: 'center' },
-                { text: totalAmount.toFixed(2), alignment: 'center' }
-            ];
-        }),
-        [
-            { text: 'Total for the Month', colSpan: 3, alignment: 'center', bold: true },
-            {}, {},
-            { 
-                text: Array.from({ length: daysInMonth }, (_, index) => {
-                    const day = index + 1;
-                    const dateKey = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-                    const entry = overallReport[dateKey] || {};
-                    const delinquencyCount = entry.delinquencies ? entry.delinquencies.length : 0;
-                    return delinquencyCount * 6;
-                }).reduce((sum, value) => sum + value, 0).toFixed(2),
-                alignment: 'center', bold: true 
-            }
+                return [
+                    { text: day, alignment: 'center' },
+                    dateKey,
+                    { text: delinquencyCount, alignment: 'center' },
+                    { text: totalAmount.toFixed(2), alignment: 'center' }
+                ];
+            }),
+            [
+                { text: 'Total for the Month', colSpan: 3, alignment: 'center', bold: true },
+                {}, {},
+                { 
+                    text: Array.from({ length: daysInMonth }, (_, index) => {
+                        const day = index + 1;
+                        const dateKey = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                        const entry = overallReport[dateKey] || { delinquencies: [] };
+                        return entry.delinquencies.length * 6;
+                    }).reduce((sum, value) => sum + value, 0).toFixed(2),
+                    alignment: 'center', bold: true 
+                }
+            ]
         ]
-    ]
-}
+    }
 
         },
         { text: '', margin: [0, 15] },
