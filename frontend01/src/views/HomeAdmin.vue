@@ -864,53 +864,50 @@ generateMonthlyReports(dailyReport, overallReport, month, year) {
     { text: '', margin: [0, 10] },
     { text: `Overall Report for the month of ${getMonthName(month)}-${year}`, style: 'subheader' },
     {
-        table: {
-            headerRows: 1,
-            widths: [25, '*', '*', '*'],
-            body: [
-                [
-                    { text: 'No.', style: 'tableHeader', alignment: 'center' },
-                    { text: 'Date of Delinquency', style: 'tableHeader', alignment: 'center' },
-                    { text: 'Number of Delinquencies', style: 'tableHeader', alignment: 'center' },
-                    { text: 'Total Amount', style: 'tableHeader', alignment: 'center' }
-                ],
-                // Loop through each day to calculate the delinquencies and total amount for each date
-                ...Object.keys(dailyReport).map((day, index) => {
-                    console.log("Processing day:", day);  // Log the day for debugging
+        
+       table: {
+    headerRows: 1,
+    widths: [25, '*', '*', '*'],
+    body: [
+        [
+            { text: 'No.', style: 'tableHeader', alignment: 'center' },
+            { text: 'Date of Delinquency', style: 'tableHeader', alignment: 'center' },
+            { text: 'Number of Delinquencies', style: 'tableHeader', alignment: 'center' },
+            { text: 'Total Amount', style: 'tableHeader', alignment: 'center' }
+        ],
+        // Loop through each day to calculate the delinquencies and total amount for each date
+        ...Object.keys(dailyReport).map((day, index) => {
+            const dailyData = dailyReport[day];  // Get the daily report data for the day
+            // Check if the delinquencies array exists and has a length
+            const delinquencyCount = (dailyData && Array.isArray(dailyData.delinquencies)) ? dailyData.delinquencies.length : 0;
+            const totalAmount = delinquencyCount * 6;  // Total amount for the day (assuming 6 per delinquency)
 
-                    const dailyData = dailyReport[day];  // Get the daily report data for the day
+            // Format the day as YYYY-MM-DD, ensure the day is in the correct format
+            const dateParts = day.split('-');
+            const formattedDate = dateParts.length === 3 ? `${dateParts[0]}-${dateParts[1]}-${dateParts[2]}` : 'Invalid Date';
+
+            // Return an array with formatted data for each row in the table
+            return [
+                { text: index + 1, alignment: 'center' },  // Day (1-based index)
+                formattedDate,  // Date (formatted as YYYY-MM-DD)
+                { text: delinquencyCount, alignment: 'center' },  // Number of delinquencies
+                { text: totalAmount.toFixed(2), alignment: 'center' }  // Total amount for the day
+            ];
+        }),
+        // Calculate total delinquency for the month
+        [
+            { text: 'Total for the Month', colSpan: 3, alignment: 'center', bold: true },
+            {}, {},
+            { 
+                text: Object.keys(dailyReport).reduce((sum, day) => {
+                    const dailyData = dailyReport[day];
                     const delinquencyCount = (dailyData && Array.isArray(dailyData.delinquencies)) ? dailyData.delinquencies.length : 0;
-                    const totalAmount = delinquencyCount * 6;  // Total amount for the day (assuming 6 per delinquency)
-
-                    // Check if the day is a valid date string
-                    const dateObj = new Date(day);
-                    let formattedDate = 'Invalid Date';  // Default value in case it's invalid
-                    if (!isNaN(dateObj)) {
-                        // If the date is valid, format it as YYYY-MM-DD
-                        formattedDate = dateObj.toISOString().split('T')[0];  // ISO format (YYYY-MM-DD)
-                    }
-
-                    return [
-                        { text: index + 1, alignment: 'center' },  // Day (1-based index)
-                        formattedDate,  // Date (formatted as YYYY-MM-DD or Invalid Date)
-                        { text: delinquencyCount, alignment: 'center' },  // Number of delinquencies
-                        { text: totalAmount.toFixed(2), alignment: 'center' }  // Total amount for the day
-                    ];
-                }),
-                // Calculate total delinquency for the month
-                [
-                    { text: 'Total for the Month', colSpan: 3, alignment: 'center', bold: true },
-                    {}, {},
-                    { 
-                        text: Object.keys(dailyReport).reduce((sum, day) => {
-                            const dailyData = dailyReport[day];
-                            const delinquencyCount = (dailyData && Array.isArray(dailyData.delinquencies)) ? dailyData.delinquencies.length : 0;
-                            return sum + (delinquencyCount * 6);  // Add up the delinquency totals for the month
-                        }, 0).toFixed(2),
-                        alignment: 'center', bold: true 
-                    }
-                ]
-            ]
+                    return sum + (delinquencyCount * 6);  // Add up the delinquency totals for the month
+                }, 0).toFixed(2),
+                alignment: 'center', bold: true 
+            }
+        ]
+    ]
         }
     },
     { text: '', margin: [0, 15] },
@@ -922,6 +919,7 @@ generateMonthlyReports(dailyReport, overallReport, month, year) {
     { text: '', margin: [0, 15] },
     { text: 'Division Head', style: 'headerText', alignment: 'right' }
 ];
+
 // Add the overall content to the document
 docDefinition.content.push(overallContent);
 
