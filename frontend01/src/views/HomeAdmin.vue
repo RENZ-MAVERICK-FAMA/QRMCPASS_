@@ -882,7 +882,7 @@ sortedDates.forEach(day => {
                                 { text: index + 1, alignment: 'center' },
                                 entry.unit || '-', // Default value if missing
                                 entry.date || '-',  // Default value if missing
-                                entry.amount ? entry.amount * 6 : '-'
+                                entry.amount ? entry.amount * 6 : '6'
                             ];
                         }) :
                         [[1, dailyReport[day].delinquencies.unit || '-', dailyReport[day].delinquencies.date || '-', dailyReport[day].delinquencies.amount || '-']])
