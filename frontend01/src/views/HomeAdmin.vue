@@ -1008,7 +1008,7 @@ generateMonthlymulticabReports(dailyReport, overallReport, month, year) {
                             { 
                                 text: `Total: ${
                                     Array.isArray(dailyReport[day].delinquencies) 
-                                    ? dailyReport[day].delinquencies.reduce((sum, entry) => sum + (entry.amount ? entry.amount * 6 : 6), 0) 
+                                    ? dailyReport[day].delinquencies.reduce((sum, entry) => sum + (entry.amount ? entry.amount * 11 : 11), 0) 
                                     : (dailyReport[day].delinquencies.amount ? dailyReport[day].delinquencies.amount * 11 : 11)
                                 }`,
                                 alignment: 'center',
