@@ -864,7 +864,6 @@ generateMonthlyReports(dailyReport, overallReport, month, year) {
     { text: '', margin: [0, 10] },
     { text: `Overall Report for the month of ${getMonthName(month)}-${year}`, style: 'subheader' },
     {
-        
         table: {
             headerRows: 1,
             widths: [25, '*', '*', '*'],
@@ -876,19 +875,15 @@ generateMonthlyReports(dailyReport, overallReport, month, year) {
                     { text: 'Total Amount', style: 'tableHeader', alignment: 'center' }
                 ],
                 // Loop through each day to calculate the delinquencies and total amount for each date
-                ...Object.keys(dailyReport).map((day, index) => {
+                ...Object.keys(dailyReport).map(day => {
                     const dailyData = dailyReport[day];  // Get the daily report data for the day
                     const delinquencyCount = dailyData.delinquencies.length;  // Count the delinquencies for the day
                     const totalAmount = delinquencyCount * 6;  // Total amount for the day (assuming 6 per delinquency)
 
-                    // Format the day as YYYY-MM-DD
-                    const dateParts = day.split('-');
-                    const formattedDate = `${dateParts[0]}-${dateParts[1]}-${dateParts[2]}`;
-
                     // Return an array with formatted data for each row in the table
                     return [
-                        { text: index + 1, alignment: 'center' },  // Day (1-based index)
-                        formattedDate,  // Date (formatted as YYYY-MM-DD)
+                        { text: parseInt(day) + 1, alignment: 'center' },  // Day (1-based index)
+                        day,  // Date (formatted as YYYY-MM-DD)
                         { text: delinquencyCount, alignment: 'center' },  // Number of delinquencies
                         { text: totalAmount.toFixed(2), alignment: 'center' }  // Total amount for the day
                     ];
