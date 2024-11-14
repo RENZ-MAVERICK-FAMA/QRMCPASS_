@@ -268,7 +268,7 @@ delinquencies.sort((a, b) => new Date(a.date_of_payment) - new Date(b.date_of_pa
   
   // Create table body with header row and delinquency data
   const tableHeaderRow = ['Body Number', 'Date', 'Status']; // Plain text values for the header row
- 
+const widths = [auto,auto,auto,auto,auto]
 
 // Ensure the widths array has 5 elements (one for each column)
 const tableBody = [
