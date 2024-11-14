@@ -261,46 +261,33 @@ generateDelReportMotorelaRange(startDate, endDate) {
 
 generatedeldailymotorelaFile(delinquencies, startDate, endDate) {
 
-// Convert date strings to Date objects and sort by date
-delinquencies.sort((a, b) => new Date(a.date_of_payment) - new Date(b.date_of_payment));
+    delinquencies.sort((a, b) => new Date(a.date_of_payment) - new Date(b.date_of_payment));
 
-  const filename = `Motorela Delinquency Report for ${startDate} & ${endDate}.pdf`;
-  
-  // Create table body with header row and delinquency data
-  const tableHeaderRow = ['Body Number', 'Date', 'Status']; // Plain text values for the header row
-const widths = [auto,auto,auto,auto,auto]
+const filename = `Motorela Delinquency Report for ${startDate} & ${endDate}.pdf`;
 
-// Ensure the widths array has 5 elements (one for each column)
+// Create table body with header row and delinquency data
 const tableBody = [
   [
-    { text: 'No.', style: 'tableHeader' }, // New "No." header
+    { text: 'No.', style: 'tableHeader' },
     { text: 'Body Number', style: 'tableHeader' },
     { text: 'Date', style: 'tableHeader' },
     { text: 'Status', style: 'tableHeader' }
   ],
-  // Map delinquency data into rows, with default values to handle missing data
   ...delinquencies.map((delinquency, index) => [
     index + 1, // Sequential number
-    delinquency.unit_id || '-',  // Fallback to '-' if unit_id is missing
-    delinquency.date_of_payment 
-      ? new Date(delinquency.date_of_payment).toLocaleDateString('en-US') 
-      : '-', // Format date or use '-'
-    delinquency.status || '-'  // Fallback to '-' if status is missing
+    delinquency.unit_id || '-',  // Use '-' if unit_id is missing
+    new Date(delinquency.date_of_payment).toLocaleDateString('en-US'), // Format date
+    delinquency.status || '-' // Use '-' if status is missing
   ])
 ];
 
+// Updated docDefinition with corrected widths array
 const docDefinition = {
-  content: [  
+  content: [
     {
       columns: [
-        {
-          width: 'auto',
-          stack: [{ image: logos.citylogo, width: 40, height: 40, alignment: 'left' }]
-        },
-        {
-          width: 'auto',
-          stack: [{ image: logos.ceedmologo, width: 50, height: 40, alignment: 'left' }]
-        },
+        { width: 'auto', stack: [{ image: logos.citylogo, width: 40, height: 40, alignment: 'left' }] },
+        { width: 'auto', stack: [{ image: logos.ceedmologo, width: 50, height: 40, alignment: 'left' }] },
         {
           width: '*',
           stack: [
@@ -312,19 +299,16 @@ const docDefinition = {
           ],
           alignment: 'center'
         },
-        {
-          width: 'auto',
-          stack: [{ image: logos.qrlogo, width: 50, height: 40, alignment: 'right' }]
-        }
+        { width: 'auto', stack: [{ image: logos.qrlogo, width: 50, height: 40, alignment: 'right' }] }
       ]
     },
-    { text: '', margin: [0, 20] },  // Space below the header
+    { text: '', margin: [0, 20] },
     { text: `Today's Report - ${startDate} & ${endDate}`, style: 'subheader', alignment: 'center', margin: [0, 10] },
     {
       table: {
         headerRows: 1,
-        widths: widths, // Use the updated widths array
-        body: tableBody  // Use the adjusted tableBody
+        widths: [25, 100, 100, 100],  // Updated to match four columns in `tableBody`
+        body: tableBody
       }
     },
     { text: '', margin: [0, 15] },
@@ -352,7 +336,7 @@ const docDefinition = {
 };
 
 // Generate and download PDF
-pdfMake.createPdf(docDefinition).download(`Motorela Delinquency Report for ${startDate} & ${endDate}.pdf`);
+pdfMake.createPdf(docDefinition).download(filename);
 },
 generateDelReportMulticabRange(startDate, endDate) {
   axios.get(`https://qrmcpass.loca.lt/admin/delinquencies/multicab/daily?start_date=${startDate}&end_date=${endDate}`, {
