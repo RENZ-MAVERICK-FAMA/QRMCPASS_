@@ -47,16 +47,7 @@
         <!-- Select Toll Booth -->
         <div class="mt-3 grid">
           <label for="branch">Toll Booth</label>
-          <!-- <Select
-            class="w-full"
-            v-model="selectedBranch"
-            :options="branches"
-            optionValue="value"
-            optionLabel="label"
-            placeholder="Select Toll Booth"
-            required
-            readonly
-          ></Select> -->
+          
           <InputText
               v-model="selectedBranch"
               class="w-full md:max-w-[400px]"
@@ -101,40 +92,12 @@
       </form>
     </div>
 
-    <!-- <div class="p-5 shadow bg-white rounded-[10px] w-full">
-    <h2 class="text-[18px] font-bold">Delinquencies</h2>
-    <ul >
-      <li
-        v-for="(delinquency, index) in visibleDelinquencies"
-        :key="delinquency.id"
-        class="mt-2 p-2 border rounded"
-      >
-        <p><strong>Date:</strong> {{ delinquency.date_of_payment }}</p>
-        <p><strong>Status:</strong> {{ delinquency.status }}</p>
-      </li>
-    </ul>
-    <p v-if="delinquencies.length === 0" class="text-gray-500">
-      No delinquencies for the selected unit.
-    </p>
-    <button
-      v-if="delinquencies.length > 5"
-      @click="toggleShowMore"
-      class="mt-3 px-4 py-2 bg-blue-500 text-white rounded"
-    >
-      {{ showMore ? 'Show Less' : 'See More' }}
-    </button>
-  </div> -->
+    
 
   <div class="p-5 shadow bg-white rounded-[10px] w-full">
     <div class=" grid grid-rows-1 grid-cols-2 gap-1">
       <h2 class="text-[18px] font-bold">Delinquencies</h2>
-    <!-- <button
-      v-if="delinquencies.length > 5"
-      @click="toggleShowMore"
-      class=" px-4 py-2 bg-blue-500 text-white rounded"
-    >
-      {{ showMore ? 'Show Less' : 'See More' }}
-    </button> -->
+    
     </div>
    
     <div class="scrollable-list mt-2">
@@ -246,17 +209,17 @@ export default {
     },visibleTransactions() {
       return this.showMore ? this.transactions : this.transactions.slice(0, 5);
     }, totalAmount() {
-  if (!this.selectedUnit.id) return 0; // Ensure there's a selected unit
+  // Ensure selectedUnit exists and has an id
+  if (!this.selectedUnit || !this.selectedUnit.id) return 0;
 
   // Define the multiplier based on unit type
   const multiplier = this.selectedUnit.unit_type === 'motorela' ? 6 :
                      this.selectedUnit.unit_type === 'multicab' ? 11 : 0;
 
   // Calculate the total amount for unpaid delinquencies
-  return this.delinquencies.filter(delinquency => delinquency.status === 'unpaid') // Filter unpaid delinquencies
+  return this.delinquencies.filter(delinquency => delinquency.status === 'unpaid')
     .reduce((total, delinquency) => {
-      // Here we assume each delinquency contributes a fixed amount based on unit type
-      return total + multiplier; // Add the amount based on unit type
+      return total + multiplier;
     }, 0); // Start with a total of 0
 }, totalPaymentAmount() {
     return this.visibleTransactions.reduce((total, transaction) => {
@@ -346,8 +309,7 @@ export default {
         teller: this.teller.id,
       };
       console.log("the data: ",data);
-      axios
-        .post("https://qrmcpass.loca.lt/paymentdel", data, {
+      axios.post("https://qrmcpass.loca.lt/paymentdel", data, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
             "Content-Type": "application/json",
