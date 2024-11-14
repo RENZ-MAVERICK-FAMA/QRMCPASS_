@@ -268,132 +268,88 @@ delinquencies.sort((a, b) => new Date(a.date_of_payment) - new Date(b.date_of_pa
   
   // Create table body with header row and delinquency data
   const tableHeaderRow = ['Body Number', 'Date', 'Status']; // Plain text values for the header row
-  const tableBody = [
+ 
+
+// Ensure the widths array has 5 elements (one for each column)
+const tableBody = [
   [
     { text: 'No.', style: 'tableHeader' }, // New "No." header
     { text: 'Body Number', style: 'tableHeader' },
     { text: 'Date', style: 'tableHeader' },
     { text: 'Status', style: 'tableHeader' }
   ],
+  // Map delinquency data into rows, with default values to handle missing data
   ...delinquencies.map((delinquency, index) => [
-    index + 1, // Add the index + 1 for the sequential number
-    delinquency.unit_id, 
-    new Date(delinquency.date_of_payment).toLocaleDateString('en-US'), // Convert date to readable format
-    delinquency.status
+    index + 1, // Sequential number
+    delinquency.unit_id || '-',  // Fallback to '-' if unit_id is missing
+    delinquency.date_of_payment 
+      ? new Date(delinquency.date_of_payment).toLocaleDateString('en-US') 
+      : '-', // Format date or use '-'
+    delinquency.status || '-'  // Fallback to '-' if status is missing
   ])
 ];
 
-// Ensure the widths array has 5 elements (one for each column)
-const widths = ['auto', 'auto', 'auto', 'auto', 'auto']; // 5 columns now
-
-// Check if delinquencies is defined and is an array
-if (!Array.isArray(delinquencies)) {
-  console.error('delinquencies is not an array:', delinquencies);
-} else {
-  console.log('delinquencies is an array:', delinquencies);
-}
-
-// Now, you can use `tableBody` and `widths` to construct your table
-
-
-
-  const docDefinition = {
-    content: [  
-      {
-        columns: [
+const docDefinition = {
+  content: [  
     {
-        width: 'auto', // Automatically size based on content
-        stack: [
-            {
-                image: logos.citylogo,
-                width: 40,
-                height: 40,
-                alignment: 'left'
-            }
-        ]
-    },
-    {
-        width: 'auto', // Automatically size based on content
-        stack: [
-            {
-                image: logos.ceedmologo,
-                width: 50,
-                height: 40,
-                alignment: 'left'
-            }
-        ]
-    },
-    {
-        width: '*', // Takes up remaining space
-        stack: [
-            {
-                text: 'Province of Bukidnon',
-                style: 'headerText'
-            },
-            {
-                text: 'City Government of Malaybalay',
-                style: 'headerText'
-            },
-            {
-                text: 'City Economic Enterprise Development and Management Office',
-                style: 'headerText'
-            },
-            {
-                text: 'CEEDMO Motorela Booth',
-                style: 'headerText'
-            },
-            {
-                text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon',
-                style: 'headerText'
-            }
-        ],
-        alignment: 'center' // Center the header text
-    },
-    {
-        width: 'auto', // Automatically size based on content
-        stack: [
-            {
-                image: logos.qrlogo,
-                width: 50,
-                height: 40,
-                alignment: 'right'
-            }
-        ]
-    }
-]
-      },
-      { text: '', margin: [0, 20] },  // Space below the header
-      { text: `Today's Report - ${startDate} & ${endDate}`, style: 'subheader', alignment: 'center', margin: [0, 10] },
-      {
-        table: {
-          headerRows: 1,
-          widths: [100, 100, 100],
-          body: tableBody
+      columns: [
+        {
+          width: 'auto',
+          stack: [{ image: logos.citylogo, width: 40, height: 40, alignment: 'left' }]
+        },
+        {
+          width: 'auto',
+          stack: [{ image: logos.ceedmologo, width: 50, height: 40, alignment: 'left' }]
+        },
+        {
+          width: '*',
+          stack: [
+            { text: 'Province of Bukidnon', style: 'headerText' },
+            { text: 'City Government of Malaybalay', style: 'headerText' },
+            { text: 'City Economic Enterprise Development and Management Office', style: 'headerText' },
+            { text: 'CEEDMO Motorela Booth', style: 'headerText' },
+            { text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon', style: 'headerText' }
+          ],
+          alignment: 'center'
+        },
+        {
+          width: 'auto',
+          stack: [{ image: logos.qrlogo, width: 50, height: 40, alignment: 'right' }]
         }
-      },
-      { text: '', margin: [0, 15] },
-      { text: 'Prepared by:', margin: [0, 30] },
-      { text: '', margin: [10, 15] },
-      { text: 'Verified by:', margin: [0, 30] },
-      { text: '', margin: [0, 15] },
-      { text: 'Approved by:', margin: [0, 30] },
-    ],
-    styles: {
-      tableHeader: {
-        bold: true,
-        fontSize: 10,
-        alignment: 'center'
-      },
-      headerText: {
-        fontSize: 12,
-        bold: true
-      },
-      subheader: {
-        fontSize: 14,
-        bold: true
+      ]
+    },
+    { text: '', margin: [0, 20] },  // Space below the header
+    { text: `Today's Report - ${startDate} & ${endDate}`, style: 'subheader', alignment: 'center', margin: [0, 10] },
+    {
+      table: {
+        headerRows: 1,
+        widths: widths, // Use the updated widths array
+        body: tableBody  // Use the adjusted tableBody
       }
+    },
+    { text: '', margin: [0, 15] },
+    { text: 'Prepared by:', margin: [0, 30] },
+    { text: '', margin: [10, 15] },
+    { text: 'Verified by:', margin: [0, 30] },
+    { text: '', margin: [0, 15] },
+    { text: 'Approved by:', margin: [0, 30] }
+  ],
+  styles: {
+    tableHeader: {
+      bold: true,
+      fontSize: 10,
+      alignment: 'center'
+    },
+    headerText: {
+      fontSize: 12,
+      bold: true
+    },
+    subheader: {
+      fontSize: 14,
+      bold: true
     }
-  };
+  }
+};
 
 // Generate and download PDF
 pdfMake.createPdf(docDefinition).download(`Motorela Delinquency Report for ${startDate} & ${endDate}.pdf`);
@@ -794,7 +750,8 @@ generateMotorelaPaymentPDF(transactions, startDate, endDate) {
 
 pdfMake.createPdf(docDefinition).download(filename);
 
-},generatemonthlyMotorelaDelinquenciesReport() {
+},
+generatemonthlyMotorelaDelinquenciesReport() {
     const [year, month] = this.monthlyMonth.split('-').map(Number);
 
     axios.get(`https://qrmcpass.loca.lt/admin/delinquencies/motorela/monthly?month=${month}&year=${year}`, {
