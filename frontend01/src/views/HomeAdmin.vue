@@ -938,7 +938,7 @@ generatemonthlyMulticabDelinquenciesReport() {
       this.generateMonthlymulticabReports(dailyReport, overallReport, month, year);
     })
     .catch((error) => {
-      console.error('Error fetching monthly motorela delinquencies:', error);
+      console.error('Error fetching monthly multicab delinquencies:', error);
     });
 },
 
@@ -1124,15 +1124,15 @@ docDefinition.content.push(overallContent);
       });
     },
     generateMonthlymulticabpaymentReports(dailyReport, overallReport, month, year) {
-      const docDefinition = {
+        const docDefinition = {
         content: [],
         styles: {
             header: { fontSize: 16, bold: true, margin: [0, 10], alignment: 'center' },
             subheader: { fontSize: 14, bold: true, margin: [0, 5], alignment: 'center' },
             tableHeader: { bold: true, fontSize: 13, color: 'black', alignment: 'center' },
-            headerText: {fontSize: 12,bold: true},
+            headerText: {fontSize: 10,bold: true},
         }
-    };
+    }; 
 
     const sortedDates = Object.keys(dailyReport).sort((a, b) => new Date(a) - new Date(b));
 
@@ -1239,89 +1239,105 @@ docDefinition.content.push(overallContent);
 
     // Generate overall content
     const overallContent = [
-        {
-          columns: [
     {
-        width: 'auto', // Automatically size based on content
-        stack: [
+        columns: [
             {
-                image: logos.citylogo,
-                width: 40,
-                height: 40,
-                alignment: 'left'
-            }
-        ]
-    },
-    {
-        width: 'auto', // Automatically size based on content
-        stack: [
-            {
-                image: logos.ceedmologo,
-                width: 50,
-                height: 40,
-                alignment: 'left'
-            }
-        ]
-    },
-    {
-        width: '*', // Takes up remaining space
-        stack: [
-            {
-                text: 'Province of Bukidnon',
-                style: 'headerText'
+                width: 'auto', // Automatically size based on content
+                stack: [
+                    {
+                        image: logos.citylogo,
+                        width: 40,
+                        height: 40,
+                        alignment: 'left'
+                    }
+                ]
             },
             {
-                text: 'City Government of Malaybalay',
-                style: 'headerText'
+                width: 'auto', // Automatically size based on content
+                stack: [
+                    {
+                        image: logos.ceedmologo,
+                        width: 50,
+                        height: 40,
+                        alignment: 'left'
+                    }
+                ]
             },
             {
-                text: 'City Economic Enterprise Development and Management Office',
-                style: 'headerText'
+                width: '*', // Takes up remaining space
+                stack: [
+                    {
+                        text: 'Province of Bukidnon',
+                        style: 'headerText'
+                    },
+                    {
+                        text: 'City Government of Malaybalay',
+                        style: 'headerText'
+                    },
+                    {
+                        text: 'City Economic Enterprise Development and Management Office',
+                        style: 'headerText'
+                    },
+                    {
+                        text: 'CEEDMO Multicab Booth',
+                        style: 'headerText'
+                    },
+                    {
+                        text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon',
+                        style: 'headerText'
+                    }
+                ],
+                alignment: 'center' // Center the header text
             },
             {
-                text: 'CEEDMO Multicab Booth',
-                style: 'headerText'
-            },
-            {
-                text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon',
-                style: 'headerText'
-            }
-        ],
-        alignment: 'center' // Center the header text
-    },
-    {
-        width: 'auto', // Automatically size based on content
-        stack: [
-            {
-                image: logos.qrlogo,
-                width: 50,
-                height: 40,
-                alignment: 'right'
-            }
-        ]
-    }
-]
-        },
-        { text: '', margin: [0, 10] },
-        { text: `Overall Report for the month of ${this.getMonthName(month)}-${year}`, style: 'subheader' },
-        {
-            table: {
-                headerRows: 1,
-                widths: ['*', '*'],
-                body: [
-                    [
-                        { text: 'Date', style: 'tableHeader' },
-                        { text: 'Total Amount', style: 'tableHeader' }
-                    ], // Table header row
-                    ...sortedDates.map(day => [
-                        parseInt(day) + 1, 
-                        dailyReport[day].transactions.reduce((dayTotal, transaction) => dayTotal + transaction.amount, 0).toFixed(2)
-                    ]),  
-                    ['Total for the Month', totalAmountForMonth]
+                width: 'auto', // Automatically size based on content
+                stack: [
+                    {
+                        image: logos.qrlogo,
+                        width: 50,
+                        height: 40,
+                        alignment: 'right'
+                    }
                 ]
             }
+        ]
+    },
+    { text: '', margin: [0, 10] },
+    { text: `Overall Report for the month of ${this.getMonthName(month)}-${year}`, style: 'subheader' },
+    {
+        table: {
+            headerRows: 1,
+            widths: ['*', '*'],
+            body: [
+                [
+                    { text: 'Date', style: 'tableHeader' },
+                    { text: 'Total Amount', style: 'tableHeader' }
+                ], // Table header row
+                ...sortedDates.map(day => [
+                    parseInt(day) + 1, 
+                    dailyReport[day].transactions.reduce((dayTotal, transaction) => dayTotal + transaction.amount, 0).toFixed(2)
+                ]),  
+                ['Total for the Month', totalAmountForMonth]
+            ]
         }
-    ];
+    },
+    { text: '', margin: [0, 15] }, // Add some space before the signatory section
+    {
+        text: 'Prepared by:', style: 'headerText', alignment: 'right'
+    },
+    { text: '', margin: [0, 15] },
+    {
+        text: 'Admin', style: 'headerText', alignment: 'right'
+    },
+    { text: '', margin: [0, 15] }, // Small space between Prepared and Approved
+    {
+        text: 'Approved by:', style: 'headerText', alignment: 'right'
+    },
+    { text: '', margin: [0, 15] },
+    {
+        text: 'Division Head', style: 'headerText', alignment: 'right'
+    }
+];
 
     docDefinition.content.push(overallContent);
 
