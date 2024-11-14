@@ -864,7 +864,7 @@ generateMonthlyReports(dailyReport, overallReport, month, year) {
     { text: '', margin: [0, 10] },
     { text: `Overall Report for the month of ${getMonthName(month)}-${year}`, style: 'subheader' },
     {
-        {
+        
     table: {
         headerRows: 1,
         widths: [25, '*', '*', '*'],
