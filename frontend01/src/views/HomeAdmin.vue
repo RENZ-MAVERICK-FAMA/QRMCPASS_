@@ -841,64 +841,70 @@ generateMonthlyReports(dailyReport, overallReport, month, year) {
         docDefinition.content.push(dailyContent);
         docDefinition.content.push({ text: '', pageBreak: 'after' });
     });
-   
 
-    // Calculate the total amount for the month across all days
-    const totalAmountForMonth = sortedDates.reduce((total, day) => 
-        total + dailyReport[day].transactions.reduce((dayTotal, transaction) => dayTotal + transaction.amount, 0), 0
-    ).toFixed(2);
-
-    // Overall report content
     const overallContent = [
-        {
-            columns: [
-                { width: 'auto', stack: [{ image: logos.citylogo, width: 40, height: 40, alignment: 'left' }] },
-                { width: 'auto', stack: [{ image: logos.ceedmologo, width: 50, height: 40, alignment: 'left' }] },
-                {
-                    width: '*',
-                    stack: [
-                        { text: 'Province of Bukidnon', style: 'headerText' },
-                        { text: 'City Government of Malaybalay', style: 'headerText' },
-                        { text: 'City Economic Enterprise Development and Management Office', style: 'headerText' },
-                        { text: 'CEEDMO Motorela Booth', style: 'headerText' },
-                        { text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon', style: 'headerText' }
-                    ],
-                    alignment: 'center'
-                },
-                { width: 'auto', stack: [{ image: logos.qrlogo, width: 50, height: 40, alignment: 'right' }] }
-            ]
-        },
-        { text: '', margin: [0, 10] },
-        { text: `Overall Report for the month of ${getMonthName(month)}-${year}`, style: 'subheader' },
-        {
-            table: {
-                headerRows: 1,
-                widths: [25, '*', '*', '*'],
-                body: [
-                    [
-                        { text: 'No.', style: 'tableHeader', alignment: 'center' },
-                        { text: 'Date of Delinquency', style: 'tableHeader', alignment: 'center' },
-                        { text: 'Number of Delinquencies', style: 'tableHeader', alignment: 'center' },
-                        { text: 'Total Amount', style: 'tableHeader', alignment: 'center' }
-                    ],
-                    ...sortedDates.map((day, index) => {
-                        // Calculate daily amount and delinquency count
-                        const dayTotal = dailyReport[day].transactions.reduce((daySum, transaction) => daySum + transaction.amount, 0).toFixed(2);
-                        const delinquencyCount = dailyReport[day].transactions.length;
+    {
+        columns: [
+            { width: 'auto', stack: [{ image: logos.citylogo, width: 40, height: 40, alignment: 'left' }] },
+            { width: 'auto', stack: [{ image: logos.ceedmologo, width: 50, height: 40, alignment: 'left' }] },
+            {
+                width: '*',
+                stack: [
+                    { text: 'Province of Bukidnon', style: 'headerText' },
+                    { text: 'City Government of Malaybalay', style: 'headerText' },
+                    { text: 'City Economic Enterprise Development and Management Office', style: 'headerText' },
+                    { text: 'CEEDMO Motorela Booth', style: 'headerText' },
+                    { text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon', style: 'headerText' }
+                ],
+                alignment: 'center'
+            },
+            { width: 'auto', stack: [{ image: logos.qrlogo, width: 50, height: 40, alignment: 'right' }] }
+        ]
+    },
+    { text: '', margin: [0, 10] },
+    { text: `Overall Report for the month of ${getMonthName(month)}-${year}`, style: 'subheader' },
+    {
+        table: {
+            headerRows: 1,
+            widths: [25, '*', '*', '*'],
+            body: [
+                [
+                    { text: 'No.', style: 'tableHeader', alignment: 'center' },
+                    { text: 'Date of Delinquency', style: 'tableHeader', alignment: 'center' },
+                    { text: 'Number of Delinquencies', style: 'tableHeader', alignment: 'center' },
+                    { text: 'Total Amount', style: 'tableHeader', alignment: 'center' }
+                ],
+                // Loop through each date to calculate the delinquencies and total amount
+                ...Array.from({ length: daysInMonth }, (_, index) => {
+                    const day = index + 1;
+                    const dateKey = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                    
+                    // Ensure each day has an entry in overallReport, even if no delinquencies
+                    const entry = overallReport[dateKey] || { delinquencies: [] };
+                    const delinquencyCount = entry.delinquencies.length; // Count of delinquencies for the date
+                    const totalAmount = delinquencyCount * 6; // Assuming each delinquency has a fixed amount of 6
 
-                        return [
-                            { text: index + 1, alignment: 'center' },
-                            day,
-                            { text: delinquencyCount, alignment: 'center' },
-                            { text: dayTotal, alignment: 'center' }
-                        ];
-                    }),
-                    [
-                        { text: 'Total for the Month', colSpan: 3, alignment: 'center', bold: true },
-                        {}, {}, 
-                        { text: totalAmountForMonth, alignment: 'center', bold: true }
-                    ]
+                    return [
+                        { text: day, alignment: 'center' },
+                        dateKey,
+                        { text: delinquencyCount, alignment: 'center' },
+                        { text: totalAmount.toFixed(2), alignment: 'center' }
+                    ];
+                }),
+                [
+                    { text: 'Total for the Month', colSpan: 3, alignment: 'center', bold: true },
+                    {}, {},
+                    { 
+                        text: Array.from({ length: daysInMonth }, (_, index) => {
+                            const day = index + 1;
+                            const dateKey = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                            const entry = overallReport[dateKey] || { delinquencies: [] };
+                            return entry.delinquencies.length * 6;
+                        }).reduce((sum, value) => sum + value, 0).toFixed(2),
+                        alignment: 'center', bold: true 
+                    }
                 ]
+            ]
         }
     },
     { text: '', margin: [0, 15] },
