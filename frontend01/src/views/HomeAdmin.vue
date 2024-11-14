@@ -1027,183 +1027,188 @@ generatemonthlyMulticabDelinquenciesReport() {
 
 
 generateMonthlymulticabReports(dailyReport, overallReport, month, year) {
-  const docDefinition = {
-        content: [],
-        styles: {
-            header: {
-                fontSize: 16,
-                bold: true,
-                margin: [0, 10]
-            },
-            subheader: {
-                fontSize: 14,
-                bold: true,
-                margin: [0, 5]
-            },
-            tableHeader: {
-                bold: true,
-                fontSize: 13,
-                color: 'black'
-            },
-      headerText: {
-        fontSize: 12,
-        bold: true
-      },
-        }
-    };
-
-    // Sort the dates in ascending order
-    const sortedDates = Object.keys(dailyReport).sort((a, b) => new Date(a) - new Date(b));
-    console.log('Daily Report for', dailyReport);
-
-    // Add daily reports to the document content
-    sortedDates.forEach(day => {
-        const dailyContent = [
-            {
-              columns: [
-    {
-        width: 'auto', // Automatically size based on content
-        stack: [
-            {
-                image: logos.citylogo,
-                width: 40,
-                height: 40,
-                alignment: 'left'
-            }
-        ]
-    },
-    {
-        width: 'auto', // Automatically size based on content
-        stack: [
-            {
-                image: logos.ceedmologo,
-                width: 50,
-                height: 40,
-                alignment: 'left'
-            }
-        ]
-    },
-    {
-        width: '*', // Takes up remaining space
-        stack: [
-            {
-                text: 'Province of Bukidnon',
-                style: 'headerText'
-            },
-            {
-                text: 'City Government of Malaybalay',
-                style: 'headerText'
-            },
-            {
-                text: 'City Economic Enterprise Development and Management Office',
-                style: 'headerText'
-            },
-            {
-                text: 'CEEDMO Multicab Booth',
-                style: 'headerText'
-            },
-            {
-                text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon',
-                style: 'headerText'
-            }
-        ],
-        alignment: 'center' // Center the header text
-    },
-    {
-        width: 'auto', // Automatically size based on content
-        stack: [
-            {
-                image: logos.qrlogo,
-                width: 50,
-                height: 40,
-                alignment: 'right'
-            }
-        ]
+    const docDefinition = {
+    content: [],
+    styles: {
+        header: {
+            fontSize: 16,
+            bold: true,
+            margin: [0, 10]
+        },
+        subheader: {
+            fontSize: 14,
+            bold: true,
+            margin: [0, 5]
+        },
+        tableHeader: {
+            bold: true,
+            fontSize: 13,
+            color: 'black'
+        },
+        headerText: {
+            fontSize: 12,
+            bold: true
+        },
     }
-]
-            },
-            { text: '', margin: [0, 10] },
-            { text: `Daily Report ${this.getMonthName(month)}-${parseInt(day) + 1}-${year}`, style: 'subheader', alignment: 'center' },
-            { text: '', margin: [0, 10] },
-            { text: 'Body Number', style: 'tableHeader', alignment: 'center' },
-            { text: '', margin: [0, 10] },
-            ...(Array.isArray(dailyReport[day].delinquencies) ? 
-                dailyReport[day].delinquencies.map(entry => [entry.unit]) :
-                [[dailyReport[day].delinquencies.unit]])
-        ];
+};
 
-        docDefinition.content.push(dailyContent);
-        docDefinition.content.push({ text: '', pageBreak: 'after' }); // Add page break after each day's report
-    });
+// Sort the dates in ascending order
+const sortedDates = Object.keys(dailyReport).sort((a, b) => new Date(a) - new Date(b));
+console.log('Daily Report for', dailyReport);
 
-    // Add overall report to the document content
-    const overallContent = [
+// Add daily reports to the document content
+sortedDates.forEach(day => {
+    const dailyContent = [
         {
-          columns: [
-    {
-        width: 'auto', // Automatically size based on content
-        stack: [
-            {
-                image: logos.citylogo,
-                width: 40,
-                height: 40,
-                alignment: 'left'
-            }
-        ]
-    },
-    {
-        width: 'auto', // Automatically size based on content
-        stack: [
-            {
-                image: logos.ceedmologo,
-                width: 50,
-                height: 40,
-                alignment: 'left'
-            }
-        ]
-    },
-    {
-        width: '*', // Takes up remaining space
-        stack: [
-            {
-                text: 'Province of Bukidnon',
-                style: 'headerText'
-            },
-            {
-                text: 'City Government of Malaybalay',
-                style: 'headerText'
-            },
-            {
-                text: 'City Economic Enterprise Development and Management Office',
-                style: 'headerText'
-            },
-            {
-                text: 'CEEDMO Multicab Booth',
-                style: 'headerText'
-            },
-            {
-                text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon',
-                style: 'headerText'
-            }
-        ],
-        alignment: 'center' // Center the header text
-    },
-    {
-        width: 'auto', // Automatically size based on content
-        stack: [
-            {
-                image: logos.qrlogo,
-                width: 50,
-                height: 40,
-                alignment: 'right'
-            }
-        ]
-    }
-]
+            columns: [
+                {
+                    stack: [
+                        { text: 'Province of Bukidnon', style: 'headerText' },
+                        { text: 'City of Malaybalay', style: 'headerText' },
+                        { text: 'Market Site Brgy 9, Malaybalay City Bukidnon', style: 'headerText' },
+                        { text: 'City Economic Enterprise Development and Management Office', style: 'headerText' },
+                        { text: 'CEEDMO Motorela Booth', style: 'headerText' }
+                    ],
+                    alignment: 'center'
+                }
+            ]
         },
         { text: '', margin: [0, 10] },
-        { text: 'Overall Report', style: 'subheader', alignment: 'center' },
-        { text: 'Body Number', style: 'tableHeader', alignment: 'center' }
+        { text: `Daily Report for ${this.getMonthName(month)}-${parseInt(day) + 1}-${year}`, style: 'subheader', alignment: 'center' },
+        { text: '', margin: [0, 10] },
+        {
+  table: {
+    widths: [25, '*', '*', '*'],  // Define the column widths
+    body: [
+      [
+        { text: 'No.', style: 'tableHeader', alignment: 'center' },
+        { text: 'Body Number', style: 'tableHeader', alignment: 'center' },
+        { text: 'Date of Delinquency', style: 'tableHeader', alignment: 'center' },
+        { text: 'Amount', style: 'tableHeader', alignment: 'center' }
+      ],
+      // Add data rows dynamically based on the delinquencies
+      ...(Array.isArray(dailyReport[day].delinquencies) 
+        ? dailyReport[day].delinquencies.map((entry, index) => {
+            return [
+              { text: index + 1, alignment: 'center' },
+              entry.unit || '-', // Default value if missing
+              entry.date || '-', // Default value if missing
+              entry.amount ? entry.amount * 6 : '6' // Multiply amount by 6 or default to 6
+            ];
+          }) 
+        : [[1, dailyReport[day].delinquencies.unit || '-', dailyReport[day].delinquencies.date || '-', dailyReport[day].delinquencies.amount ? dailyReport[day].delinquencies.amount * 6 : '6']]
+      ),
+      // Calculate and add the total amount row
+      [
+        { text: '', colSpan: 3, border: [false, true, false, false] },
+        {}, // Placeholder for spanning the column
+        {},
+        {
+          text: `Total: ${Array.isArray(dailyReport[day].delinquencies) 
+            ? dailyReport[day].delinquencies.reduce((sum, entry) => sum + (entry.amount ? entry.amount * 6 : 6), 0) 
+            : dailyReport[day].delinquencies.amount ? dailyReport[day].delinquencies.amount * 6 : 6}`,
+          alignment: 'center',
+          style: 'totalRow',
+          bold: true
+        }
+      ]
+    ]
+  }
+},
+{ text: '', margin: [0, 10] }
+    ];
+
+    docDefinition.content.push(dailyContent);
+    docDefinition.content.push({ text: '', pageBreak: 'after' }); // Add page break after each day's report
+});
+
+// Add overall report to the document content
+const overallContent = [
+    {
+        columns: [
+            {
+                width: 'auto', // Automatically size based on content
+                stack: [
+                    {
+                        image: logos.citylogo,
+                        width: 40,
+                        height: 40,
+                        alignment: 'left'
+                    }
+                ]
+            },
+            {
+                width: 'auto', // Automatically size based on content
+                stack: [
+                    {
+                        image: logos.ceedmologo,
+                        width: 50,
+                        height: 40,
+                        alignment: 'left'
+                    }
+                ]
+            },
+            {
+                width: '*', // Takes up remaining space
+                stack: [
+                    {
+                        text: 'Province of Bukidnon',
+                        style: 'headerText'
+                    },
+                    {
+                        text: 'City Government of Malaybalay',
+                        style: 'headerText'
+                    },
+                    {
+                        text: 'City Economic Enterprise Development and Management Office',
+                        style: 'headerText'
+                    },
+                    {
+                        text: 'CEEDMO Motorela Booth',
+                        style: 'headerText'
+                    },
+                    {
+                        text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon',
+                        style: 'headerText'
+                    }
+                ],
+                alignment: 'center' // Center the header text
+            },
+            {
+                width: 'auto', // Automatically size based on content
+                stack: [
+                    {
+                        image: logos.qrlogo,
+                        width: 50,
+                        height: 40,
+                        alignment: 'right'
+                    }
+                ]
+            }
+        ]
+    },
+    { text: '', margin: [0, 10] },
+    { text: 'Overall Report', style: 'subheader', alignment: 'center' },
+    {
+        table: {
+            widths: [25, '*', '*', '*'],  // Define the column widths
+            body: [
+                [
+                    { text: 'No.', style: 'tableHeader', alignment: 'center' },
+                    { text: 'Body Number', style: 'tableHeader', alignment: 'center' },
+                    { text: 'Amount', style: 'tableHeader', alignment: 'center' },
+                    { text: 'Date of Delinquency', style: 'tableHeader', alignment: 'center' }
+                ],
+                // Add data rows dynamically based on the overall report
+                ...Object.keys(overallReport).map((unit, index) => [
+                    { text: index + 1, alignment: 'center' },
+                    unit,
+                    overallReport[unit].amount || '-', // Default value if missing
+                    overallReport[unit].date || '-'  // Default value if missing
+                ])
+            ]
+        }
+    }
     ];
 
     Object.keys(overallReport).forEach(unit => {
