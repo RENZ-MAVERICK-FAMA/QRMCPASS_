@@ -862,123 +862,86 @@ const overallContent = [
     {
         columns: [
             {
-                width: 'auto', // Automatically size based on content
-                stack: [
-                    {
-                        image: logos.citylogo,
-                        width: 40,
-                        height: 40,
-                        alignment: 'left'
-                    }
-                ]
+                width: 'auto', 
+                stack: [{ image: logos.citylogo, width: 40, height: 40, alignment: 'left' }]
             },
             {
-                width: 'auto', // Automatically size based on content
-                stack: [
-                    {
-                        image: logos.ceedmologo,
-                        width: 50,
-                        height: 40,
-                        alignment: 'left'
-                    }
-                ]
+                width: 'auto', 
+                stack: [{ image: logos.ceedmologo, width: 50, height: 40, alignment: 'left' }]
             },
             {
-                width: '*', // Takes up remaining space
+                width: '*', 
                 stack: [
-                    {
-                        text: 'Province of Bukidnon',
-                        style: 'headerText'
-                    },
-                    {
-                        text: 'City Government of Malaybalay',
-                        style: 'headerText'
-                    },
-                    {
-                        text: 'City Economic Enterprise Development and Management Office',
-                        style: 'headerText'
-                    },
-                    {
-                        text: 'CEEDMO Motorela Booth',
-                        style: 'headerText'
-                    },
-                    {
-                        text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon',
-                        style: 'headerText'
-                    }
+                    { text: 'Province of Bukidnon', style: 'headerText' },
+                    { text: 'City Government of Malaybalay', style: 'headerText' },
+                    { text: 'City Economic Enterprise Development and Management Office', style: 'headerText' },
+                    { text: 'CEEDMO Motorela Booth', style: 'headerText' },
+                    { text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon', style: 'headerText' }
                 ],
-                alignment: 'center' // Center the header text
+                alignment: 'center'
             },
             {
-                width: 'auto', // Automatically size based on content
-                stack: [
-                    {
-                        image: logos.qrlogo,
-                        width: 50,
-                        height: 40,
-                        alignment: 'right'
-                    }
-                ]
+                width: 'auto', 
+                stack: [{ image: logos.qrlogo, width: 50, height: 40, alignment: 'right' }]
             }
         ]
     },
     { text: '', margin: [0, 10] },
     {
-  text: `Overall Report for the month of ${this.getMonthName(month)}-${year}`, 
-  style: 'subheader'
-},
-{
-  table: {
-    headerRows: 1,
-    widths: [25, '*', '*', '*'], // Define column widths for "No.", "Body Number", "Amount", "Date of Delinquency"
-    body: [
-      [
-        { text: 'No.', style: 'tableHeader', alignment: 'center' },
-        { text: 'Date of Delinquency', style: 'tableHeader', alignment: 'center' },
-        { text: 'Amount', style: 'tableHeader', alignment: 'center' },
-        { text: 'Total Amount', style: 'tableHeader', alignment: 'center' }
-      ],
-      // Dynamically add data rows based on the `overallReport`
-      ...Object.keys(overallReport).map((unit, index) => [
-        { text: index + 1, alignment: 'center' },
-        unit,
-        // Multiply each amount by 6 or set a default of 6 if amount is missing
-        { text: overallReport[unit].amount ? (overallReport[unit].amount * 6).toFixed(2) : '6.00' },
-        overallReport[unit].date || '-'
-      ]),
-      // Add a total row at the end
-      [
-        { text: 'Total for the Month', colSpan: 2, alignment: 'center', bold: true },
-        {}, // Empty cell to occupy the second column
-        // Calculate and display the total amount for the month by summing all entries
-        { 
-          text: Object.values(overallReport).reduce((sum, entry) => 
-            sum + (entry.amount ? entry.amount * 6 : 6), 0
-          ).toFixed(2), 
-          alignment: 'center', bold: true 
-        },
-        {} // Empty cell for the date column
-      ]
-    ]
-  }
-},
-{ text: '', margin: [0, 15] }, // Add some space before the signatory section
-{
-  text: 'Prepared by:', style: 'headerText', alignment: 'right'
-},
-{ text: '', margin: [0, 15] },
-{
-  text: 'Admin', style: 'headerText', alignment: 'right'
-},
-{ text: '', margin: [0, 15] }, // Small space between Prepared and Approved
-{
-  text: 'Approved by:', style: 'headerText', alignment: 'right'
-},
-{ text: '', margin: [0, 15] },
-{
-  text: 'Division Head', style: 'headerText', alignment: 'right'
-}
+        text: `Overall Report for the month of ${this.getMonthName(month)}-${year}`, 
+        style: 'subheader'
+    },
+    {
+        table: {
+            headerRows: 1,
+            widths: [25, '*', '*', '*'], 
+            body: [
+                [
+                    { text: 'No.', style: 'tableHeader', alignment: 'center' },
+                    { text: 'Date of Delinquency', style: 'tableHeader', alignment: 'center' },
+                    { text: 'Amount', style: 'tableHeader', alignment: 'center' },
+                    { text: 'Total Amount', style: 'tableHeader', alignment: 'center' }
+                ],
+                // Add rows for each date of the month
+                ...Array.from({ length: daysInMonth }, (_, index) => {
+                    const day = index + 1;
+                    const dateKey = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                    const entry = overallReport[dateKey] || {}; // Default to empty if no data for the day
+                    return [
+                        { text: day, alignment: 'center' },
+                        dateKey,
+                        { text: entry.amount ? entry.amount.toFixed(2) : '-', alignment: 'center' },
+                        { text: entry.amount ? (entry.amount * 6).toFixed(2) : '6.00', alignment: 'center' } // Default to 6 if no amount
+                    ];
+                }),
+                // Add a total row at the end
+                [
+                    { text: 'Total for the Month', colSpan: 2, alignment: 'center', bold: true },
+                    {}, // Empty cell for colspan
+                    {},
+                    { 
+                        text: Array.from({ length: daysInMonth }, (_, index) => {
+                            const day = index + 1;
+                            const dateKey = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                            const entry = overallReport[dateKey] || {};
+                            return entry.amount ? entry.amount * 6 : 6;
+                        }).reduce((sum, value) => sum + value, 0).toFixed(2), 
+                        alignment: 'center', bold: true 
+                    }
+                ]
+            ]
+        }
+    },
+    { text: '', margin: [0, 15] }, 
+    { text: 'Prepared by:', style: 'headerText', alignment: 'right' },
+    { text: '', margin: [0, 15] },
+    { text: 'Admin', style: 'headerText', alignment: 'right' },
+    { text: '', margin: [0, 15] }, 
+    { text: 'Approved by:', style: 'headerText', alignment: 'right' },
+    { text: '', margin: [0, 15] },
+    { text: 'Division Head', style: 'headerText', alignment: 'right' }
 ];
+
 
 docDefinition.content.push(overallContent);
 
