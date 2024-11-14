@@ -875,43 +875,26 @@ generateMonthlyReports(dailyReport, overallReport, month, year) {
                     { text: 'Total Amount', style: 'tableHeader', alignment: 'center' }
                 ],
                 // Loop through each day to calculate the delinquencies and total amount for each date
-                ...Object.keys(dailyReport).map((dayKey, index) => {
-                    const dailyData = dailyReport[dayKey];  // Get the daily report data for the day
-                    
-                    // Parse the dayKey into a valid Date format
-                    const dateParts = dayKey.split('-');  // Assuming dayKey is in format 'YYYY-MM-DD'
-                    const year = parseInt(dateParts[0], 10);
-                    const month = parseInt(dateParts[1], 10) - 1;  // Months are 0-indexed in JS
-                    const day = parseInt(dateParts[2], 10);
-
-                    const date = new Date(year, month, day); // Create a date object using the year, month, and day
-                    
-                    if (isNaN(date.getTime())) {
-                        console.error(`Invalid date string: ${dayKey}`);  // Log invalid date key for debugging
-                        return [];  // Return an empty array if the date is invalid
-                    }
-
-                    // Format the date to 'YYYY-MM-DD' (e.g. 2024-11-01)
-                    const formattedDate = date.toISOString().split('T')[0]; // Gets YYYY-MM-DD
-
+                ...Object.keys(dailyReport).map(day => {
+                    const dailyData = dailyReport[day];  // Get the daily report data for the day
                     const delinquencyCount = dailyData.delinquencies.length;  // Count the delinquencies for the day
                     const totalAmount = delinquencyCount * 6;  // Total amount for the day (assuming 6 per delinquency)
 
                     // Return an array with formatted data for each row in the table
                     return [
-                        { text: index + 1, alignment: 'center' },  // Day (1-based index)
-                        formattedDate,  // Date (formatted as YYYY-MM-DD)
+                        { text: parseInt(day) + 1, alignment: 'center' },  // Day (1-based index)
+                        day,  // Date (formatted as YYYY-MM-DD)
                         { text: delinquencyCount, alignment: 'center' },  // Number of delinquencies
                         { text: totalAmount.toFixed(2), alignment: 'center' }  // Total amount for the day
                     ];
-                }).filter(row => row.length > 0),  // Filter out invalid rows (empty arrays)
+                }),
                 // Calculate total delinquency for the month
                 [
                     { text: 'Total for the Month', colSpan: 3, alignment: 'center', bold: true },
                     {}, {},
                     { 
-                        text: Object.keys(dailyReport).reduce((sum, dayKey) => {
-                            const dailyData = dailyReport[dayKey];
+                        text: Object.keys(dailyReport).reduce((sum, day) => {
+                            const dailyData = dailyReport[day];
                             const delinquencyCount = dailyData.delinquencies.length;
                             return sum + (delinquencyCount * 6);  // Add up the delinquency totals for the month
                         }, 0).toFixed(2),
