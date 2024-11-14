@@ -1209,12 +1209,13 @@ docDefinition.content.push(overallContent);
                     headerRows: 1,
                     widths: ['*', '*', '*'],
                     body: [
-                        [
+                        [    { text: 'No.', style: 'tableHeader' },
                             { text: 'Body Number', style: 'tableHeader' },
                             { text: 'Amount', style: 'tableHeader' },
                             { text: 'Type', style: 'tableHeader' }
                         ], // Table header row
                         ...dailyReport[day].transactions.map(transaction => [
+                        { text: index + 1, alignment: 'center' },
                             transaction.unit, 
                             transaction.amount.toFixed(2), 
                             transaction.type
@@ -1310,10 +1311,12 @@ docDefinition.content.push(overallContent);
             widths: ['*', '*'],
             body: [
                 [
+                    { text: 'No.', style: 'tableHeader' },
                     { text: 'Date', style: 'tableHeader' },
                     { text: 'Total Amount', style: 'tableHeader' }
                 ], // Table header row
                 ...sortedDates.map(day => [
+                { text: index + 1, alignment: 'center' },
                     parseInt(day) + 1, 
                     dailyReport[day].transactions.reduce((dayTotal, transaction) => dayTotal + transaction.amount, 0).toFixed(2)
                 ]),  
@@ -1449,12 +1452,14 @@ docDefinition.content.push(overallContent);
                     headerRows: 1,
                     widths: ['*', '*', '*'],
                     body: [
-                        [
+                        [       
+                         { text: 'No.', style: 'tableHeader' },
                             { text: 'Body Number', style: 'tableHeader' },
                             { text: 'Amount', style: 'tableHeader' },
                             { text: 'Type', style: 'tableHeader' }
                         ], // Table header row
                         ...dailyReport[day].transactions.map(transaction => [
+                        { text: index + 1, alignment: 'center' },
                             transaction.unit, 
                             transaction.amount.toFixed(2), 
                             transaction.type
@@ -1550,9 +1555,11 @@ docDefinition.content.push(overallContent);
             widths: ['*', '*'],
             body: [
                 [
+                    { text: 'No.', style: 'tableHeader' },
                     { text: 'Date', style: 'tableHeader' },
                     { text: 'Total Amount', style: 'tableHeader' }
-                ], // Table header row
+                ], 
+                { text: index + 1, alignment: 'center' },
                 ...sortedDates.map(day => [
                     parseInt(day) + 1, 
                     dailyReport[day].transactions.reduce((dayTotal, transaction) => dayTotal + transaction.amount, 0).toFixed(2)
