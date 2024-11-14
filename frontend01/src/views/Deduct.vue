@@ -345,7 +345,7 @@ export default {
         amount: amount,
         teller: this.teller.id,
       };
-      console.log(data);
+      console.log("the data: ",data);
       axios
         .post("https://qrmcpass.loca.lt/paymentdel", data, {
           headers: {
