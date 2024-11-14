@@ -875,7 +875,7 @@ generateMonthlyReports(dailyReport, overallReport, month, year) {
                     { text: 'Number of Delinquencies', style: 'tableHeader', alignment: 'center' },
                     { text: 'Total Amount', style: 'tableHeader', alignment: 'center' }
                 ],
-                ...Array.from({ length: daysInMonth }, (_, index) => {
+                ...Array.from({ length: sortedDates }, (_, index) => {
                     const day = index + 1;
                     const dateKey = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                     
