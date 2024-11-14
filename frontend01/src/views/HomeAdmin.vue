@@ -934,9 +934,9 @@ const overallContent = [
     body: [
       [
         { text: 'No.', style: 'tableHeader', alignment: 'center' },
-        { text: 'Body Number', style: 'tableHeader', alignment: 'center' },
+        { text: 'Date of Delinquency', style: 'tableHeader', alignment: 'center' },
         { text: 'Amount', style: 'tableHeader', alignment: 'center' },
-        { text: 'Date of Delinquency', style: 'tableHeader', alignment: 'center' }
+        { text: 'Total Amount', style: 'tableHeader', alignment: 'center' }
       ],
       // Dynamically add data rows based on the `overallReport`
       ...Object.keys(overallReport).map((unit, index) => [
