@@ -882,8 +882,8 @@ generateMonthlyReports(dailyReport, overallReport, month, year) {
 
                     // Return an array with formatted data for each row in the table
                     return [
-                        { text: parseInt(day) + 2, alignment: 'center' },  // Day (1-based index)
-                        day,  // Date (formatted as YYYY-MM-DD)
+                        { text: parseInt(day) + 1, alignment: 'center' },  // Day (1-based index)
+                        parseInt(day)+1,  // Date (formatted as YYYY-MM-DD)
                         { text: delinquencyCount, alignment: 'center' },  // Number of delinquencies
                         { text: totalAmount.toFixed(2), alignment: 'center' }  // Total amount for the day
                     ];
