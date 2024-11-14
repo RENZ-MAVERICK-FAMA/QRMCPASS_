@@ -839,20 +839,13 @@ sortedDates.forEach(day => {
         {}, // Placeholder for spanning the column
         {},
         {
-  text: `Total: ${
-    Array.isArray(dailyReport[day].delinquencies)
-      ? dailyReport[day].delinquencies.reduce(
-          (sum, entry) => sum + (entry.amount ? entry.amount * 6 : 6),
-          0
-        ).toFixed(2)  // Apply toFixed for two decimal precision
-      : dailyReport[day].delinquencies.amount
-      ? (dailyReport[day].delinquencies.amount * 6).toFixed(2)
-      : '6.00'  // Default to '6.00' if amount is missing
-  }`,
-  alignment: 'center',
-  style: 'totalRow',
-  bold: true
-}
+          text: `Total: ${Array.isArray(dailyReport[day].delinquencies) 
+            ? dailyReport[day].delinquencies.reduce((sum, entry) => sum + (entry.amount ? entry.amount * 6 : 6), 0) 
+            : dailyReport[day].delinquencies.amount ? dailyReport[day].delinquencies.amount * 6 : 6}`,
+          alignment: 'center',
+          style: 'totalRow',
+          bold: true
+        }
       ]
     ]
   }
@@ -930,27 +923,61 @@ const overallContent = [
         ]
     },
     { text: '', margin: [0, 10] },
-    { text: 'Overall Report', style: 'subheader', alignment: 'center' },
     {
-        table: {
-            widths: [25, '*', '*', '*'],  // Define the column widths
-            body: [
-                [
-                    { text: 'No.', style: 'tableHeader', alignment: 'center' },
-                    { text: 'Body Number', style: 'tableHeader', alignment: 'center' },
-                    { text: 'Amount', style: 'tableHeader', alignment: 'center' },
-                    { text: 'Date of Delinquency', style: 'tableHeader', alignment: 'center' }
-                ],
-                // Add data rows dynamically based on the overall report
-                ...Object.keys(overallReport).map((unit, index) => [
-                    { text: index + 1, alignment: 'center' },
-                    unit,
-                    overallReport[unit].amount || '-', // Default value if missing
-                    overallReport[unit].date || '-'  // Default value if missing
-                ])
-            ]
-        }
-    }
+  text: `Overall Report for the month of ${this.getMonthName(month)}-${year}`, 
+  style: 'subheader'
+},
+{
+  table: {
+    headerRows: 1,
+    widths: [25, '*', '*', '*'], // Define column widths for "No.", "Body Number", "Amount", "Date of Delinquency"
+    body: [
+      [
+        { text: 'No.', style: 'tableHeader', alignment: 'center' },
+        { text: 'Body Number', style: 'tableHeader', alignment: 'center' },
+        { text: 'Amount', style: 'tableHeader', alignment: 'center' },
+        { text: 'Date of Delinquency', style: 'tableHeader', alignment: 'center' }
+      ],
+      // Dynamically add data rows based on the `overallReport`
+      ...Object.keys(overallReport).map((unit, index) => [
+        { text: index + 1, alignment: 'center' },
+        unit,
+        // Multiply each amount by 6 or set a default of 6 if amount is missing
+        { text: overallReport[unit].amount ? (overallReport[unit].amount * 6).toFixed(2) : '6.00' },
+        overallReport[unit].date || '-'
+      ]),
+      // Add a total row at the end
+      [
+        { text: 'Total for the Month', colSpan: 2, alignment: 'center', bold: true },
+        {}, // Empty cell to occupy the second column
+        // Calculate and display the total amount for the month by summing all entries
+        { 
+          text: Object.values(overallReport).reduce((sum, entry) => 
+            sum + (entry.amount ? entry.amount * 6 : 6), 0
+          ).toFixed(2), 
+          alignment: 'center', bold: true 
+        },
+        {} // Empty cell for the date column
+      ]
+    ]
+  }
+},
+{ text: '', margin: [0, 15] }, // Add some space before the signatory section
+{
+  text: 'Prepared by:', style: 'headerText', alignment: 'right'
+},
+{ text: '', margin: [0, 15] },
+{
+  text: 'Admin', style: 'headerText', alignment: 'right'
+},
+{ text: '', margin: [0, 15] }, // Small space between Prepared and Approved
+{
+  text: 'Approved by:', style: 'headerText', alignment: 'right'
+},
+{ text: '', margin: [0, 15] },
+{
+  text: 'Division Head', style: 'headerText', alignment: 'right'
+}
 ];
 
 docDefinition.content.push(overallContent);
