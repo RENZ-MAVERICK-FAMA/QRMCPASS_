@@ -878,8 +878,14 @@ generateMonthlyReports(dailyReport, overallReport, month, year) {
                 ...Object.keys(dailyReport).map((dayKey, index) => {
                     const dailyData = dailyReport[dayKey];  // Get the daily report data for the day
                     
-                    // Format the date to 'YYYY-MM-DD' (e.g. 2024-11-01)
+                    // Check if the dayKey is a valid date string before creating a Date object
                     const date = new Date(dayKey);
+                    if (isNaN(date.getTime())) {
+                        console.error(`Invalid date string: ${dayKey}`);  // Log invalid date key for debugging
+                        return [];  // Return an empty array if the date is invalid
+                    }
+
+                    // Format the date to 'YYYY-MM-DD' (e.g. 2024-11-01)
                     const formattedDate = date.toISOString().split('T')[0]; // Gets YYYY-MM-DD
 
                     const delinquencyCount = dailyData.delinquencies.length;  // Count the delinquencies for the day
@@ -892,7 +898,7 @@ generateMonthlyReports(dailyReport, overallReport, month, year) {
                         { text: delinquencyCount, alignment: 'center' },  // Number of delinquencies
                         { text: totalAmount.toFixed(2), alignment: 'center' }  // Total amount for the day
                     ];
-                }),
+                }).filter(row => row.length > 0),  // Filter out invalid rows (empty arrays)
                 // Calculate total delinquency for the month
                 [
                     { text: 'Total for the Month', colSpan: 3, alignment: 'center', bold: true },
