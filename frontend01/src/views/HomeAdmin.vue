@@ -844,82 +844,81 @@ generateMonthlyReports(dailyReport, overallReport, month, year) {
 
     // Overall report content
     const overallContent = [
-        {
-            columns: [
-                { width: 'auto', stack: [{ image: logos.citylogo, width: 40, height: 40, alignment: 'left' }] },
-                { width: 'auto', stack: [{ image: logos.ceedmologo, width: 50, height: 40, alignment: 'left' }] },
-                {
-                    width: '*',
-                    stack: [
-                        { text: 'Province of Bukidnon', style: 'headerText' },
-                        { text: 'City Government of Malaybalay', style: 'headerText' },
-                        { text: 'City Economic Enterprise Development and Management Office', style: 'headerText' },
-                        { text: 'CEEDMO Motorela Booth', style: 'headerText' },
-                        { text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon', style: 'headerText' }
-                    ],
-                    alignment: 'center'
-                },
-                { width: 'auto', stack: [{ image: logos.qrlogo, width: 50, height: 40, alignment: 'right' }] }
-            ]
-        },
-        { text: '', margin: [0, 10] },
-        { text: `Overall Report for the month of ${getMonthName(month)}-${year}`, style: 'subheader' },
-        {
-            
-    table: {
-        headerRows: 1,
-        widths: [25, '*', '*', '*'],
-        body: [
-            [
-                { text: 'No.', style: 'tableHeader', alignment: 'center' },
-                { text: 'Date of Delinquency', style: 'tableHeader', alignment: 'center' },
-                { text: 'Number of Delinquencies', style: 'tableHeader', alignment: 'center' },
-                { text: 'Total Amount', style: 'tableHeader', alignment: 'center' }
-            ],
-            ...Array.from({ length: daysInMonth }, (_, index) => {
-                const day = index + 1;
-                const dateKey = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-                
-                // Ensure each day has an entry in overallReport, even if no delinquencies
-                const entry = overallReport[dateKey] || { delinquencies: [] };
-                const delinquencyCount = entry.delinquencies.length; // Count of delinquencies for the date
-                const totalAmount = delinquencyCount * 6;
-
-                return [
-                    { text: day, alignment: 'center' },
-                    dateKey,
-                    { text: delinquencyCount, alignment: 'center' },
-                    { text: totalAmount.toFixed(2), alignment: 'center' }
-                ];
-            }),
-            [
-                { text: 'Total for the Month', colSpan: 3, alignment: 'center', bold: true },
-                {}, {},
-                { 
-                    text: Array.from({ length: daysInMonth }, (_, index) => {
-                        const day = index + 1;
-                        const dateKey = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-                        const entry = overallReport[dateKey] || { delinquencies: [] };
-                        return entry.delinquencies.length * 6;
-                    }).reduce((sum, value) => sum + value, 0).toFixed(2),
-                    alignment: 'center', bold: true 
-                }
-            ]
+    {
+        columns: [
+            { width: 'auto', stack: [{ image: logos.citylogo, width: 40, height: 40, alignment: 'left' }] },
+            { width: 'auto', stack: [{ image: logos.ceedmologo, width: 50, height: 40, alignment: 'left' }] },
+            {
+                width: '*',
+                stack: [
+                    { text: 'Province of Bukidnon', style: 'headerText' },
+                    { text: 'City Government of Malaybalay', style: 'headerText' },
+                    { text: 'City Economic Enterprise Development and Management Office', style: 'headerText' },
+                    { text: 'CEEDMO Motorela Booth', style: 'headerText' },
+                    { text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon', style: 'headerText' }
+                ],
+                alignment: 'center'
+            },
+            { width: 'auto', stack: [{ image: logos.qrlogo, width: 50, height: 40, alignment: 'right' }] }
         ]
-    }
+    },
+    { text: '', margin: [0, 10] },
+    { text: `Overall Report for the month of ${getMonthName(month)}-${year}`, style: 'subheader' },
+    {
+        table: {
+            headerRows: 1,
+            widths: [25, '*', '*', '*'],
+            body: [
+                [
+                    { text: 'No.', style: 'tableHeader', alignment: 'center' },
+                    { text: 'Date of Delinquency', style: 'tableHeader', alignment: 'center' },
+                    { text: 'Number of Delinquencies', style: 'tableHeader', alignment: 'center' },
+                    { text: 'Total Amount', style: 'tableHeader', alignment: 'center' }
+                ],
+                ...Array.from({ length: daysInMonth }, (_, index) => {
+                    const day = index + 1;
+                    const dateKey = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                    
+                    // Ensure each day has an entry in overallReport, even if no delinquencies
+                    const entry = overallReport[dateKey] || { delinquencies: [] };
+                    const delinquencyCount = entry.delinquencies.length; // Count of delinquencies for the date
+                    const totalAmount = delinquencyCount * 6;
 
-        },
-        { text: '', margin: [0, 15] },
-        { text: 'Prepared by:', style: 'headerText', alignment: 'right' },
-        { text: '', margin: [0, 15] },
-        { text: 'Admin', style: 'headerText', alignment: 'right' },
-        { text: '', margin: [0, 15] },
-        { text: 'Approved by:', style: 'headerText', alignment: 'right' },
-        { text: '', margin: [0, 15] },
-        { text: 'Division Head', style: 'headerText', alignment: 'right' }
-    ];
+                    return [
+                        { text: day, alignment: 'center' },
+                        dateKey,
+                        { text: delinquencyCount, alignment: 'center' },
+                        { text: totalAmount.toFixed(2), alignment: 'center' }
+                    ];
+                }),
+                [
+                    { text: 'Total for the Month', colSpan: 3, alignment: 'center', bold: true },
+                    {}, {},
+                    { 
+                        text: Array.from({ length: daysInMonth }, (_, index) => {
+                            const day = index + 1;
+                            const dateKey = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                            const entry = overallReport[dateKey] || { delinquencies: [] };
+                            return entry.delinquencies.length * 6;
+                        }).reduce((sum, value) => sum + value, 0).toFixed(2),
+                        alignment: 'center', bold: true 
+                    }
+                ]
+            ]
+        }
+    },
+    { text: '', margin: [0, 15] },
+    { text: 'Prepared by:', style: 'headerText', alignment: 'right' },
+    { text: '', margin: [0, 15] },
+    { text: 'Admin', style: 'headerText', alignment: 'right' },
+    { text: '', margin: [0, 15] },
+    { text: 'Approved by:', style: 'headerText', alignment: 'right' },
+    { text: '', margin: [0, 15] },
+    { text: 'Division Head', style: 'headerText', alignment: 'right' }
+];
 
-    docDefinition.content.push(overallContent);
+// Add the overall content to the document
+docDefinition.content.push(overallContent);
 
     // Generate and download PDF
     pdfMake.createPdf(docDefinition).download(`Motorela Delinquency Report for ${getMonthName(month)}-${year}.pdf`);
