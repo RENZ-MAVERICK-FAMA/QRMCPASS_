@@ -865,7 +865,7 @@ generateMonthlyReports(dailyReport, overallReport, month, year) {
     { text: `Overall Report for the month of ${getMonthName(month)}-${year}`, style: 'subheader' },
     {
         
-       table: {
+        table: {
     headerRows: 1,
     widths: [25, '*', '*', '*'],
     body: [
@@ -878,13 +878,12 @@ generateMonthlyReports(dailyReport, overallReport, month, year) {
         // Loop through each day to calculate the delinquencies and total amount for each date
         ...Object.keys(dailyReport).map((day, index) => {
             const dailyData = dailyReport[day];  // Get the daily report data for the day
-            // Check if the delinquencies array exists and has a length
-            const delinquencyCount = (dailyData && Array.isArray(dailyData.delinquencies)) ? dailyData.delinquencies.length : 0;
+            const delinquencyCount = dailyData.delinquencies.length;  // Count the delinquencies for the day
             const totalAmount = delinquencyCount * 6;  // Total amount for the day (assuming 6 per delinquency)
 
-            // Format the day as YYYY-MM-DD, ensure the day is in the correct format
+            // Format the day as YYYY-MM-DD
             const dateParts = day.split('-');
-            const formattedDate = dateParts.length === 3 ? `${dateParts[0]}-${dateParts[1]}-${dateParts[2]}` : 'Invalid Date';
+            const formattedDate = `${dateParts[0]}-${dateParts[1]}-${dateParts[2]}`;
 
             // Return an array with formatted data for each row in the table
             return [
@@ -901,7 +900,7 @@ generateMonthlyReports(dailyReport, overallReport, month, year) {
             { 
                 text: Object.keys(dailyReport).reduce((sum, day) => {
                     const dailyData = dailyReport[day];
-                    const delinquencyCount = (dailyData && Array.isArray(dailyData.delinquencies)) ? dailyData.delinquencies.length : 0;
+                    const delinquencyCount = dailyData.delinquencies.length;
                     return sum + (delinquencyCount * 6);  // Add up the delinquency totals for the month
                 }, 0).toFixed(2),
                 alignment: 'center', bold: true 
