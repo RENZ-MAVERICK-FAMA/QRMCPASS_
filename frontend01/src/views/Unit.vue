@@ -119,7 +119,7 @@ export default {
       
       // If the unit exists, update the array locally
       if (index !== -1) {
-        this.units[index] = { id, color, unit_info, unit_type,password };
+        this.units[index] = { id, color, unit_info,password };
       }
       
       // Close the modal after updating
