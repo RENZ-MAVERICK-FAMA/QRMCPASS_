@@ -842,7 +842,7 @@ generateMonthlyReports(dailyReport, overallReport, month, year) {
         docDefinition.content.push({ text: '', pageBreak: 'after' });
     });
 
-    cconst overallContent = [
+    const overallContent = [
     {
         columns: [
             { width: 'auto', stack: [{ image: logos.citylogo, width: 40, height: 40, alignment: 'left' }] },
