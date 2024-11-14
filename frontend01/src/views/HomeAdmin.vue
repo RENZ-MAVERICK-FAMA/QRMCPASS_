@@ -842,7 +842,7 @@ generateMonthlyReports(dailyReport, overallReport, month, year) {
         docDefinition.content.push({ text: '', pageBreak: 'after' });
     });
 
-    const overallContent = [
+    cconst overallContent = [
     {
         columns: [
             { width: 'auto', stack: [{ image: logos.citylogo, width: 40, height: 40, alignment: 'left' }] },
@@ -878,8 +878,14 @@ generateMonthlyReports(dailyReport, overallReport, month, year) {
                 ...Object.keys(dailyReport).map((dayKey, index) => {
                     const dailyData = dailyReport[dayKey];  // Get the daily report data for the day
                     
-                    // Check if the dayKey is a valid date string before creating a Date object
-                    const date = new Date(dayKey);
+                    // Parse the dayKey into a valid Date format
+                    const dateParts = dayKey.split('-');  // Assuming dayKey is in format 'YYYY-MM-DD'
+                    const year = parseInt(dateParts[0], 10);
+                    const month = parseInt(dateParts[1], 10) - 1;  // Months are 0-indexed in JS
+                    const day = parseInt(dateParts[2], 10);
+
+                    const date = new Date(year, month, day); // Create a date object using the year, month, and day
+                    
                     if (isNaN(date.getTime())) {
                         console.error(`Invalid date string: ${dayKey}`);  // Log invalid date key for debugging
                         return [];  // Return an empty array if the date is invalid
