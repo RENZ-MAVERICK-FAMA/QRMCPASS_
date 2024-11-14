@@ -839,13 +839,20 @@ sortedDates.forEach(day => {
         {}, // Placeholder for spanning the column
         {},
         {
-          text: `Total: ${Array.isArray(dailyReport[day].delinquencies) 
-            ? dailyReport[day].delinquencies.reduce((sum, entry) => sum + (entry.amount ? entry.amount * 6 : 6), 0) 
-            : dailyReport[day].delinquencies.amount ? dailyReport[day].delinquencies.amount * 6 : 6}`,
-          alignment: 'center',
-          style: 'totalRow',
-          bold: true
-        }
+  text: `Total: ${
+    Array.isArray(dailyReport[day].delinquencies)
+      ? dailyReport[day].delinquencies.reduce(
+          (sum, entry) => sum + (entry.amount ? entry.amount * 6 : 6),
+          0
+        ).toFixed(2)  // Apply toFixed for two decimal precision
+      : dailyReport[day].delinquencies.amount
+      ? (dailyReport[day].delinquencies.amount * 6).toFixed(2)
+      : '6.00'  // Default to '6.00' if amount is missing
+  }`,
+  alignment: 'center',
+  style: 'totalRow',
+  bold: true
+}
       ]
     ]
   }
