@@ -101,7 +101,7 @@ export default {
         id: admin.id,
        color: admin.color,
         unit_info: admin.unit_info,
-       
+        unit_type: admin.unit_type, 
         password: admin.password
       };
       this.showEditModal = true;
@@ -132,7 +132,7 @@ export default {
         id: null,
         color: '',
         unit_info: '',
-        unit_type: '', // Ensure unit_type is reset as well
+        unit_type: '', 
         password: ''
       };
       
