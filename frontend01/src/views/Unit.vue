@@ -80,7 +80,8 @@ export default {
         id: null,
         color: '',
         unit_info: '',
-        password: ''
+        password: '',
+        unit_type:''
       }
     };
   },
@@ -109,8 +110,8 @@ export default {
       this.showEditModal = false;
     },
     updateTeller() {
-  const { id, color, unit_info,  password } = this.editedTeller;
-  const updatedData = { color, unit_info,  password };
+  const { id, color, unit_info, password, unit_type } = this.editedTeller; // Include unit_type here
+  const updatedData = { color, unit_info, password, unit_type }; // Include unit_type in the data sent to the server
 
   axios.put(`https://qrmcpass.loca.lt/updateUnit/${id}`, updatedData)
     .then(response => {
@@ -119,7 +120,8 @@ export default {
       
       // If the unit exists, update the array locally
       if (index !== -1) {
-        this.units[index] = { id, color, unit_info,password };
+        // Make sure unit_type is included in the update
+        this.units[index] = { id, color, unit_info, unit_type, password }; // Update unit_type in the local data
       }
       
       // Close the modal after updating
@@ -130,7 +132,7 @@ export default {
         id: null,
         color: '',
         unit_info: '',
-        
+        unit_type: '', // Ensure unit_type is reset as well
         password: ''
       };
       

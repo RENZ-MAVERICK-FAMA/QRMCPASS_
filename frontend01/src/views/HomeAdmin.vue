@@ -200,7 +200,7 @@ export default {
             },
 
             { text: '', pageBreak: 'before' },
-
+            { text: '', margin: [0, 40] },
             // Multicab - Total Collection Table
             {
                 text: 'Multicab - Total Collection Per Month',
@@ -227,7 +227,7 @@ export default {
             },
 
             { text: '', pageBreak: 'before' },
-
+            { text: '', margin: [0, 40] },
             // Delinquency Report Header (Motorela)
             {
                 text: 'Motorela - Total Delinquencies Per Month',
@@ -257,7 +257,7 @@ export default {
 
             // Page break after Motorela delinquency section
             { text: '', pageBreak: 'after' },
-
+            { text: '', margin: [0, 40] },
             // Delinquency Report Header (Multicab)
             {
                 text: 'Multicab - Total Delinquencies Per Month',
