@@ -223,63 +223,67 @@ generatePdfFile(data, selectedYear) {
         // Move to the next page before delinquency report
         { text: '', pageBreak: 'before' },
 
-        // Delinquency Report Header (Motorela)
-        {
-            text: 'Motorela - Total Delinquencies Per Month',
-            style: 'sectionHeader',
-            margin: [0, 0, 0, 10]
-        },
-        {
-            table: {
-                headerRows: 1,
-                widths: ['*', 'auto'],
-                body: [
-                    [{ text: 'Month', style: 'tableHeader' }, { text: 'Amount Collected', style: 'tableHeader' }],
-                    ...monthNames.map((month, index) => {
-                        const monthData = data.monthly_data[index + 1]; // Adjusted to 1-based index
-                        return [
-                            month,
-                            monthData ? monthData.delinquency_amount.motorela : 0 // Safe check for delinquency data
-                        ];
-                    }),
-                    [{ text: 'Total Delinquency Collected', style: 'tableHeader' }, totalDelinquenciesMotorela]
-                ]
-            },
-            margin: [0, 0, 0, 20]
-        },
+// Delinquency Report Header (Motorela)
+{
+    text: 'Motorela - Total Delinquencies Per Month',
+    style: 'sectionHeader',
+    margin: [0, 0, 0, 10]
+},
+{
+    table: {
+        headerRows: 1,
+        widths: ['*', 'auto'],
+        body: [
+            [{ text: 'Month', style: 'tableHeader' }, { text: 'Delinquency Amount', style: 'tableHeader' }],
+            ...monthNames.map((month, index) => {
+                const monthData = data.monthly_data[index + 1]; // Adjusted to 1-based index
+                const delinquencyCount = monthData ? monthData.delinquency_count.motorela : 0;
+                const delinquencyAmount = delinquencyCount * 6; // Multiply by 6 for motorela
+                return [
+                    month,
+                    delinquencyAmount // Show the delinquency amount (count * 6)
+                ];
+            }),
+            [{ text: 'Total Delinquency Collected', style: 'tableHeader' }, totalDelinquenciesMotorela]
+        ]
+    },
+    margin: [0, 0, 0, 20]
+},
 
-        // Page break after Motorela delinquency section
-        { text: '', pageBreak: 'after' },
+// Page break after Motorela delinquency section
+{ text: '', pageBreak: 'after' },
 
-        // Delinquency Report Header (Multicab)
-        {
-            text: 'Multicab - Total Delinquencies Per Month',
-            style: 'sectionHeader',
-            margin: [0, 0, 0, 10]
-        },
-        {
-            table: {
-                headerRows: 1,
-                widths: ['*', 'auto'],
-                body: [
-                    [{ text: 'Month', style: 'tableHeader' }, { text: 'Amount Collected', style: 'tableHeader' }],
-                    ...monthNames.map((month, index) => {
-                        const monthData = data.monthly_data[index + 1]; // Adjusted to 1-based index
-                        return [
-                            month,
-                            monthData ? monthData.delinquency_amount.multicab : 0 // Safe check for delinquency data
-                        ];
-                    }),
-                    [{ text: 'Total Delinquency Collected', style: 'tableHeader' }, totalDelinquenciesMulticab]
-                ]
-            },
-            margin: [0, 0, 0, 20]
-        },
+// Delinquency Report Header (Multicab)
+{
+    text: 'Multicab - Total Delinquencies Per Month',
+    style: 'sectionHeader',
+    margin: [0, 0, 0, 10]
+},
+{
+    table: {
+        headerRows: 1,
+        widths: ['*', 'auto'],
+        body: [
+            [{ text: 'Month', style: 'tableHeader' }, { text: 'Delinquency Amount', style: 'tableHeader' }],
+            ...monthNames.map((month, index) => {
+                const monthData = data.monthly_data[index + 1]; // Adjusted to 1-based index
+                const delinquencyCount = monthData ? monthData.delinquency_count.multicab : 0;
+                const delinquencyAmount = delinquencyCount * 11; // Multiply by 11 for multicab
+                return [
+                    month,
+                    delinquencyAmount // Show the delinquency amount (count * 11)
+                ];
+            }),
+            [{ text: 'Total Delinquency Collected', style: 'tableHeader' }, totalDelinquenciesMulticab]
+        ]
+    },
+    margin: [0, 0, 0, 20]
+},
+
 
         // Overall Total
         { text: '', margin: [0, 10] },
-        { text: 'Overall: ' + (totalPaymentsMotorela + totalPaymentsMulticab), margin: [0, 0, 0, 10], bold: true, alignment: 'center' },
-
+       
         // Signatories section (aligned to right)
         {
             text: 'Approved by:',
