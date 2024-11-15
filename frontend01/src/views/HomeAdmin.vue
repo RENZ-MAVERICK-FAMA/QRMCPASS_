@@ -118,7 +118,7 @@ export default {
           console.error('Error fetching data:', error);
         });
     },
-generatePdfFile(data, selectedYear) {
+    generatePdfFile(data, selectedYear) {
     // Helper function to get month names
     function getMonthNames() {
         return [
@@ -135,195 +135,197 @@ generatePdfFile(data, selectedYear) {
     const totalDelinquenciesMotorela = data.total_delinquencies_by_type.motorela;
 
     const docDefinition = {
-    // Header on every page
-    header: function() {
-    return {
-        columns: [
-            { 
-                width: 'auto', 
-                stack: [{ image: logos.citylogo, width: 35, height: 35, alignment: 'left' }] 
-            },
-            { 
-                width: 'auto', 
-                stack: [{ image: logos.ceedmologo, width: 40, height: 35, alignment: 'left' }] 
+        // Header on every page
+        header: function() {
+            return {
+                columns: [
+                    { 
+                        width: 'auto', 
+                        stack: [{ image: logos.citylogo, width: 35, height: 35, alignment: 'left' }] 
+                    },
+                    { 
+                        width: 'auto', 
+                        stack: [{ image: logos.ceedmologo, width: 40, height: 35, alignment: 'left' }] 
+                    },
+                    {
+                        width: '*',
+                        stack: [
+                            { text: 'Province of Bukidnon', style: 'headerText' },
+                            { text: 'City Government of Malaybalay', style: 'headerText' },
+                            { text: 'City Economic Enterprise Development and Management Office', style: 'headerText' },
+                            { text: 'CEEDMO Motorela Booth', style: 'headerText' },
+                            { text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon', style: 'headerText' }
+                        ],
+                        alignment: 'center'
+                    },
+                    { 
+                        width: 'auto', 
+                        stack: [{ image: logos.qrlogo, width: 40, height: 35, alignment: 'right' }] 
+                    }
+                ],
+                margin: [0, 10],  // Increase the margin to give more space at the top
+                alignment: 'center',
+                columnGap: 10 // Add space between columns
+            };
+        },
+
+        // Content of the PDF
+        content: [
+            // Add space before the section headers and tables
+            { text: '', margin: [0, 40] }, // Adjust the space between header and first section
+            
+            // Motorela - Total Collection Table
+            {
+                text: 'Motorela - Total Collection Per Month',
+                style: 'sectionHeader',
+                margin: [0, 0, 0, 10] // Margin between the section header and table
             },
             {
-                width: '*',
-                stack: [
-                    { text: 'Province of Bukidnon', style: 'headerText' },
-                    { text: 'City Government of Malaybalay', style: 'headerText' },
-                    { text: 'City Economic Enterprise Development and Management Office', style: 'headerText' },
-                    { text: 'CEEDMO Motorela Booth', style: 'headerText' },
-                    { text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon', style: 'headerText' }
-                ],
-                alignment: 'center'
+                table: {
+                    headerRows: 1,
+                    widths: ['*', 'auto'],
+                    body: [
+                        [{ text: 'Month', style: 'tableHeader' }, { text: 'Amount Collected', style: 'tableHeader' }],
+                        ...monthNames.map((month, index) => {
+                            const monthData = data.monthly_data[index + 1]; // Adjusted to 1-based index
+                            return [
+                                month, 
+                                monthData ? monthData.total_collection.motorela : 0 // Safe check if monthData exists
+                            ];
+                        }),
+                        [{ text: 'Total Amount Collected', style: 'tableHeader' }, totalPaymentsMotorela]
+                    ]
+                },
+                margin: [0, 0, 0, 20]
             },
-            { 
-                width: 'auto', 
-                stack: [{ image: logos.qrlogo, width: 40, height: 35, alignment: 'right' }] 
+
+            { text: '', pageBreak: 'before' },
+
+            // Multicab - Total Collection Table
+            {
+                text: 'Multicab - Total Collection Per Month',
+                style: 'sectionHeader',
+                margin: [0, 0, 0, 10] // Margin between section header and table
+            },
+            {
+                table: {
+                    headerRows: 1,
+                    widths: ['*', 'auto'],
+                    body: [
+                        [{ text: 'Month', style: 'tableHeader' }, { text: 'Amount Collected', style: 'tableHeader' }],
+                        ...monthNames.map((month, index) => {
+                            const monthData = data.monthly_data[index + 1]; // Adjusted to 1-based index
+                            return [
+                                month, 
+                                monthData ? monthData.total_collection.multicab : 0 // Safe check for data existence
+                            ];
+                        }),
+                        [{ text: 'Total Amount Collected', style: 'tableHeader' }, totalPaymentsMulticab]
+                    ]
+                },
+                margin: [0, 0, 0, 20]
+            },
+
+            { text: '', pageBreak: 'before' },
+
+            // Delinquency Report Header (Motorela)
+            {
+                text: 'Motorela - Total Delinquencies Per Month',
+                style: 'sectionHeader',
+                margin: [0, 0, 0, 10] // Margin between section header and table
+            },
+            {
+                table: {
+                    headerRows: 1,
+                    widths: ['*', 'auto'],
+                    body: [
+                        [{ text: 'Month', style: 'tableHeader' }, { text: 'Delinquency Amount', style: 'tableHeader' }],
+                        ...monthNames.map((month, index) => {
+                            const monthData = data.monthly_data[index + 1]; // Adjusted to 1-based index
+                            const delinquencyCount = monthData ? monthData.delinquency_count.motorela : 0;
+                            const delinquencyAmount = delinquencyCount * 6; // Multiply by 6 for motorela
+                            return [
+                                month,
+                                delinquencyAmount // Show the delinquency amount (count * 6)
+                            ];
+                        }),
+                        [{ text: 'Total Delinquency Collected', style: 'tableHeader' }, totalDelinquenciesMotorela * 6]
+                    ]
+                },
+                margin: [0, 0, 0, 20]
+            },
+
+            // Page break after Motorela delinquency section
+            { text: '', pageBreak: 'after' },
+
+            // Delinquency Report Header (Multicab)
+            {
+                text: 'Multicab - Total Delinquencies Per Month',
+                style: 'sectionHeader',
+                margin: [0, 0, 0, 10] // Margin between section header and table
+            },
+            {
+                table: {
+                    headerRows: 1,
+                    widths: ['*', 'auto'],
+                    body: [
+                        [{ text: 'Month', style: 'tableHeader' }, { text: 'Delinquency Amount', style: 'tableHeader' }],
+                        ...monthNames.map((month, index) => {
+                            const monthData = data.monthly_data[index + 1]; // Adjusted to 1-based index
+                            const delinquencyCount = monthData ? monthData.delinquency_count.multicab : 0;
+                            const delinquencyAmount = delinquencyCount * 11; // Multiply by 11 for multicab
+                            return [
+                                month,
+                                delinquencyAmount // Show the delinquency amount (count * 11)
+                            ];
+                        }),
+                        [{ text: 'Total Delinquency Collected', style: 'tableHeader' }, totalDelinquenciesMulticab * 11]
+                    ]
+                },
+                margin: [0, 0, 0, 20]
+            },
+
+            // Overall Total
+            { text: '', margin: [0, 10] },
+
+            // Signatories section (aligned to right)
+            {
+                text: 'Approved by:',
+                alignment: 'right',
+                margin: [0, 20, 0, 0]
+            },
+            {
+                text: 'Noted by:',
+                alignment: 'right'
             }
         ],
-        margin: [0, 10],  // Increase the top margin if needed
-        alignment: 'center',
-        columnGap: 10 // Add space between columns
+
+        styles: {
+            titleText: {
+                fontSize: 16,
+                bold: true
+            },
+            sectionHeader: {
+                fontSize: 14,
+                bold: true
+            },
+            tableHeader: {
+                bold: true,
+                fontSize: 13,
+                color: 'black',
+                alignment: 'center'
+            },
+            headerText: {
+                fontSize: 12,
+                bold: true
+            }
+        }
     };
-},
 
-
-    // Content of the PDF
-    content: [
-        // Motorela - Total Collection Table
-        {
-            text: 'Motorela - Total Collection Per Month',
-            style: 'sectionHeader',
-            margin: [0, 0, 0, 10]
-        },
-        {
-            table: {
-                headerRows: 1,
-                widths: ['*', 'auto'],
-                body: [
-                    [{ text: 'Month', style: 'tableHeader' }, { text: 'Amount Collected', style: 'tableHeader' }],
-                    ...monthNames.map((month, index) => {
-                        const monthData = data.monthly_data[index + 1]; // Adjusted to 1-based index
-                        return [
-                            month, 
-                            monthData ? monthData.total_collection.motorela : 0 // Safe check if monthData exists
-                        ];
-                    }),
-                    [{ text: 'Total Amount Collected', style: 'tableHeader' }, totalPaymentsMotorela]
-                ]
-            },
-            margin: [0, 0, 0, 20]
-        },
-        { text: '', pageBreak: 'before' },
-
-
-        // Multicab - Total Collection Table
-        {
-            text: 'Multicab - Total Collection Per Month',
-            style: 'sectionHeader',
-            margin: [0, 0, 0, 10]
-        },
-        {
-            table: {
-                headerRows: 1,
-                widths: ['*', 'auto'],
-                body: [
-                    [{ text: 'Month', style: 'tableHeader' }, { text: 'Amount Collected', style: 'tableHeader' }],
-                    ...monthNames.map((month, index) => {
-                        const monthData = data.monthly_data[index + 1]; // Adjusted to 1-based index
-                        return [
-                            month, 
-                            monthData ? monthData.total_collection.multicab : 0 // Safe check for data existence
-                        ];
-                    }),
-                    [{ text: 'Total Amount Collected', style: 'tableHeader' }, totalPaymentsMulticab]
-                ]
-            },
-            margin: [0, 0, 0, 20]
-        },
-
-        // Move to the next page before delinquency report
-        { text: '', pageBreak: 'before' },
-
-// Delinquency Report Header (Motorela)
-{
-    text: 'Motorela - Total Delinquencies Per Month',
-    style: 'sectionHeader',
-    margin: [0, 0, 0, 10]
-},
-{
-    table: {
-        headerRows: 1,
-        widths: ['*', 'auto'],
-        body: [
-            [{ text: 'Month', style: 'tableHeader' }, { text: 'Delinquency Amount', style: 'tableHeader' }],
-            ...monthNames.map((month, index) => {
-                const monthData = data.monthly_data[index + 1]; // Adjusted to 1-based index
-                const delinquencyCount = monthData ? monthData.delinquency_count.motorela : 0;
-                const delinquencyAmount = delinquencyCount * 6; // Multiply by 6 for motorela
-                return [
-                    month,
-                    delinquencyAmount // Show the delinquency amount (count * 6)
-                ];
-            }),
-            [{ text: 'Total Delinquency Collected', style: 'tableHeader' }, totalDelinquenciesMotorela*6]
-        ]
-    },
-    margin: [0, 0, 0, 20]
-},
-
-// Page break after Motorela delinquency section
-{ text: '', pageBreak: 'after' },
-
-// Delinquency Report Header (Multicab)
-{
-    text: 'Multicab - Total Delinquencies Per Month',
-    style: 'sectionHeader',
-    margin: [0, 0, 0, 10]
-},
-{
-    table: {
-        headerRows: 1,
-        widths: ['*', 'auto'],
-        body: [
-            [{ text: 'Month', style: 'tableHeader' }, { text: 'Delinquency Amount', style: 'tableHeader' }],
-            ...monthNames.map((month, index) => {
-                const monthData = data.monthly_data[index + 1]; // Adjusted to 1-based index
-                const delinquencyCount = monthData ? monthData.delinquency_count.multicab : 0;
-                const delinquencyAmount = delinquencyCount * 11; // Multiply by 11 for multicab
-                return [
-                    month,
-                    delinquencyAmount // Show the delinquency amount (count * 11)
-                ];
-            }),
-            [{ text: 'Total Delinquency Collected', style: 'tableHeader' }, totalDelinquenciesMulticab*11]
-        ]
-    },
-    margin: [0, 0, 0, 20]
-},
-
-
-        // Overall Total
-        { text: '', margin: [0, 10] },
-       
-        // Signatories section (aligned to right)
-        {
-            text: 'Approved by:',
-            alignment: 'right',
-            margin: [0, 20, 0, 0]
-        },
-        {
-            text: 'Noted by:',
-            alignment: 'right'
-        }
-    ],
-    styles: {
-        titleText: {
-            fontSize: 16,
-            bold: true
-        },
-        sectionHeader: {
-            fontSize: 14,
-            bold: true
-        },
-        tableHeader: {
-            bold: true,
-            fontSize: 13,
-            color: 'black',
-            alignment: 'center'
-        },
-        headerText: {
-            fontSize: 12,
-            bold: true
-        }
-    }
-};
-
-const filename = `Annual_Report_${selectedYear}.pdf`;
-pdfMake.createPdf(docDefinition).download(filename);
+    const filename = `Annual_Report_${selectedYear}.pdf`;
+    pdfMake.createPdf(docDefinition).download(filename);
 }
+
 
     ,populateYears() {
     const currentYear = new Date().getFullYear();
