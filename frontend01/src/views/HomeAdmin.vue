@@ -136,16 +136,16 @@ generatePdfFile(data, selectedYear) {
 
     const docDefinition = {
     // Header on every page
-    header: function(currentPage) {
+    header: function() {
     return {
         columns: [
             { 
                 width: 'auto', 
-                stack: [{ image: logos.citylogo, width: 40, height: 40, alignment: 'left' }] 
+                stack: [{ image: logos.citylogo, width: 35, height: 35, alignment: 'left' }] 
             },
             { 
                 width: 'auto', 
-                stack: [{ image: logos.ceedmologo, width: 50, height: 40, alignment: 'left' }] 
+                stack: [{ image: logos.ceedmologo, width: 40, height: 35, alignment: 'left' }] 
             },
             {
                 width: '*',
@@ -160,15 +160,15 @@ generatePdfFile(data, selectedYear) {
             },
             { 
                 width: 'auto', 
-                stack: [{ image: logos.qrlogo, width: 50, height: 40, alignment: 'right' }] 
+                stack: [{ image: logos.qrlogo, width: 40, height: 35, alignment: 'right' }] 
             }
         ],
-        margin: [0, 30, 0, 10],  // Add a larger margin to give space for the header
- // Ensure there's space at the top of the page
+        margin: [0, 10],  // Increase the top margin if needed
         alignment: 'center',
-        columnGap: 10 // Adds space between columns if needed
+        columnGap: 10 // Add space between columns
     };
-    },
+},
+
 
     // Content of the PDF
     content: [
@@ -176,7 +176,7 @@ generatePdfFile(data, selectedYear) {
         {
             text: 'Motorela - Total Collection Per Month',
             style: 'sectionHeader',
-            margin: [0, 30, 0, 10]
+            margin: [0, 0, 0, 10]
         },
         {
             table: {
@@ -203,7 +203,7 @@ generatePdfFile(data, selectedYear) {
         {
             text: 'Multicab - Total Collection Per Month',
             style: 'sectionHeader',
-            margin: [0, 30, 0, 10]
+            margin: [0, 0, 0, 10]
         },
         {
             table: {
@@ -231,7 +231,7 @@ generatePdfFile(data, selectedYear) {
 {
     text: 'Motorela - Total Delinquencies Per Month',
     style: 'sectionHeader',
-    margin: [0, 30, 0, 10]
+    margin: [0, 0, 0, 10]
 },
 {
     table: {
@@ -255,14 +255,13 @@ generatePdfFile(data, selectedYear) {
 },
 
 // Page break after Motorela delinquency section
-{ text: '', pageBreak: 'before' }, // Ensure this comes after the header, not before
-
+{ text: '', pageBreak: 'after' },
 
 // Delinquency Report Header (Multicab)
 {
     text: 'Multicab - Total Delinquencies Per Month',
     style: 'sectionHeader',
-    margin: [0, 30, 0, 10]
+    margin: [0, 0, 0, 10]
 },
 {
     table: {
