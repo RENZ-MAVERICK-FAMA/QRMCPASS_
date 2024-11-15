@@ -124,7 +124,7 @@ export default {
           console.error('Error fetching data:', error);
         });
     },
-    generatePdfFile(data, selectedYear) {
+generatePdfFile(data, selectedYear) {
     const totalOverall = data.total_payments + data.total_delinquencies;
     const totalPaymentsMulticab = data.total_payments_by_type.multicab;
     const totalPaymentsMotorela = data.total_payments_by_type.motorela;
@@ -134,13 +134,23 @@ export default {
     const docDefinition = {
         header: (currentPage) => {
             if (currentPage === 1) {
-                return { text: `Annual Report - ${selectedYear} - Total Collection`, alignment: 'center', bold: true, margin: [0, 10, 0, 10] };
+                return { 
+                    text: `Annual Report - ${selectedYear} - Total Collection`, 
+                    alignment: 'center', 
+                    bold: true, 
+                    margin: [0, 10, 0, 10] 
+                };
             } else if (currentPage === 2) {
-                return { text: `Annual Report - ${selectedYear} - Total Delinquencies`, alignment: 'center', bold: true, margin: [0, 10, 0, 10] };
+                return { 
+                    text: `Annual Report - ${selectedYear} - Total Delinquencies`, 
+                    alignment: 'center', 
+                    bold: true, 
+                    margin: [0, 10, 0, 10] 
+                };
             }
         },
         content: [
-            // Motorela Table - Page 1
+            // Motorela - Total Collection Table
             {
                 text: 'Motorela - Total Collection Per Month',
                 style: 'sectionHeader',
@@ -162,7 +172,7 @@ export default {
                 margin: [0, 0, 0, 20]
             },
 
-            // Multicab Table - Page 1
+            // Multicab - Total Collection Table
             {
                 text: 'Multicab - Total Collection Per Month',
                 style: 'sectionHeader',
@@ -185,9 +195,9 @@ export default {
             },
             { text: '', pageBreak: 'after' },
 
-            // Page 2: Motorela Delinquency Table
+            // Motorela - Total Delinquencies Table
             {
-                text: 'Motorela - Total Delinquencies Collected Per Month',
+                text: 'Motorela - Total Delinquencies Per Month',
                 style: 'sectionHeader',
                 margin: [0, 0, 0, 10]
             },
@@ -207,9 +217,9 @@ export default {
                 margin: [0, 0, 0, 20]
             },
 
-            // Multicab Delinquency Table - Page 2
+            // Multicab - Total Delinquencies Table
             {
-                text: 'Multicab - Total Delinquencies Collected Per Month',
+                text: 'Multicab - Total Delinquencies Per Month',
                 style: 'sectionHeader',
                 margin: [0, 0, 0, 10]
             },
@@ -229,6 +239,30 @@ export default {
                 margin: [0, 0, 0, 20]
             },
 
+            // 14x2 Table for Monthly and Total Amount (Generic Layout for Each Table)
+            {
+                text: 'Monthly Report - Total Amount Collected',
+                style: 'sectionHeader',
+                margin: [0, 0, 0, 10]
+            },
+            {
+                table: {
+                    headerRows: 1,
+                    widths: ['*', 'auto'],
+                    body: [
+                        [{ text: 'Month', style: 'tableHeader' }, { text: 'Amount Collected', style: 'tableHeader' }],
+                        ...Array.from({ length: 12 }).map((_, i) => {
+                            const month = new Date(0, i).toLocaleString('default', { month: 'long' });
+                            return [
+                                month,
+                                data.monthly_data[month] ? data.monthly_data[month].total_collection : 0
+                            ];
+                        }),
+                        [{ text: 'Total Amount Collected', style: 'tableHeader' }, totalPaymentsMotorela + totalPaymentsMulticab] // The final total of both types
+                    ]
+                },
+                margin: [0, 0, 0, 20]
+            },
             { text: '', margin: [0, 10] },
             { text: 'Overall: ' + totalOverall, margin: [0, 0, 0, 10], bold: true, alignment: 'center' },
 
