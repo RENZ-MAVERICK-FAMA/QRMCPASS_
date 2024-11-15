@@ -194,6 +194,8 @@ generatePdfFile(data, selectedYear) {
             },
             margin: [0, 0, 0, 20]
         },
+        { text: '', pageBreak: 'before' },
+
 
         // Multicab - Total Collection Table
         {
@@ -244,7 +246,7 @@ generatePdfFile(data, selectedYear) {
                     delinquencyAmount // Show the delinquency amount (count * 6)
                 ];
             }),
-            [{ text: 'Total Delinquency Collected', style: 'tableHeader' }, totalDelinquenciesMotorela]
+            [{ text: 'Total Delinquency Collected', style: 'tableHeader' }, totalDelinquenciesMotorela*6]
         ]
     },
     margin: [0, 0, 0, 20]
@@ -274,7 +276,7 @@ generatePdfFile(data, selectedYear) {
                     delinquencyAmount // Show the delinquency amount (count * 11)
                 ];
             }),
-            [{ text: 'Total Delinquency Collected', style: 'tableHeader' }, totalDelinquenciesMulticab]
+            [{ text: 'Total Delinquency Collected', style: 'tableHeader' }, totalDelinquenciesMulticab*11]
         ]
     },
     margin: [0, 0, 0, 20]
