@@ -163,7 +163,8 @@ generatePdfFile(data, selectedYear) {
                 stack: [{ image: logos.qrlogo, width: 50, height: 40, alignment: 'right' }] 
             }
         ],
-        margin: [0, 10],  // Ensure there's space at the top of the page
+        margin: [0, 30, 0, 10],  // Add a larger margin to give space for the header
+ // Ensure there's space at the top of the page
         alignment: 'center',
         columnGap: 10 // Adds space between columns if needed
     };
@@ -175,7 +176,7 @@ generatePdfFile(data, selectedYear) {
         {
             text: 'Motorela - Total Collection Per Month',
             style: 'sectionHeader',
-            margin: [0, 0, 0, 10]
+            margin: [0, 30, 0, 10]
         },
         {
             table: {
@@ -202,7 +203,7 @@ generatePdfFile(data, selectedYear) {
         {
             text: 'Multicab - Total Collection Per Month',
             style: 'sectionHeader',
-            margin: [0, 0, 0, 10]
+            margin: [0, 30, 0, 10]
         },
         {
             table: {
@@ -230,7 +231,7 @@ generatePdfFile(data, selectedYear) {
 {
     text: 'Motorela - Total Delinquencies Per Month',
     style: 'sectionHeader',
-    margin: [0, 0, 0, 10]
+    margin: [0, 30, 0, 10]
 },
 {
     table: {
@@ -254,13 +255,14 @@ generatePdfFile(data, selectedYear) {
 },
 
 // Page break after Motorela delinquency section
-{ text: '', pageBreak: 'after' },
+{ text: '', pageBreak: 'before' }, // Ensure this comes after the header, not before
+
 
 // Delinquency Report Header (Multicab)
 {
     text: 'Multicab - Total Delinquencies Per Month',
     style: 'sectionHeader',
-    margin: [0, 0, 0, 10]
+    margin: [0, 30, 0, 10]
 },
 {
     table: {
