@@ -107,13 +107,11 @@ export default {
     this.populateYears();
   },
   methods: {
-    getMonthName(monthNumber) {
-    const months = [
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
+    getMonthNames() {
+    return [
+        'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
     ];
-    return months[monthNumber - 1]; // Subtract 1 because month numbers are 1-based, but array indices are 0-based
-  },
+},
     GenerateOverall(selectedYear) {
       axios.get(`https://qrmcpass.loca.lt/admin/analytics/overall?year=${selectedYear}`)
         .then(response => {
@@ -299,10 +297,6 @@ export default {
 
     const filename = `Annual_Report_${selectedYear}.pdf`;
     pdfMake.createPdf(docDefinition).download(filename);
-},getMonthNames() {
-    return [
-        'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
-    ];
 }
 
     ,populateYears() {
