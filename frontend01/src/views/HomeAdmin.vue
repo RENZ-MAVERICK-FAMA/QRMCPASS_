@@ -127,71 +127,116 @@ export default {
     generatePdfFile(data, selectedYear) {
     const totalOverall = data.total_payments + data.total_delinquencies;
     const totalPaymentsMulticab = data.total_payments_by_type.multicab;
-    const totalpaymentsMotorela = data.total_payments_by_type.motorela;
-    const totalTollPayments = totalPaymentsMulticab + totalpaymentsMotorela;
+    const totalPaymentsMotorela = data.total_payments_by_type.motorela;
+    const totalDelinquenciesMulticab = data.total_delinquencies_by_type.multicab;
+    const totalDelinquenciesMotorela = data.total_delinquencies_by_type.motorela;
 
     const docDefinition = {
+        header: (currentPage) => {
+            if (currentPage === 1) {
+                return { text: `Annual Report - ${selectedYear} - Total Collection`, alignment: 'center', bold: true, margin: [0, 10, 0, 10] };
+            } else if (currentPage === 2) {
+                return { text: `Annual Report - ${selectedYear} - Total Delinquencies`, alignment: 'center', bold: true, margin: [0, 10, 0, 10] };
+            }
+        },
         content: [
-            // Title section
+            // Motorela Table - Page 1
             {
-                text: 'Annual Report',
-                style: 'titleText',
-                alignment: 'center', // Center the title
-                margin: [0, 10, 0, 10] // Add margin for spacing
+                text: 'Motorela - Total Collection Per Month',
+                style: 'sectionHeader',
+                margin: [0, 0, 0, 10]
             },
-            // Table section
             {
                 table: {
                     headerRows: 1,
-                    widths: ['*', 'auto', 'auto', 'auto'],
+                    widths: ['*', 'auto'],
                     body: [
-                        [
-                            { text: 'Month', style: 'tableHeader' },
-                            { text: 'Total Collection', style: 'tableHeader' },
-                            { text: 'Total Delinquency Payments', style: 'tableHeader' },
-                            { text: 'Overall Total', style: 'tableHeader' }
-                        ],
-                        // Here you would populate the rows dynamically based on your data
-                        ['January', data.total_payments, data.total_delinquencies, totalOverall],
-                        ['February', data.total_payments, data.total_delinquencies, totalOverall],
-                        // Add other months similarly
+                        [{ text: 'Month', style: 'tableHeader' }, { text: 'Amount Collected', style: 'tableHeader' }],
+                        ...Object.keys(data.monthly_data).map(month => [
+                            month,
+                            data.monthly_data[month].total_collection.motorela || 0
+                        ]),
+                        [{ text: 'Total Amount Collected', style: 'tableHeader' }, totalPaymentsMotorela]
                     ]
-                }
+                },
+                margin: [0, 0, 0, 20]
             },
-            { text: '', margin: [0, 10] },
-            // Total payment and delinquency summary section
+
+            // Multicab Table - Page 1
+            {
+                text: 'Multicab - Total Collection Per Month',
+                style: 'sectionHeader',
+                margin: [0, 0, 0, 10]
+            },
             {
                 table: {
                     headerRows: 1,
-                    widths: ['auto', 'auto'],
+                    widths: ['*', 'auto'],
                     body: [
-                        [{ text: 'Total Toll Payments: ' + totalTollPayments, style: 'headerText' }, ''],
-                        [{ text: 'Total Delinquencies: ' + data.total_delinquencies, style: 'headerText' }, ''],
-                        [{ text: 'Multicab', style: 'tableHeader' }, ''],
-                        ['Total Payments', data.total_payments_by_type.multicab],
-                        ['Total Delinquencies', data.total_delinquencies_by_type.multicab]
+                        [{ text: 'Month', style: 'tableHeader' }, { text: 'Amount Collected', style: 'tableHeader' }],
+                        ...Object.keys(data.monthly_data).map(month => [
+                            month,
+                            data.monthly_data[month].total_collection.multicab || 0
+                        ]),
+                        [{ text: 'Total Amount Collected', style: 'tableHeader' }, totalPaymentsMulticab]
                     ]
-                }
+                },
+                margin: [0, 0, 0, 20]
             },
-            { text: '', margin: [0, 10] },
+            { text: '', pageBreak: 'after' },
+
+            // Page 2: Motorela Delinquency Table
+            {
+                text: 'Motorela - Total Delinquencies Collected Per Month',
+                style: 'sectionHeader',
+                margin: [0, 0, 0, 10]
+            },
             {
                 table: {
                     headerRows: 1,
-                    widths: ['auto', 'auto'],
+                    widths: ['*', 'auto'],
                     body: [
-                        [{ text: 'Motorela', style: 'tableHeader' }, ''],
-                        ['Total Payments', data.total_payments_by_type.motorela],
-                        ['Total Delinquencies', data.total_delinquencies_by_type.motorela]
+                        [{ text: 'Month', style: 'tableHeader' }, { text: 'Amount Collected', style: 'tableHeader' }],
+                        ...Object.keys(data.monthly_data).map(month => [
+                            month,
+                            data.monthly_data[month].delinquency_amount.motorela || 0
+                        ]),
+                        [{ text: 'Total Delinquency Collected', style: 'tableHeader' }, totalDelinquenciesMotorela]
                     ]
-                }
+                },
+                margin: [0, 0, 0, 20]
             },
+
+            // Multicab Delinquency Table - Page 2
+            {
+                text: 'Multicab - Total Delinquencies Collected Per Month',
+                style: 'sectionHeader',
+                margin: [0, 0, 0, 10]
+            },
+            {
+                table: {
+                    headerRows: 1,
+                    widths: ['*', 'auto'],
+                    body: [
+                        [{ text: 'Month', style: 'tableHeader' }, { text: 'Amount Collected', style: 'tableHeader' }],
+                        ...Object.keys(data.monthly_data).map(month => [
+                            month,
+                            data.monthly_data[month].delinquency_amount.multicab || 0
+                        ]),
+                        [{ text: 'Total Delinquency Collected', style: 'tableHeader' }, totalDelinquenciesMulticab]
+                    ]
+                },
+                margin: [0, 0, 0, 20]
+            },
+
             { text: '', margin: [0, 10] },
             { text: 'Overall: ' + totalOverall, margin: [0, 0, 0, 10], bold: true, alignment: 'center' },
+
             // Signatories section (aligned to right)
             {
                 text: 'Approved by:',
                 alignment: 'right',
-                margin: [0, 20, 0, 0] // Add margin for spacing
+                margin: [0, 20, 0, 0]
             },
             {
                 text: 'Noted by:',
@@ -203,11 +248,15 @@ export default {
                 fontSize: 16,
                 bold: true
             },
+            sectionHeader: {
+                fontSize: 14,
+                bold: true
+            },
             tableHeader: {
                 bold: true,
                 fontSize: 13,
                 color: 'black',
-                alignment: 'center'  // Center alignment for table headers
+                alignment: 'center'
             },
             headerText: {
                 fontSize: 12,
