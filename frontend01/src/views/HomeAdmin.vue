@@ -124,8 +124,7 @@ export default {
           console.error('Error fetching data:', error);
         });
     },
-generatePdfFile(data, selectedYear) {
-    const totalOverall = data.total_payments + data.total_delinquencies;
+    generatePdfFile(data, selectedYear) {
     const totalPaymentsMulticab = data.total_payments_by_type.multicab;
     const totalPaymentsMotorela = data.total_payments_by_type.motorela;
     const totalDelinquenciesMulticab = data.total_delinquencies_by_type.multicab;
@@ -162,9 +161,9 @@ generatePdfFile(data, selectedYear) {
                     widths: ['*', 'auto'],
                     body: [
                         [{ text: 'Month', style: 'tableHeader' }, { text: 'Amount Collected', style: 'tableHeader' }],
-                        ...Object.keys(data.monthly_data).map(month => [
+                        ...getMonthNames().map(month => [
                             month,
-                            data.monthly_data[month].total_collection.motorela || 0
+                            data.monthly_data[month] && data.monthly_data[month].total_collection.motorela || 0
                         ]),
                         [{ text: 'Total Amount Collected', style: 'tableHeader' }, totalPaymentsMotorela]
                     ]
@@ -184,9 +183,9 @@ generatePdfFile(data, selectedYear) {
                     widths: ['*', 'auto'],
                     body: [
                         [{ text: 'Month', style: 'tableHeader' }, { text: 'Amount Collected', style: 'tableHeader' }],
-                        ...Object.keys(data.monthly_data).map(month => [
+                        ...getMonthNames().map(month => [
                             month,
-                            data.monthly_data[month].total_collection.multicab || 0
+                            data.monthly_data[month] && data.monthly_data[month].total_collection.multicab || 0
                         ]),
                         [{ text: 'Total Amount Collected', style: 'tableHeader' }, totalPaymentsMulticab]
                     ]
@@ -207,9 +206,9 @@ generatePdfFile(data, selectedYear) {
                     widths: ['*', 'auto'],
                     body: [
                         [{ text: 'Month', style: 'tableHeader' }, { text: 'Amount Collected', style: 'tableHeader' }],
-                        ...Object.keys(data.monthly_data).map(month => [
+                        ...getMonthNames().map(month => [
                             month,
-                            data.monthly_data[month].delinquency_amount.motorela || 0
+                            data.monthly_data[month] && data.monthly_data[month].delinquency_amount.motorela || 0
                         ]),
                         [{ text: 'Total Delinquency Collected', style: 'tableHeader' }, totalDelinquenciesMotorela]
                     ]
@@ -229,9 +228,9 @@ generatePdfFile(data, selectedYear) {
                     widths: ['*', 'auto'],
                     body: [
                         [{ text: 'Month', style: 'tableHeader' }, { text: 'Amount Collected', style: 'tableHeader' }],
-                        ...Object.keys(data.monthly_data).map(month => [
+                        ...getMonthNames().map(month => [
                             month,
-                            data.monthly_data[month].delinquency_amount.multicab || 0
+                            data.monthly_data[month] && data.monthly_data[month].delinquency_amount.multicab || 0
                         ]),
                         [{ text: 'Total Delinquency Collected', style: 'tableHeader' }, totalDelinquenciesMulticab]
                     ]
@@ -239,7 +238,7 @@ generatePdfFile(data, selectedYear) {
                 margin: [0, 0, 0, 20]
             },
 
-            // 14x2 Table for Monthly and Total Amount (Generic Layout for Each Table)
+            // 14x2 Table for Monthly and Total Amount (with month names)
             {
                 text: 'Monthly Report - Total Amount Collected',
                 style: 'sectionHeader',
@@ -251,20 +250,19 @@ generatePdfFile(data, selectedYear) {
                     widths: ['*', 'auto'],
                     body: [
                         [{ text: 'Month', style: 'tableHeader' }, { text: 'Amount Collected', style: 'tableHeader' }],
-                        ...Array.from({ length: 12 }).map((_, i) => {
-                            const month = new Date(0, i).toLocaleString('default', { month: 'long' });
-                            return [
-                                month,
-                                data.monthly_data[month] ? data.monthly_data[month].total_collection : 0
-                            ];
-                        }),
-                        [{ text: 'Total Amount Collected', style: 'tableHeader' }, totalPaymentsMotorela + totalPaymentsMulticab] // The final total of both types
+                        ...getMonthNames().map(month => [
+                            month,
+                            data.monthly_data[month] && data.monthly_data[month].total_collection || 0
+                        ]),
+                        [{ text: 'Total Amount Collected', style: 'tableHeader' }, totalPaymentsMotorela + totalPaymentsMulticab] // Total of both Motorela and Multicab
                     ]
                 },
                 margin: [0, 0, 0, 20]
             },
+
+            // Overall Total
             { text: '', margin: [0, 10] },
-            { text: 'Overall: ' + totalOverall, margin: [0, 0, 0, 10], bold: true, alignment: 'center' },
+            { text: 'Overall: ' + (totalPaymentsMotorela + totalPaymentsMulticab), margin: [0, 0, 0, 10], bold: true, alignment: 'center' },
 
             // Signatories section (aligned to right)
             {
@@ -301,8 +299,11 @@ generatePdfFile(data, selectedYear) {
 
     const filename = `Annual_Report_${selectedYear}.pdf`;
     pdfMake.createPdf(docDefinition).download(filename);
+},getMonthNames() {
+    return [
+        'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
+    ];
 }
-
 
     ,populateYears() {
     const currentYear = new Date().getFullYear();
