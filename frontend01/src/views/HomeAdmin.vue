@@ -127,6 +127,8 @@ export default {
         ];
     }
 
+    const monthNames = getMonthNames(); // Get the month names
+
     const totalPaymentsMulticab = data.total_payments_by_type.multicab;
     const totalPaymentsMotorela = data.total_payments_by_type.motorela;
     const totalDelinquenciesMulticab = data.total_delinquencies_by_type.multicab;
@@ -163,10 +165,14 @@ export default {
                     widths: ['*', 'auto'],
                     body: [
                         [{ text: 'Month', style: 'tableHeader' }, { text: 'Amount Collected', style: 'tableHeader' }],
-                        ...getMonthNames().map(month => [
-                            month,
-                            data.monthly_data[month] && data.monthly_data[month].total_collection.motorela || 0
-                        ]),
+                        ...monthNames.map((month, index) => {
+                            // Adjust index for mapping the correct month data (index + 1 to match 1-12 range)
+                            const monthData = data.monthly_data[index + 1]; // Adjusted to 1-based index
+                            return [
+                                month, 
+                                monthData ? monthData.total_collection.motorela : 0 // Safe check if monthData exists
+                            ];
+                        }),
                         [{ text: 'Total Amount Collected', style: 'tableHeader' }, totalPaymentsMotorela]
                     ]
                 },
@@ -185,18 +191,73 @@ export default {
                     widths: ['*', 'auto'],
                     body: [
                         [{ text: 'Month', style: 'tableHeader' }, { text: 'Amount Collected', style: 'tableHeader' }],
-                        ...getMonthNames().map(month => [
-                            month,
-                            data.monthly_data[month] && data.monthly_data[month].total_collection.multicab || 0
-                        ]),
+                        ...monthNames.map((month, index) => {
+                            const monthData = data.monthly_data[index + 1]; // Adjusted to 1-based index
+                            return [
+                                month, 
+                                monthData ? monthData.total_collection.multicab : 0 // Safe check for data existence
+                            ];
+                        }),
                         [{ text: 'Total Amount Collected', style: 'tableHeader' }, totalPaymentsMulticab]
                     ]
                 },
                 margin: [0, 0, 0, 20]
             },
-            { text: '', pageBreak: 'after' },
 
-           
+            // Total Delinquencies Table (for Motorela and Multicab can be similarly updated)
+            {
+                text: 'Motorela - Total Delinquencies Per Month',
+                style: 'sectionHeader',
+                margin: [0, 0, 0, 10]
+            },
+            {
+                table: {
+                    headerRows: 1,
+                    widths: ['*', 'auto'],
+                    body: [
+                        [{ text: 'Month', style: 'tableHeader' }, { text: 'Amount Collected', style: 'tableHeader' }],
+                        ...monthNames.map((month, index) => {
+                            const monthData = data.monthly_data[index + 1]; // Adjusted to 1-based index
+                            return [
+                                month,
+                                monthData ? monthData.delinquency_amount.motorela : 0 // Safe check for delinquency data
+                            ];
+                        }),
+                        [{ text: 'Total Delinquency Collected', style: 'tableHeader' }, totalDelinquenciesMotorela]
+                    ]
+                },
+                margin: [0, 0, 0, 20]
+            },
+
+            // Multicab Delinquency Table
+            {
+                text: 'Multicab - Total Delinquencies Per Month',
+                style: 'sectionHeader',
+                margin: [0, 0, 0, 10]
+            },
+            {
+                table: {
+                    headerRows: 1,
+                    widths: ['*', 'auto'],
+                    body: [
+                        [{ text: 'Month', style: 'tableHeader' }, { text: 'Amount Collected', style: 'tableHeader' }],
+                        ...monthNames.map((month, index) => {
+                            const monthData = data.monthly_data[index + 1]; // Adjusted to 1-based index
+                            return [
+                                month,
+                                monthData ? monthData.delinquency_amount.multicab : 0 // Safe check for delinquency data
+                            ];
+                        }),
+                        [{ text: 'Total Delinquency Collected', style: 'tableHeader' }, totalDelinquenciesMulticab]
+                    ]
+                },
+                margin: [0, 0, 0, 20]
+            },
+
+            // Overall Total
+            { text: '', margin: [0, 10] },
+            { text: 'Overall: ' + (totalPaymentsMotorela + totalPaymentsMulticab), margin: [0, 0, 0, 10], bold: true, alignment: 'center' },
+
             // Signatories section (aligned to right)
             {
                 text: 'Approved by:',
@@ -233,7 +294,6 @@ export default {
     const filename = `Annual_Report_${selectedYear}.pdf`;
     pdfMake.createPdf(docDefinition).download(filename);
 }
-
     ,populateYears() {
     const currentYear = new Date().getFullYear();
     const years = [];
