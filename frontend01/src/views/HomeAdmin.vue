@@ -107,11 +107,7 @@ export default {
     this.populateYears();
   },
   methods: {
-    getMonthNames() {
-    return [
-        'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
-    ];
-},
+   
     GenerateOverall(selectedYear) {
       axios.get(`https://qrmcpass.loca.lt/admin/analytics/overall?year=${selectedYear}`)
         .then(response => {
@@ -123,6 +119,14 @@ export default {
         });
     },
     generatePdfFile(data, selectedYear) {
+    // Helper function to get month names
+    function getMonthNames() {
+        return [
+            'January', 'February', 'March', 'April', 'May', 'June', 
+            'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+    }
+
     const totalPaymentsMulticab = data.total_payments_by_type.multicab;
     const totalPaymentsMotorela = data.total_payments_by_type.motorela;
     const totalDelinquenciesMulticab = data.total_delinquencies_by_type.multicab;
