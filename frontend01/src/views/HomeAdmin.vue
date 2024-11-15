@@ -196,76 +196,7 @@ export default {
             },
             { text: '', pageBreak: 'after' },
 
-            // Motorela - Total Delinquencies Table
-            {
-                text: 'Motorela - Total Delinquencies Per Month',
-                style: 'sectionHeader',
-                margin: [0, 0, 0, 10]
-            },
-            {
-                table: {
-                    headerRows: 1,
-                    widths: ['*', 'auto'],
-                    body: [
-                        [{ text: 'Month', style: 'tableHeader' }, { text: 'Amount Collected', style: 'tableHeader' }],
-                        ...getMonthNames().map(month => [
-                            month,
-                            data.monthly_data[month] && data.monthly_data[month].delinquency_amount.motorela || 0
-                        ]),
-                        [{ text: 'Total Delinquency Collected', style: 'tableHeader' }, totalDelinquenciesMotorela]
-                    ]
-                },
-                margin: [0, 0, 0, 20]
-            },
-
-            // Multicab - Total Delinquencies Table
-            {
-                text: 'Multicab - Total Delinquencies Per Month',
-                style: 'sectionHeader',
-                margin: [0, 0, 0, 10]
-            },
-            {
-                table: {
-                    headerRows: 1,
-                    widths: ['*', 'auto'],
-                    body: [
-                        [{ text: 'Month', style: 'tableHeader' }, { text: 'Amount Collected', style: 'tableHeader' }],
-                        ...getMonthNames().map(month => [
-                            month,
-                            data.monthly_data[month] && data.monthly_data[month].delinquency_amount.multicab || 0
-                        ]),
-                        [{ text: 'Total Delinquency Collected', style: 'tableHeader' }, totalDelinquenciesMulticab]
-                    ]
-                },
-                margin: [0, 0, 0, 20]
-            },
-
-            // 14x2 Table for Monthly and Total Amount (with month names)
-            {
-                text: 'Monthly Report - Total Amount Collected',
-                style: 'sectionHeader',
-                margin: [0, 0, 0, 10]
-            },
-            {
-                table: {
-                    headerRows: 1,
-                    widths: ['*', 'auto'],
-                    body: [
-                        [{ text: 'Month', style: 'tableHeader' }, { text: 'Amount Collected', style: 'tableHeader' }],
-                        ...getMonthNames().map(month => [
-                            month,
-                            data.monthly_data[month] && data.monthly_data[month].total_collection || 0
-                        ]),
-                        [{ text: 'Total Amount Collected', style: 'tableHeader' }, totalPaymentsMotorela + totalPaymentsMulticab] // Total of both Motorela and Multicab
-                    ]
-                },
-                margin: [0, 0, 0, 20]
-            },
-
-            // Overall Total
-            { text: '', margin: [0, 10] },
-            { text: 'Overall: ' + (totalPaymentsMotorela + totalPaymentsMulticab), margin: [0, 0, 0, 10], bold: true, alignment: 'center' },
-
+           
             // Signatories section (aligned to right)
             {
                 text: 'Approved by:',
