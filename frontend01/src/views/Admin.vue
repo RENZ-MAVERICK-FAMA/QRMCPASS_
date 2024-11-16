@@ -37,7 +37,7 @@
       </div>
     </main>
     <Dialog v-model:visible="showModal" header="ADD ADMIN" modal class=" w-full md:w-[600px]" >
-      <form @submit.prevent="addTeller" >
+      <form @submit.prevent="confirmTransaction" >
         <div class="mt-3" >
           <label>Username</label>
           <InputText v-model="username" type="text" placeholder="Enter Username" required class="w-full" />
@@ -67,6 +67,17 @@
         </div>
       </form>
     </Dialog>
+    <Dialog header="Confirm Transaction" modal v-model:visible="showConfirmModal">
+    <p>Please enter your transaction password to confirm:</p>
+    <div class="mt-4">
+      <InputText v-model="transactionPassword" type="password" placeholder="Enter Transaction Password" class="w-full" />
+      <p v-if="errorMessage" class="text-red-500 text-sm mt-2">{{ errorMessage }}</p>
+    </div>
+    <div class="flex justify-end mt-4">
+      <Button label="Cancel" class="p-button-text" @click="showConfirmModal = false" />
+      <Button label="Confirm" class="p-button-danger" @click="validateTransactionPassword" />
+    </div>
+  </Dialog>
     <Dialog v-model:visible="showEditModal" header="Update Admin" modal class=" w-full md:w-[600px]" >
       <div class="modal-content">
 
@@ -110,13 +121,16 @@
   </template>
   <script>
   import axios from 'axios';
-  
+  import { ref } from 'vue';
   export default {
     data() {
       return {
       admins: [],
       showModal: false,
       showEditModal: false,
+      showConfirmModal: false,
+      transactionPassword:"",
+      errorMessage: '',
       username: '',
       firstName: '',
       lastName: '',
@@ -134,7 +148,30 @@
         password: ''
       }
       };
+    },setup(){
+
+const superadmin = ref({
+  id: null,
+  username: "",
+  first_name: "",
+  last_name: "",
+});
+
+axios
+  .get("https://qrmcpass.loca.lt/Superadmin", {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("access_token")}`,
     },
+  })
+  .then((response) => {
+    superadmin.value = response.data;
+  })
+  .catch((error) => {
+    console.error("Error fetching user:", error);
+  });
+
+return { superadmin };
+},
     mounted() {
       this.fetchadmins();
     },computed: {
@@ -157,7 +194,46 @@
       });
     }
   },
-    methods: {
+    methods: {async validateTransactionPassword() {
+  if (!this.superadmin.id) {
+    this.errorMessage = "Teller ID is missing. Please try again.";
+    return;
+  }
+
+  if (!this.transactionPassword) {
+    this.errorMessage = "Please enter your transaction password.";
+    return;
+  }
+
+  try {
+    const response = await axios.post("https://qrmcpass.loca.lt/api/transaction-password", {
+      superadmin_id: this.superadmin.id,
+      transaction_password: this.transactionPassword,
+    });
+
+    if (response.data.success) {
+      this.errorMessage = "";
+      this.showConfirmModal = false;
+
+      console.log("Validation successful. Proceeding with account creation...");
+      this.addTeller(); // Call the topup method
+    } else {
+      this.errorMessage = response.data.message || "Invalid transaction password.";
+    }
+  } catch (error) {
+    this.errorMessage = "Failed to validate transaction password. Please try again.";
+    console.error("Error validating transaction password:", error);
+  }
+},confirmTransaction() {
+      // Close the initial modal and open the confirmation modal
+      this.showModal = false;
+      this.showConfirmModal = true;
+    },proceedTransaction() {
+      // Handle the confirmed transaction here
+      this.showConfirmModal = false;
+      this.topup(); // Call the topup method to proceed
+    },
+
       addTeller() {
       let formData = new FormData();
       formData.append('username', this.username);
