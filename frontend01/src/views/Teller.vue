@@ -37,38 +37,50 @@
       </DataTable>
     </div>
   </main>
-  <Dialog v-model:visible="showModal" header="ADD TELLER" modal class=" w-full md:w-[600px]" >
-    <form @submit.prevent="addTeller" >
-      <div class="mt-3" >
-          <label>Username</label>
-          <InputText type="text" v-model="username" id="username" placeholder="Enter Username" required class="w-full" />
-        </div>
-        <div class="mt-3" >
-          <label>Firstname</label>
-          <InputText type="text" v-model="firstName" id="firstName" placeholder="Enter Firstname" required minlength="1" class="w-full" />
-        </div>
-        <div class="mt-3" >
-          <label>Lastname</label>
-          <InputText type="text" v-model="lastName" id="lastName" placeholder="Enter Lastname" required minlength="1" class="w-full" />
-        </div>
-        <div class="mt-3" >
-          <label>Address</label>
-          <InputText type="text" v-model="address" id="address" placeholder="Enter Address" required minlength="1" class="w-full" />
-        </div>
-        <div class="mt-3" >
-          <label>Password</label>
-          <InputText type="password" v-model="password1" id="password1" placeholder="Enter Password" required minlength="7" class="w-full" />
-        </div>
-        <div class="mt-3" >
-          <label>Confirm Password</label>
-          <InputText type="password" v-model="password2" id="password2" placeholder="Confirm Password" required minlength="7" class="w-full" />
-        </div>
-        <div class="mt-3" >
-          <label>Transaction Password</label>
-          <InputText type="password" v-model="transaction_password" id="transaction_password" placeholder="Transaction Password" required class="w-full" />
-        </div>
-        <Button type="submit" class="mt-3 w-full" severity="success" icon="pi pi-plus" label="Submit" />
+  <Dialog v-model:visible="showModal" header="ADD TELLER" modal class="w-full md:w-[600px]">
+    <form @submit.prevent="confirmTransaction">
+      <div class="mt-3">
+        <label>Username</label>
+        <InputText v-model="username" type="text" placeholder="Enter Username" required class="w-full" />
+      </div>
+      <div class="mt-3">
+        <label>Firstname</label>
+        <InputText v-model="firstName" type="text" placeholder="Enter Firstname" required class="w-full" />
+      </div>
+      <div class="mt-3">
+        <label>Lastname</label>
+        <InputText v-model="lastName" type="text" placeholder="Enter Lastname" required class="w-full" />
+      </div>
+      <div class="mt-3">
+        <label>Address</label>
+        <InputText v-model="address" type="text" placeholder="Enter Address" required class="w-full" />
+      </div>
+      <div class="mt-3">
+        <label>Password</label>
+        <InputText v-model="password1" type="password" placeholder="Enter Password" required class="w-full" />
+      </div>
+      <div class="mt-3">
+        <label>Confirm Password</label>
+        <InputText v-model="password2" type="password" placeholder="Confirm Password" required class="w-full" />
+      </div>
+      <div class="mt-3">
+        <label>Transaction Password</label>
+        <InputText v-model="transaction_password" type="password" placeholder="Transaction Password" required class="w-full" />
+      </div>
+      <Button type="submit" class="mt-3 w-full" severity="success" label="Submit" />
     </form>
+  </Dialog>
+
+  <Dialog header="Confirm Transaction" modal v-model:visible="showConfirmModal">
+    <p>Please enter your transaction password to confirm:</p>
+    <div class="mt-4">
+      <InputText v-model="transactionPassword" type="password" placeholder="Enter Transaction Password" class="w-full" />
+      <p v-if="errorMessage" class="text-red-500 text-sm mt-2">{{ errorMessage }}</p>
+    </div>
+    <div class="flex justify-end mt-4">
+      <Button label="Cancel" class="p-button-text" @click="showConfirmModal = false" />
+      <Button label="Confirm" class="p-button-danger" @click="validateTransactionPassword" />
+    </div>
   </Dialog>
   <Dialog v-model:visible="showEditModal" header="Update Teller" modal class=" w-full md:w-[600px]" >
       <div class="modal-content">
@@ -119,6 +131,7 @@ export default {
       tellers: [],
       showModal: false,
       showEditModal: false,
+      showConfirmModal: false,
       username: '',
       firstName: '',
       lastName: '',
@@ -127,6 +140,8 @@ export default {
       password1: '',
       password2: '',
       transaction_password:'',
+      transactionPassword:"",
+      errorMessage: '',
       loginError: null,
       editedTeller: {
         id: null,
@@ -141,6 +156,31 @@ export default {
   mounted() {
     this.fetchTellers();
   },
+  setup(){
+
+    const superadmin = ref({
+      id: null,
+      username: "",
+      first_name: "",
+      last_name: "",
+    });
+
+    axios
+      .get("https://qrmcpass.loca.lt/SuperAdmin", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      })
+      .then((response) => {
+        superadmin.value = response.data;
+      })
+      .catch((error) => {
+        console.error("Error fetching user:", error);
+      });
+
+    return { superadmin };
+  },
+
   computed: {
     filteredTeller() {
       if (!this.searchTerm) {
@@ -246,7 +286,45 @@ export default {
     .catch(error => {
       console.error(error);
     });
-}
+},async validateTransactionPassword() {
+  if (!this.teller.id) {
+    this.errorMessage = "Teller ID is missing. Please try again.";
+    return;
+  }
+
+  if (!this.transactionPassword) {
+    this.errorMessage = "Please enter your transaction password.";
+    return;
+  }
+
+  try {
+    const response = await axios.post("https://qrmcpass.loca.lt/api/transaction-password", {
+      superadmin_id: this.superadmin.id,
+      transaction_password: this.transactionPassword,
+    });
+
+    if (response.data.success) {
+      this.errorMessage = "";
+      this.showConfirmModal = false;
+
+      console.log("Validation successful. Proceeding with account creation...");
+      this.addTeller(); // Call the topup method
+    } else {
+      this.errorMessage = response.data.message || "Invalid transaction password.";
+    }
+  } catch (error) {
+    this.errorMessage = "Failed to validate transaction password. Please try again.";
+    console.error("Error validating transaction password:", error);
+  }
+},confirmTransaction() {
+      // Close the initial modal and open the confirmation modal
+      this.showModal = false;
+      this.showConfirmModal = true;
+    },proceedTransaction() {
+      // Handle the confirmed transaction here
+      this.showConfirmModal = false;
+      this.topup(); // Call the topup method to proceed
+    },
 
     },
   };
