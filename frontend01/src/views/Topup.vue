@@ -228,37 +228,37 @@ export default {
     }, 1000);
   },
   methods: { 
-    async validateTransactionPassword() {
-    this.errorMessage = ''; // Clear previous errors
-
-    // Ensure password input is provided
-    if (!this.transactionPassword) {
-      this.errorMessage = 'Transaction password is required.';
-      return;
-    }
-
-    try {
-      // Send the password and teller ID to the backend for validation
-      const response = await axios.post('https://qrmcpass.loca.lt/api/validate-transaction-password', {
-        teller_id: this.teller.value.id,
-         // Replace with dynamic teller ID
-        transaction_password: this.transactionPassword,
-      });
-      console.log("mao ni ang teller Id: ", teller_id);
-      if (response.data.success) {
-        // Password validated successfully
-        this.topup(); // Proceed with the transaction logic
-        this.showConfirmModal = false; // Close the modal
+     // Validate transaction password
+     async validateTransactionPassword() {
+      if (!this.teller.id) {
+        this.errorMessage = "Teller ID is missing. Please try again.";
+        return;
       }
-    } catch (error) {
-      // Handle errors from the backend
-      if (error.response && error.response.data && error.response.data.message) {
-        this.errorMessage = error.response.data.message; // Show backend error message
-      } else {
-        this.errorMessage = 'An unexpected error occurred. Please try again.';
+
+      if (!this.transactionPassword) {
+        this.errorMessage = "Please enter your transaction password.";
+        return;
       }
-    }
-  },
+
+      try {
+        const response = await axios.post("https://qrmcpass.loca.lt/api/validate-transaction-password", {
+          teller_id: this.teller.id,
+          transaction_password: this.transactionPassword,
+        });
+
+        if (response.data.success) {
+          this.errorMessage = "";
+          this.showConfirmModal = false;
+          this.topup(); // Proceed with top-up if validation succeeds
+        } else {
+          this.errorMessage = response.data.message || "Invalid transaction password.";
+        }
+      } catch (error) {
+        this.errorMessage = "Failed to validate transaction password. Please try again.";
+        console.error("Error validating transaction password:", error);
+      }
+    },
+ 
     generateReceipt(reference, unitid) {
     // Fetch the transaction and unit data using reference and unitid
     axios.get(`https://qrmcpass.loca.lt/api/transactions/${reference}/${unitid}`)
