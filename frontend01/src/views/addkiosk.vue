@@ -93,7 +93,7 @@ export default {
 
       try {
         const response = await axios.post('https://qrmcpass.loca.lt/api/transaction-password', {
-          superadmin_id: this.superadmin.value.id,
+          superadmin_id: this.superadmin.id,
           transaction_password: this.transactionPassword,
         });
 
