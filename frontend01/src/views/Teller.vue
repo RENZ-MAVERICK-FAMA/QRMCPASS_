@@ -63,6 +63,10 @@
           <label>Confirm Password</label>
           <InputText type="password" v-model="password2" id="password2" placeholder="Confirm Password" required minlength="7" class="w-full" />
         </div>
+        <div class="mt-3" >
+          <label>Transaction Password</label>
+          <InputText type="password" v-model="transaction_password" id="transaction_password" placeholder="Transaction Password" required class="w-full" />
+        </div>
         <Button type="submit" class="mt-3 w-full" severity="success" icon="pi pi-plus" label="Submit" />
     </form>
   </Dialog>
@@ -122,6 +126,7 @@ export default {
       searchTerm: '',
       password1: '',
       password2: '',
+      transaction_password:'',
       loginError: null,
       editedTeller: {
         id: null,
@@ -165,6 +170,7 @@ export default {
       formData.append('address', this.address);
       formData.append('password1', this.password1);
       formData.append('password2', this.password2);
+      formData.append('transaction_password', this.transaction_password);
 
       axios.post('https://qrmcpass.loca.lt/addTeller', formData)
         .then(response => {
@@ -174,6 +180,7 @@ export default {
       this.address = '';
       this.password1 = '';
       this.password2 = '';
+      this.transaction_password= '';
       
           this.$router.push('/teller');
           window.location.href = '/teller';
