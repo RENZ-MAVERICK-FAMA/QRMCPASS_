@@ -111,10 +111,24 @@
 
   <!-- Confirmation Modal -->
   <Dialog header="Confirm Transaction" modal v-model:visible="showConfirmModal">
-    <p>Please confirm to continue your transaction.</p>
+    <p>Please enter your transaction password to confirm:</p>
+    <div class="mt-4">
+      <!-- Input field for transaction password -->
+      <InputText 
+        v-model="transactionPassword" 
+        type="password" 
+        placeholder="Enter Transaction Password" 
+        class="w-full"
+      />
+      <p v-if="errorMessage" class="text-red-500 text-sm mt-2">{{ errorMessage }}</p>
+    </div>
     <div class="flex justify-end mt-4">
       <Button label="Cancel" class="p-button-text" @click="showConfirmModal = false" />
-      <Button label="Confirm" class="p-button-danger" @click="proceedTransaction" />
+      <Button 
+        label="Confirm" 
+        class="p-button-danger" 
+        @click="validateTransactionPassword" 
+      />
     </div>
   </Dialog>
 
@@ -159,6 +173,8 @@ export default {
       error: "",
       transactions: [],
       searchQuery: '',
+      transactionPassword: '',
+      errorMessage: ''
       
       
     };
@@ -212,6 +228,36 @@ export default {
     }, 1000);
   },
   methods: { 
+    validateTransactionPassword() {
+    this.errorMessage = ''; // Clear previous errors
+
+    if (!this.transactionPassword) {
+      this.errorMessage = 'Transaction password is required.';
+      return;
+    }
+
+    try {
+      // Send the password and teller ID to the backend for validation
+      const response = axios.post('/api/validate-transaction-password', {
+        teller_id: this.tellerId, // Replace with dynamic teller ID
+        transaction_password: this.transactionPassword,
+      });
+
+      if (response.data.success) {
+        // Password validated successfully
+        this.topup(); // Proceed with the transaction
+        this.showConfirmModal = false; // Close the modal
+      }
+    } catch (error) {
+      // Handle backend errors
+      if (error.response && error.response.data.message) {
+        this.errorMessage = error.response.data.message; // Use error message from backend
+      } else {
+        this.errorMessage = 'An unexpected error occurred. Please try again.';
+      }
+    }
+  },
+
     generateReceipt(reference, unitid) {
     // Fetch the transaction and unit data using reference and unitid
     axios.get(`https://qrmcpass.loca.lt/api/transactions/${reference}/${unitid}`)
