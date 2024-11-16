@@ -228,9 +228,10 @@ export default {
     }, 1000);
   },
   methods: { 
-    validateTransactionPassword() {
+    async validateTransactionPassword() {
     this.errorMessage = ''; // Clear previous errors
 
+    // Ensure password input is provided
     if (!this.transactionPassword) {
       this.errorMessage = 'Transaction password is required.';
       return;
@@ -238,26 +239,25 @@ export default {
 
     try {
       // Send the password and teller ID to the backend for validation
-      const response = axios.post('/api/validate-transaction-password', {
+      const response = await axios.post('/api/validate-transaction-password', {
         teller_id: this.tellerId, // Replace with dynamic teller ID
         transaction_password: this.transactionPassword,
       });
 
       if (response.data.success) {
         // Password validated successfully
-        this.topup(); // Proceed with the transaction
+        this.topup(); // Proceed with the transaction logic
         this.showConfirmModal = false; // Close the modal
       }
     } catch (error) {
-      // Handle backend errors
-      if (error.response && error.response.data.message) {
-        this.errorMessage = error.response.data.message; // Use error message from backend
+      // Handle errors from the backend
+      if (error.response && error.response.data && error.response.data.message) {
+        this.errorMessage = error.response.data.message; // Show backend error message
       } else {
         this.errorMessage = 'An unexpected error occurred. Please try again.';
       }
     }
   },
-
     generateReceipt(reference, unitid) {
     // Fetch the transaction and unit data using reference and unitid
     axios.get(`https://qrmcpass.loca.lt/api/transactions/${reference}/${unitid}`)
