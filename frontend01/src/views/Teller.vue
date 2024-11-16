@@ -287,7 +287,7 @@ export default {
       console.error(error);
     });
 },async validateTransactionPassword() {
-  if (!this.teller.id) {
+  if (!this.superadmin.id) {
     this.errorMessage = "Teller ID is missing. Please try again.";
     return;
   }
