@@ -16,7 +16,7 @@
         <InputText type="password" v-model="password2" id="password2" placeholder="Confirm Password" class="w-full" />
       </div>
       <div class="grid grid-cols-2 gap-10 mt-3">
-        <Button type="submit" icon="pi pi-save" label="Save" severity="success" class="w-full" />
+        <Button type="button" icon="pi pi-save" label="Save" severity="success" class="w-full" @click="showConfirmModal = true" />
         <RouterLink to="/HomeSuperAdmin">
           <Button type="text" icon="pi pi-times" label="Cancel" severity="secondary" class="w-full" />
         </RouterLink>
