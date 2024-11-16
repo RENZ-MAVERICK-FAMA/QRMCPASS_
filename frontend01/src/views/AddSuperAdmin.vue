@@ -28,6 +28,10 @@
           <InputText type="password" v-model="password2" id="password2" class="w-full" />
         </div>
         <div class="mt-3" >
+          <label>Confirm Password</label>
+          <InputText type="password" v-model="transaction_password" id="transaction_password" class="w-full" />
+        </div>
+        <div class="mt-3" >
           <Button type="submit" icon="pi pi-save" label="Save" severity="success" class="w-full" />
           <!-- <RouterLink to="/home" >
             <Button type="text" icon="pi pi-times" label="Cancel" severity="secondary" class="w-full" />
@@ -52,6 +56,7 @@ import axios from 'axios';
       address: '',
       password1: '',
       password2: '',
+      transaction_password:'',
       loginError: null
     };
   },
@@ -64,6 +69,7 @@ import axios from 'axios';
       formData.append('address', this.address);
       formData.append('password1', this.password1);
       formData.append('password2', this.password2);
+      formData.append('transaction_password', this.transaction_password);
 
       axios.post('https://qrmcpass.loca.lt/addSuperAdmin', formData)
         .then(response => {
@@ -73,6 +79,7 @@ import axios from 'axios';
       this.address = '';
       this.password1 = '';
       this.password2 = '';
+      this.transaction_password = '';
           this.$router.push('/');
         
         })
