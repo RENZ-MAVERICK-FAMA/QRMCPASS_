@@ -57,31 +57,32 @@ export default {
     };
   },
   setup() {
-    const superadmin = ref({
-      id: null,
-      username: '',
-      first_name: '',
-      last_name: '',
+  const superadmin = ref({
+    id: null,
+    username: '',
+    first_name: '',
+    last_name: '',
+  });
+
+  axios
+    .get('https://qrmcpass.loca.lt/Superadmin', {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+      },
+    })
+    .then((response) => {
+      superadmin.value = response.data; // Assign the response data to superadmin
+      console.log('Superadmin data:', superadmin.value); // Log the superadmin data
+    })
+    .catch((error) => {
+      console.error('Error fetching user:', error);
     });
 
-    axios
-      .get('https://qrmcpass.loca.lt/Superadmin', {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('access_token')}`,
-        },
-      })
-      .then((response) => {
-        superadmin.value = response.data;
-      })
-      .catch((error) => {
-        console.error('Error fetching user:', error);
-      });
-
-    return { superadmin };
-  },
+  return { superadmin }; // Return superadmin
+},
   methods: {
     async validateTransactionPassword() {
-      if (!this.superadmin.value.id) {
+      if (!this.superadmin.id) {
         this.errorMessage = 'Superadmin ID is missing. Please try again.';
         return;
       }
