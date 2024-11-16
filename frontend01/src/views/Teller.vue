@@ -166,7 +166,7 @@ export default {
     });
 
     axios
-      .get("https://qrmcpass.loca.lt/SuperAdmin", {
+      .get("https://qrmcpass.loca.lt/Superadmin", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
