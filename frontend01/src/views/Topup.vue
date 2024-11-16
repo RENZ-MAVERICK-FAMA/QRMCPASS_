@@ -240,7 +240,7 @@ export default {
     try {
       // Send the password and teller ID to the backend for validation
       const response = await axios.post('https://qrmcpass.loca.lt/api/validate-transaction-password', {
-        teller_id: this.tellerId, // Replace with dynamic teller ID
+        teller_id: this.teller.id, // Replace with dynamic teller ID
         transaction_password: this.transactionPassword,
       });
 
