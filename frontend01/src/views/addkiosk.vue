@@ -16,6 +16,7 @@
         <InputText type="password" v-model="password2" id="password2" placeholder="Confirm Password" class="w-full" />
       </div>
       <div class="grid grid-cols-2 gap-10 mt-3">
+        <!-- Save Button that triggers the modal -->
         <Button type="button" icon="pi pi-save" label="Save" severity="success" class="w-full" @click="showConfirmModal = true" />
         <RouterLink to="/HomeSuperAdmin">
           <Button type="text" icon="pi pi-times" label="Cancel" severity="secondary" class="w-full" />
@@ -24,7 +25,7 @@
     </form>
 
     <!-- Transaction Confirmation Modal -->
-    <Dialog header="Confirm Transaction" v-model="showConfirmModal">
+    <Dialog header="Confirm Transaction" v-model:visible="showConfirmModal">
       <p>Please enter your transaction password to confirm:</p>
       <div class="mt-4">
         <InputText v-model="transactionPassword" type="password" placeholder="Enter Transaction Password" class="w-full" />
@@ -37,6 +38,7 @@
     </Dialog>
   </main>
 </template>
+
 
 <script>
 import axios from 'axios';
@@ -51,7 +53,7 @@ export default {
       loginError: null,
       transactionPassword: '',
       errorMessage: '',
-      showConfirmModal: false,
+      showConfirmModal: false, // The modal visibility state
     };
   },
   setup() {
@@ -97,8 +99,7 @@ export default {
 
         if (response.data.success) {
           this.errorMessage = '';
-          this.showConfirmModal = false;
-
+          this.showConfirmModal = false; // Close the modal after validation success
           console.log('Validation successful. Proceeding with account creation...');
           this.addkiosk(); // Proceed with adding the kiosk
         } else {
