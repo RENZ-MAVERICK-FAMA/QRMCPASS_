@@ -92,9 +92,8 @@
       </form>
     </div>
 
-    
-
-  <div class="p-5 shadow bg-white rounded-[10px] w-full">
+      <div class="grid grid-rows-2 grid-cols-1 md:grid md:grid-rows-2 md:grid-cols-1">
+         <div class="p-5 shadow bg-white rounded-[10px] w-full">
     <div class=" grid grid-rows-1 grid-cols-2 gap-1">
       <h2 class="text-[18px] font-bold">Delinquencies</h2>
     
@@ -113,11 +112,7 @@
     <div v-if="delinquencies.length > 0" class="mt-3 p-2 border rounded">
     <p><strong>Total Amount:</strong> {{ totalAmount }}</p>
   </div>
-  </div>
-  
- 
-  
-</div>
+
 <div class="p-5 shadow bg-white rounded-[10px] w-full">
   <div class=" grid grid-rows-1 grid-cols-2 gap-1">
     <h2 class="text-[18px] font-bold">Payments</h2>
@@ -137,6 +132,17 @@
       <strong>Total Amount: </strong> {{ totalPaymentAmount }}
     </p>
 </div> 
+
+      
+        </div>
+    
+
+ 
+  </div>
+  
+ 
+  
+</div>
 
 
     </div>
