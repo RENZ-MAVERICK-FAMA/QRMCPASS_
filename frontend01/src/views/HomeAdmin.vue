@@ -459,12 +459,12 @@ generateDelReportMulticabRange(startDate, endDate) {
   });
 },
 generatedelmulticabdailyExcelFile(delinquencies,startDate, endDate) {
-  delinquencies.sort((a, b) => new Date(a.date_of_payment) - new Date(b.date_of_payment));
-  const filename = `Multicab Delinquencies Report for ${startDate} & ${endDate}.pdf`;
-  
+    delinquencies.sort((a, b) => new Date(a.date_of_payment) - new Date(b.date_of_payment));
 
-  const tableHeaderRow = ['Body Number', 'Date of Delinquency', 'Status','Date of Payment','Timestamp']; // Plain text values for the header row
-  const tableBody = [
+const filename = `Multicab Delinquency Report for ${startDate} & ${endDate}.pdf`;
+
+// Create table body with header row and delinquency data
+const tableBody = [
   [
     { text: 'No.', style: 'tableHeader' },
     { text: 'Body Number', style: 'tableHeader' },
@@ -479,107 +479,62 @@ generatedelmulticabdailyExcelFile(delinquencies,startDate, endDate) {
   ])
 ];
 
-  const docDefinition = {
-    content: [
-      {
-        columns: [
+// Updated docDefinition with corrected widths array
+const docDefinition = {
+  content: [
     {
-        width: 'auto', // Automatically size based on content
-        stack: [
-            {
-                image: logos.citylogo,
-                width: 40,
-                height: 40,
-                alignment: 'left'
-            }
-        ]
+      columns: [
+        { width: 'auto', stack: [{ image: logos.citylogo, width: 40, height: 40, alignment: 'left' }] },
+        { width: 'auto', stack: [{ image: logos.ceedmologo, width: 50, height: 40, alignment: 'left' }] },
+        {
+          width: '*',
+          stack: [
+            { text: 'Province of Bukidnon', style: 'headerText' },
+            { text: 'City Government of Malaybalay', style: 'headerText' },
+            { text: 'City Economic Enterprise Development and Management Office', style: 'headerText' },
+            { text: 'CEEDMO Motorela Booth', style: 'headerText' },
+            { text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon', style: 'headerText' }
+          ],
+          alignment: 'center'
+        },
+        { width: 'auto', stack: [{ image: logos.qrlogo, width: 50, height: 40, alignment: 'right' }] }
+      ]
     },
+    { text: '', margin: [0, 20] },
+    { text: `Today's Report - ${startDate} & ${endDate}`, style: 'subheader', alignment: 'center', margin: [0, 10] },
     {
-        width: 'auto', // Automatically size based on content
-        stack: [
-            {
-                image: logos.ceedmologo,
-                width: 50,
-                height: 40,
-                alignment: 'left'
-            }
-        ]
-    },
-    {
-        width: '*', // Takes up remaining space
-        stack: [
-            {
-                text: 'Province of Bukidnon',
-                style: 'headerText'
-            },
-            {
-                text: 'City Government of Malaybalay',
-                style: 'headerText'
-            },
-            {
-                text: 'City Economic Enterprise Development and Management Office',
-                style: 'headerText'
-            },
-            {
-                text: 'CEEDMO Multicab Booth',
-                style: 'headerText'
-            },
-            {
-                text: 'Public Market Building, Barangay 9, Malaybalay City, Bukidnon',
-                style: 'headerText'
-            }
-        ],
-        alignment: 'center' // Center the header text
-    },
-    {
-        width: 'auto', // Automatically size based on content
-        stack: [
-            {
-                image: logos.qrlogo,
-                width: 50,
-                height: 40,
-                alignment: 'right'
-            }
-        ]
-    }
-]
-      },
-      { text: '', margin: [0, 20] },  // Space below the header
-      { text: `Today's Report - ${startDate} & ${endDate}`, style: 'subheader', alignment: 'center', margin: [0, 10] },
-      {
-        table: {
-          headerRows: 1,
-          widths: [100, 100, 100],
-          body: tableBody
-        }
-      },
-      { text: '', margin: [0, 10] },
-      { text: 'Prepared by:', margin: [0, 30] },
-      { text: '', margin: [0, 10] },
-      { text: 'Verified by:', margin: [0, 30] },
-      { text: '', margin: [0, 10] },
-      { text: 'Approved by:', margin: [0, 30] },
-    ],
-    styles: {
-      tableHeader: {
-        bold: true,
-        fontSize: 10,
-        alignment: 'center'
-      },
-      headerText: {
-        fontSize: 12,
-        bold: true
-      },
-      subheader: {
-        fontSize: 14,
-        bold: true
+      table: {
+        headerRows: 1,
+        widths: [25, 100, 100, 100],  // Updated to match four columns in `tableBody`
+        body: tableBody
       }
+    },
+    { text: '', margin: [0, 15] },
+    { text: 'Prepared by:', margin: [0, 30] },
+    { text: '', margin: [10, 15] },
+    { text: 'Verified by:', margin: [0, 30] },
+    { text: '', margin: [0, 15] },
+    { text: 'Approved by:', margin: [0, 30] }
+  ],
+  styles: {
+    tableHeader: {
+      bold: true,
+      fontSize: 10,
+      alignment: 'center'
+    },
+    headerText: {
+      fontSize: 12,
+      bold: true
+    },
+    subheader: {
+      fontSize: 14,
+      bold: true
     }
-  };
+  }
+};
 
 // Generate and download PDF
-pdfMake.createPdf(docDefinition).download(`Multicab Delinquency Report for ${startDate} & ${endDate}.pdf`);
-
+pdfMake.createPdf(docDefinition).download(filename);
 },
 generatedailyMulticabpayment(startDate, endDate) {
   axios.get(`https://qrmcpass.loca.lt/admin/transactions/payment/multicab/daily?start_date=${startDate}&end_date=${endDate}`, {
@@ -1269,7 +1224,7 @@ docDefinition.content.push(overallContent);
         ]
     },
     {
-        width: '*', // Takes up remaining space
+        width: 'auto', // Takes up remaining space
         stack: [
             {
                 text: 'Province of Bukidnon',
@@ -1313,15 +1268,16 @@ docDefinition.content.push(overallContent);
             {
                 table: {
                     headerRows: 1,
-                    widths: ['*', '*', '*'],
+                    widths: ['auto', 'auto', 'auto'],
                     body: [
-                        [    { text: 'No.', style: 'tableHeader' },
+                        [       
+                         
                             { text: 'Body Number', style: 'tableHeader' },
                             { text: 'Amount', style: 'tableHeader' },
                             { text: 'Type', style: 'tableHeader' }
                         ], // Table header row
                         ...dailyReport[day].transactions.map(transaction => [
-                        { text: index + 1, alignment: 'center' },
+                       
                             transaction.unit, 
                             transaction.amount.toFixed(2), 
                             transaction.type
@@ -1371,7 +1327,7 @@ docDefinition.content.push(overallContent);
                 ]
             },
             {
-                width: '*', // Takes up remaining space
+                width: 'auto', // Takes up remaining space
                 stack: [
                     {
                         text: 'Province of Bukidnon',
@@ -1414,15 +1370,15 @@ docDefinition.content.push(overallContent);
     {
         table: {
             headerRows: 1,
-            widths: ['*', '*'],
+            widths: ['auto', 'auto'],
             body: [
                 [
-                    { text: 'No.', style: 'tableHeader' },
+                 
                     { text: 'Date', style: 'tableHeader' },
                     { text: 'Total Amount', style: 'tableHeader' }
-                ], // Table header row
+                ], 
+                
                 ...sortedDates.map(day => [
-                { text: index + 1, alignment: 'center' },
                     parseInt(day) + 1, 
                     dailyReport[day].transactions.reduce((dayTotal, transaction) => dayTotal + transaction.amount, 0).toFixed(2)
                 ]),  
@@ -1451,6 +1407,7 @@ docDefinition.content.push(overallContent);
     docDefinition.content.push(overallContent);
 
     // Generate and download PDF
+ 
   
     pdfMake.createPdf(docDefinition).download(`Multicab Payment Report for ${this.getMonthName(month)}-${year}.pdf`);
 },  
@@ -1473,7 +1430,7 @@ docDefinition.content.push(overallContent);
       });
     },
     generateMonthlymotorelapaymentReports(dailyReport, overallReport, month, year) {
-      const docDefinition = {
+        const docDefinition = {
         content: [],
         styles: {
             header: { fontSize: 16, bold: true, margin: [0, 10], alignment: 'center' },
@@ -1512,7 +1469,7 @@ docDefinition.content.push(overallContent);
         ]
     },
     {
-        width: '*', // Takes up remaining space
+        width: 'auto', // Takes up remaining space
         stack: [
             {
                 text: 'Province of Bukidnon',
@@ -1556,16 +1513,16 @@ docDefinition.content.push(overallContent);
             {
                 table: {
                     headerRows: 1,
-                    widths: ['*', '*', '*'],
+                    widths: ['auto', 'auto', 'auto'],
                     body: [
                         [       
-                         { text: 'No.', style: 'tableHeader' },
+                         
                             { text: 'Body Number', style: 'tableHeader' },
                             { text: 'Amount', style: 'tableHeader' },
                             { text: 'Type', style: 'tableHeader' }
                         ], // Table header row
                         ...dailyReport[day].transactions.map(transaction => [
-                        { text: index + 1, alignment: 'center' },
+                       
                             transaction.unit, 
                             transaction.amount.toFixed(2), 
                             transaction.type
@@ -1615,7 +1572,7 @@ docDefinition.content.push(overallContent);
                 ]
             },
             {
-                width: '*', // Takes up remaining space
+                width: 'auto', // Takes up remaining space
                 stack: [
                     {
                         text: 'Province of Bukidnon',
@@ -1658,14 +1615,14 @@ docDefinition.content.push(overallContent);
     {
         table: {
             headerRows: 1,
-            widths: ['*', '*'],
+            widths: ['auto', 'auto'],
             body: [
                 [
-                    { text: 'No.', style: 'tableHeader' },
+                 
                     { text: 'Date', style: 'tableHeader' },
                     { text: 'Total Amount', style: 'tableHeader' }
                 ], 
-                { text: index + 1, alignment: 'center' },
+                
                 ...sortedDates.map(day => [
                     parseInt(day) + 1, 
                     dailyReport[day].transactions.reduce((dayTotal, transaction) => dayTotal + transaction.amount, 0).toFixed(2)
@@ -1697,7 +1654,6 @@ docDefinition.content.push(overallContent);
     // Generate and download PDF
     pdfMake.createPdf(docDefinition).download(`Motorela Payment Report for ${this.getMonthName(month)}-${year}.pdf`);
 },
-
 
   }
 };
