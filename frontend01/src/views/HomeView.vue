@@ -6,15 +6,15 @@
         <label class="t font-extralight" >Paid Motorela Today</label>
       </div>
       <div class="p-5 rounded-[10px] shadow bg-white" >
-        <h1 class="text-[20px] md:text-[25px] font-extrabold text-center" >{{ motorelaPaidCount }}/{{ motorelaCount }}</h1>
+        <h1 class="text-[20px] md:text-[25px] font-extrabold text-center" >{{ multicabPaidCount}}/{{ multicabCount }}</h1>
         <label class="t font-extralight" >Paid Multicab Today</label>
       </div>
       <div class="p-5 rounded-[10px] shadow bg-white" >
-        <h1 class="text-[20px] md:text-[25px] font-extrabold text-center" >{{ motorelaPaidCount }}/{{ motorelaCount }}</h1>
+        <h1 class="text-[20px] md:text-[25px] font-extrabold text-center" >{{ motoreladelCount }}/{{ motorelaCount }}</h1>
         <label class="t font-extralight" >Delinquent Motorela Today</label>
       </div>
       <div class="p-5 rounded-[10px] shadow bg-white" >
-        <h1 class="text-[20px] md:text-[25px] font-extrabold text-center" >{{ motorelaPaidCount }}/{{ motorelaCount }}</h1>
+        <h1 class="text-[20px] md:text-[25px] font-extrabold text-center" >{{ multicabdelCount }}/{{ multicabCount }}</h1>
         <label class="t font-extralight" >Delinquent Multicab Today</label>
       </div>
     </div>
